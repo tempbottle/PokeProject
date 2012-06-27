@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 public abstract class RenderableObject extends GameObject{
 	protected static List<RenderableObject> list = new ArrayList<RenderableObject>();
 	int depth = 0;
-	public static int tileWidth=16,tileHeight=16;
+	public final static int tileWidth=16,tileHeight=16;
 	
 	public abstract void render(Graphics g);
 	
