@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.EdwJes.debug.Debug;
-import me.EdwJes.main.Entities.Entity;
+import me.EdwJes.main.Entities.*;
 
 import org.newdawn.slick.*; 
 
@@ -52,8 +52,8 @@ public class PokemonProject extends BasicGame{
 		container.setTargetFrameRate(FPS);
 		container.setShowFPS(false);
 		new Debug();
-		new Entity(4,4);
-		new Entity(1,5);
+		new Trainer(4,4);
+		new Trainer(1,5);
 	}
 
 	private void handleInput(GameContainer container) throws SlickException {
