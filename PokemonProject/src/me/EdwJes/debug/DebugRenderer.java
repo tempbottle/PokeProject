@@ -23,6 +23,7 @@ public class DebugRenderer extends RenderableObject{
 		l.add("GameObject: " + GameObject.list.size());
 		l.add("RenderableObject: " + RenderableObject.list.size());
 		l.add("Player coords: " + PokemonProject.player.obj.getEntity().getXPos() + "," + PokemonProject.player.obj.getEntity().getYPos() + " (" + PokemonProject.player.obj.getEntity().getXTile() + "," + PokemonProject.player.obj.getEntity().getYTile() + ")");
+		l.add("if(canMove&&!isMoving()){if(xTile>0)");
 		drawList(g,l);
 	}
 

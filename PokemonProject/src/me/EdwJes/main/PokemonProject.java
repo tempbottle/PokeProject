@@ -14,12 +14,13 @@ public class PokemonProject extends BasicGame{
 	
 	public static final int WINDOW_WIDTH = 640;
 	public static final int WINDOW_HEIGHT = 480;
+	public static final String TITLE = "Pokemon Project";
 	public static final boolean FULLSCREEN = false;
 	public final int FPS = 60;
 	public static GameContainer container;
 	Keyboard keyboard = new Keyboard();
 	public static Player player;
-	public static final String WORK_DIR =System.getProperty("user.dir");
+	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
 	//Dark font color: #504060, shadow: #D0D0B8
@@ -31,6 +32,9 @@ public class PokemonProject extends BasicGame{
 		try{
 			AppGameContainer app=new AppGameContainer(new PokemonProject());
 			app.setDisplayMode(WINDOW_WIDTH,WINDOW_HEIGHT,FULLSCREEN);
+			app.setVSync(true);
+			app.setTitle(TITLE);
+			//app.setIcon(String something);
 			app.start();} 
 		catch(SlickException e){ 
 			e.printStackTrace();}}
