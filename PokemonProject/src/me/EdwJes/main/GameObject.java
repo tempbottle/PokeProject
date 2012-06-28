@@ -21,4 +21,5 @@ public class GameObject {
 	public void onCreate(){}
 	public void onUpdate(){}
 	public void onDestroy(){}
+	public void callAlarm(Alarm alarm){}
 }

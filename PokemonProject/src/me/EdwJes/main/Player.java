@@ -18,6 +18,7 @@ public class Player extends GameObject{
 	           KEY_PAUSE  = Input.KEY_ENTER,
 	           KEY_EXIT   = Input.KEY_ESCAPE;
 	public boolean keyHold[] = new boolean[256]; 
+	Alarm alarm1 = new Alarm(120, this);
 	
 	public Player(){
 		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.anim[Name.Brendan.get()]));
@@ -90,4 +91,9 @@ public class Player extends GameObject{
 	@Override
 	public void onUpdate(){
 		handleInput(PokemonProject.container);}
+	
+	@Override public void callAlarm(Alarm alarm){
+		super.callAlarm(alarm);
+		if(alarm == alarm1)System.out.println("The alarm test was a success!");
+	}
 }
