@@ -19,7 +19,8 @@ public class PokemonProject extends BasicGame{
 	public final int FPS = 60;
 	public static GameContainer container;
 	Keyboard keyboard = new Keyboard();
-	public static Player player;
+	public static Console cmd = new Console();
+	public static PlayerInput player;
 	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
@@ -34,6 +35,7 @@ public class PokemonProject extends BasicGame{
 			app.setDisplayMode(WINDOW_WIDTH,WINDOW_HEIGHT,FULLSCREEN);
 			app.setVSync(true);
 			app.setTitle(TITLE);
+			app.setDefaultFont(font);
 			//app.setIcon(String something);
 			app.start();} 
 		catch(SlickException e){ 
@@ -66,7 +68,7 @@ public class PokemonProject extends BasicGame{
 		new Debug();
 		new EntityHuman(4,4,IMAGE_LOADER.anim[Name.May.get()]);
 		new EntityHuman(1,5,IMAGE_LOADER.anim[Name.May.get()]);
-		player=new Player();
+		player=new PlayerInput();
 	}
 
 	private void handleInput(GameContainer container) throws SlickException {

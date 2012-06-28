@@ -7,25 +7,27 @@ import me.EdwJes.main.EntityControl.PlayerEntityControl;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-public class Player extends GameObject{
-	public PlayerControlObject obj;
+public class PlayerInput extends GameObject{
+	protected PlayerInputControlObject obj,objPrevious;
 	public int KEY_LEFT   = Input.KEY_LEFT,
 	           KEY_RIGHT  = Input.KEY_RIGHT,
 	           KEY_UP     = Input.KEY_UP,
 	           KEY_DOWN   = Input.KEY_DOWN,
 	           KEY_ACTION = Input.KEY_X,
 	           KEY_SKIP   = Input.KEY_Z,
-	           KEY_PAUSE  = Input.KEY_ENTER,
-	           KEY_EXIT   = Input.KEY_ESCAPE;
+	           KEY_ENTER  = Input.KEY_ENTER,
+	           KEY_EXIT   = Input.KEY_ESCAPE,
+	           KEY_CHAT   = Input.KEY_T;
 	public boolean keyHold[] = new boolean[256]; 
 	
-	public Player(){
+	public PlayerInput(){
 		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.anim[Name.Brendan.get()]));
 	}
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
-
+		obj.onHandleInput(input);
+		
 		if(input.isKeyDown(KEY_LEFT)){
 			obj.onKeyLeft();
 			if(!keyHold[KEY_LEFT]){
@@ -85,6 +87,35 @@ public class Player extends GameObject{
 			keyHold[KEY_SKIP]=false;
 			obj.onKeySkipReleased();
 		}
+		
+		if(input.isKeyDown(KEY_ENTER)){
+			obj.onKeyEnter();
+			if(!keyHold[KEY_ENTER]){
+				keyHold[KEY_ENTER]=true;
+				obj.onKeyEnterPressed();}}
+		else if(keyHold[KEY_ENTER]){
+			keyHold[KEY_ENTER]=false;
+			obj.onKeyEnterReleased();
+		}
+		
+		if(input.isKeyDown(KEY_CHAT)){
+			obj.onKeyChat();
+			if(!keyHold[KEY_CHAT]){
+				keyHold[KEY_CHAT]=true;
+				obj.onKeyChatPressed();}}
+		else if(keyHold[KEY_CHAT]){
+			keyHold[KEY_CHAT]=false;
+			obj.onKeyChatReleased();
+		}
+	}
+	
+	public void setObj(PlayerInputControlObject obj){
+		this.objPrevious=this.obj;
+		this.obj=obj;
+	}
+	
+	public PlayerInputControlObject getObj(){
+		return obj;
 	}
 	
 	@Override

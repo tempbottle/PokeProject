@@ -31,14 +31,14 @@ public class Keyboard implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(int key, char c) {
-		
+	public void keyPressed(int key, char chr) {
+		PokemonProject.player.obj.onKeyPressed(key,chr);
 	}
 
 	
 	@Override
-	public void keyReleased(int key, char c) {
-
+	public void keyReleased(int key, char chr) {
+		PokemonProject.player.obj.onKeyReleased(key,chr);
 	}
 
 }
