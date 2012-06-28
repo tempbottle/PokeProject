@@ -3,10 +3,10 @@ package me.EdwJes.main.Entities;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 
-public class Trainer extends Entity{
+public class EntityHuman extends Entity{
 	public Animation[] sprite;
 	
-	public Trainer(int xTile, int yTile,Animation[] sprite) {
+	public EntityHuman(int xTile, int yTile,Animation[] sprite) {
 		super(xTile, yTile);
 		this.sprite=sprite;
 		setPosMoveSpeed(1);

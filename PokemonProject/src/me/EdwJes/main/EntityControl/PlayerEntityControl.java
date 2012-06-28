@@ -3,10 +3,10 @@ package me.EdwJes.main.EntityControl;
 import me.EdwJes.main.PlayerControlObject;
 import me.EdwJes.main.Entities.Entity;
 
-public class PlayerEntity implements PlayerControlObject,EntityControl{
+public class PlayerEntityControl implements PlayerControlObject,EntityControl{
 	private Entity entity;
 	
-	public PlayerEntity(Entity entity) {
+	public PlayerEntityControl(Entity entity) {
 		this.entity=entity;
 	}
 	//TODO: Lätt-tryck för att vända sig istället för att röra sig direkt när man har vänt sig, dir variabeln. Får göra en timer eller något 

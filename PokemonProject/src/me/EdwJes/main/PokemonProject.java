@@ -22,7 +22,8 @@ public class PokemonProject extends BasicGame{
 	public static final String WORK_DIR =System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
-
+	//Dark font color: #504060, shadow: #D0D0B8
+	
 	public PokemonProject(){ 
 		super("PokemonProject");} 
 
@@ -56,11 +57,11 @@ public class PokemonProject extends BasicGame{
 		container.setTargetFrameRate(FPS);
 		container.setShowFPS(false);
 		//TODO: Ful font init för test
-		font =new AngelCodeFont(WORK_DIR+"/resources/images/Pokemon.fnt", new Image(WORK_DIR+"/resources/images/Pokemon_00.png"));
+		font =new AngelCodeFont(WORK_DIR+"/resources/fonts/main.fnt", new Image(WORK_DIR+"/resources/fonts/main.png"));
 		IMAGE_LOADER=new ImageLoader("/resources/images/");
 		new Debug();
-		new Trainer(4,4,IMAGE_LOADER.anim[Name.May.get()]);
-		new Trainer(1,5,IMAGE_LOADER.anim[Name.May.get()]);
+		new EntityHuman(4,4,IMAGE_LOADER.anim[Name.May.get()]);
+		new EntityHuman(1,5,IMAGE_LOADER.anim[Name.May.get()]);
 		player=new Player();
 	}
 

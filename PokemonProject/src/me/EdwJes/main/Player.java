@@ -1,8 +1,8 @@
 package me.EdwJes.main;
 
 import me.EdwJes.main.ImageLoader.Name;
-import me.EdwJes.main.Entities.Trainer;
-import me.EdwJes.main.EntityControl.PlayerEntity;
+import me.EdwJes.main.Entities.EntityPlayer;
+import me.EdwJes.main.EntityControl.PlayerEntityControl;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -20,7 +20,7 @@ public class Player extends GameObject{
 	public boolean keyHold[] = new boolean[256]; 
 	
 	public Player(){
-		obj=new PlayerEntity(new Trainer(2,6,PokemonProject.IMAGE_LOADER.anim[Name.Brendan.get()]));
+		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.anim[Name.Brendan.get()]));
 	}
 	
 	public void handleInput(GameContainer container){
