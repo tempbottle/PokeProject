@@ -17,8 +17,10 @@ public class PlayerInput extends GameObject{
 	           KEY_SKIP   = Input.KEY_Z,
 	           KEY_ENTER  = Input.KEY_ENTER,
 	           KEY_EXIT   = Input.KEY_ESCAPE,
-	           KEY_CHAT   = Input.KEY_T;
+			   KEY_CHAT   = Input.KEY_T;
+
 	public boolean keyHold[] = new boolean[256]; 
+	Alarm alarm1 = new Alarm(120, this);
 	
 	public PlayerInput(){
 		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.anim[Name.Brendan.get()]));
@@ -27,7 +29,7 @@ public class PlayerInput extends GameObject{
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
 		obj.onHandleInput(input);
-		
+
 		if(input.isKeyDown(KEY_LEFT)){
 			obj.onKeyLeft();
 			if(!keyHold[KEY_LEFT]){
@@ -121,4 +123,9 @@ public class PlayerInput extends GameObject{
 	@Override
 	public void onUpdate(){
 		handleInput(PokemonProject.container);}
+	
+	@Override public void callAlarm(Alarm alarm){
+		super.callAlarm(alarm);
+		if(alarm == alarm1)System.out.println("The alarm test was a success!");
+	}
 }
