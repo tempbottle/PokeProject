@@ -23,6 +23,7 @@ public class DebugRenderer extends RenderableObject{
 		l.add("GameObject: " + GameObject.list.size());
 		l.add("RenderableObject: " + RenderableObject.list.size());
 		l.add("Player coords: " + PokemonProject.player.getObj().getXPos() + "," + PokemonProject.player.getObj().getYPos() + " (" + PokemonProject.player.getObj().getXTile() + "," + PokemonProject.player.getObj().getYTile() + ")");
+		l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+PokemonProject.SCREEN_WIDTH+","+PokemonProject.SCREEN_HEIGHT+")");
 		drawList(g,l);
 	}
 

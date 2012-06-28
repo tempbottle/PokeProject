@@ -11,11 +11,15 @@ import me.EdwJes.main.Entities.*;
 import org.newdawn.slick.*; 
 
 public class PokemonProject extends BasicGame{
-	
-	public static final int WINDOW_WIDTH = 640;
-	public static final int WINDOW_HEIGHT = 480;
+	public static AppGameContainer app;
+	protected static int WINDOW_WIDTH_INIT = 640;
+	protected static int WINDOW_HEIGHT_INIT = 480;
+	public static int SCREEN_WIDTH = 320;
+	public static int SCREEN_HEIGHT = 240;
 	public static final String TITLE = "Pokemon Project";
-	public static final boolean FULLSCREEN = false;
+	protected static boolean FULLSCREEN_INIT = false;
+	protected static float XSCALE = 2f;
+	protected static float YSCALE = 2f;
 	public final int FPS = 60;
 	public static GameContainer container;
 	Keyboard keyboard = new Keyboard();
@@ -31,18 +35,26 @@ public class PokemonProject extends BasicGame{
 
 	public static void main(String[] args){ 
 		try{
-			AppGameContainer app=new AppGameContainer(new PokemonProject());
-			app.setDisplayMode(WINDOW_WIDTH,WINDOW_HEIGHT,FULLSCREEN);
-			app.setVSync(true);
-			app.setTitle(TITLE);
-			app.setDefaultFont(font);
-			//app.setIcon(String something);
-			app.start();} 
+		AppGameContainer app=createAppGameContainer();}
 		catch(SlickException e){ 
-			e.printStackTrace();}}
+			e.printStackTrace();}
+	}
+	
+	public static AppGameContainer createAppGameContainer() throws SlickException{
+		app=new AppGameContainer(new ScalableGame(new PokemonProject(), WINDOW_WIDTH_INIT, WINDOW_HEIGHT_INIT, false));
+		app.setDisplayMode(WINDOW_WIDTH_INIT,WINDOW_HEIGHT_INIT,FULLSCREEN_INIT);
+		app.setVSync(true);
+		app.setTitle(TITLE);
+		app.setDefaultFont(font);
+		//app.setIcon(String something);
+		app.start();
+		return app;
+	}
 	
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException{
+		g.scale(XSCALE,YSCALE);
+		//TODO: Depth beroende på Y-koordinater så att man hamnar bakom saker
 	    Collections.sort(RenderableObject.list, new Comparator<Object>(){
 
 	        public int compare(Object o1, Object o2) {
@@ -63,16 +75,23 @@ public class PokemonProject extends BasicGame{
 		container.setTargetFrameRate(FPS);
 		container.setShowFPS(false);
 		//TODO: Ful font init för test
-		font =new AngelCodeFont(WORK_DIR+"/resources/fonts/main.fnt", new Image(WORK_DIR+"/resources/fonts/main.png"));
 		IMAGE_LOADER=new ImageLoader("/resources/images/");
+		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/main.fnt", IMAGE_LOADER.loadImage("/fonts/main.png"));
 		new Debug();
-		new EntityHuman(4,4,IMAGE_LOADER.anim[Name.May.get()]);
-		new EntityHuman(1,5,IMAGE_LOADER.anim[Name.May.get()]);
+		new EntityHuman(4,4,IMAGE_LOADER.animatedSprite.get(Name.May));
+		new EntityHuman(1,5,IMAGE_LOADER.animatedSprite.get(Name.May));
 		player=new PlayerInput();
 	}
 
 	private void handleInput(GameContainer container) throws SlickException {
 		container.getInput().addKeyListener(keyboard);
+	}
+	
+	public static void setScale(float xscale,float yscale){
+		XSCALE=xscale*((float)WINDOW_WIDTH_INIT/(float)app.getWidth());
+		YSCALE=yscale*((float)WINDOW_HEIGHT_INIT/(float)app.getHeight());
+		SCREEN_WIDTH=Math.round(app.getWidth()/xscale);
+		SCREEN_HEIGHT=Math.round(app.getHeight()/yscale);
 	}
 	
 	@Override
@@ -82,5 +101,11 @@ public class PokemonProject extends BasicGame{
 		List<GameObject> l = GameObject.list;
 		for(int i=0;i<l.size();i++){
 			l.get(i).update();}
+	}
+	
+	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{
+		setScale((float)app.getWidth()/(float)width,(float)app.getHeight()/(float)height);
+		app.setDisplayMode(width,height,fullscreen);
+		Debug.console.println(XSCALE);
 	}
 }

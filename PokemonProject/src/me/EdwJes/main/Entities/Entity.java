@@ -208,10 +208,10 @@ public class Entity extends RenderableObject{
 	
 	@Override
 	public void render(Graphics g) {
-		Color temp=g.getColor();
+		/*Color temp=g.getColor();
 		if(isMoving())
 			g.setColor(Color.gray);
 		g.drawRect(getXPos(),getYPos(),tileWidth-1,tileHeight-1);
-		g.setColor(temp);
+		g.setColor(temp);*/
 	}
 }

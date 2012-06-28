@@ -11,10 +11,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.EdwJes.main.Entities.EntityHuman;
+import me.EdwJes.main.ImageLoader.Name;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 public class Console extends RenderableObject implements PlayerInputControlObject{
 	
@@ -27,7 +31,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		test, shit
+		test,shit,scale,skit,display,human
 	}
 	
 	public Console(){
@@ -42,7 +46,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			i++;
 			int alpha=255;
 			if(text.fadeOutTick<ConsoleOutputText.fadeOutTimer||isOn){
-				int y=PokemonProject.WINDOW_HEIGHT - lineHeight*2-6 - ((ConsoleOutputText.list.size()-i)*16);
+				int y=PokemonProject.SCREEN_HEIGHT - lineHeight*2-6 - ((ConsoleOutputText.list.size()-i)*16);
 				if(!isOn)
 					alpha=255-((int)(((float)text.fadeOutTick/ConsoleOutputText.fadeOutTimer)*255));
 				g.setColor(new Color(255,255,255,alpha));
@@ -51,12 +55,12 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		}
 		if(isOn){
 			g.setColor(Color.darkGray);
-			g.fillRect(0,PokemonProject.WINDOW_HEIGHT-lineHeight-4,PokemonProject.WINDOW_WIDTH,PokemonProject.WINDOW_HEIGHT);
+			g.fillRect(0,PokemonProject.SCREEN_HEIGHT-lineHeight-4,PokemonProject.SCREEN_WIDTH,PokemonProject.SCREEN_HEIGHT);
 			g.setColor(Color.white);
-			g.drawString(inputFieldPrefix + input, 6, PokemonProject.WINDOW_HEIGHT-lineHeight-2);
+			g.drawString(inputFieldPrefix + input, 6, PokemonProject.SCREEN_HEIGHT-lineHeight-2);
 			int inputPositionWidth=PokemonProject.font.getWidth(inputFieldPrefix + input.substring(0,inputPosition) + " ")-2;
 			g.setColor(Color.red);
-			g.drawLine(inputPositionWidth+2, PokemonProject.WINDOW_HEIGHT-lineHeight,inputPositionWidth+2, PokemonProject.WINDOW_HEIGHT-4);
+			g.drawLine(inputPositionWidth+2, PokemonProject.SCREEN_HEIGHT-lineHeight,inputPositionWidth+2, PokemonProject.SCREEN_HEIGHT-4);
 			g.setColor(Color.white);
 		}
 	}
@@ -90,9 +94,27 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 								_str+="["+i+"]="+command[i]+"; ";
 							outputConsole(_str);
 							break;
-							
 						case shit:
 							outputConsole("Yes shit");
+							break;
+						case scale:
+							PokemonProject.setScale(Float.valueOf(command[1].trim()).floatValue(),Float.valueOf(command[1].trim()).floatValue());
+							outputConsole("Scaled the screen to "+command[1]+"x");
+							break;
+						case display:
+							try{
+								PokemonProject.setDisplayMode(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),PokemonProject.app.isFullscreen());}
+							catch(NumberFormatException e){
+								e.printStackTrace();}
+							catch(SlickException e){
+								e.printStackTrace();}
+							outputConsole("Resolution set to "+command[1]+"x"+command[2]);
+							break;
+						case human:
+							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),PokemonProject.IMAGE_LOADER.animatedSprite.get(Name.May));
+							break;
+						default:
+							outputConsole("Undefined Command: "+command[0]);
 							break;
 					}
 				}

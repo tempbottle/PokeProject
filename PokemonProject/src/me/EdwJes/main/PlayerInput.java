@@ -23,7 +23,7 @@ public class PlayerInput extends GameObject{
 	Alarm alarm1 = new Alarm(120, this);
 	
 	public PlayerInput(){
-		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.anim[Name.Brendan.get()]));
+		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.animatedSprite.get(Name.Brendan)));
 	}
 	
 	public void handleInput(GameContainer container){
