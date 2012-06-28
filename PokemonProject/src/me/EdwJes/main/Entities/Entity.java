@@ -179,6 +179,7 @@ public class Entity extends RenderableObject{
 	public void onInteracted(Entity interactor){}
 	public void onInteract(Entity target){}
 	public void onMoveTile(int xTileTo,int yTileTo){}
+	public void onMoveFinished(int xTile,int yTile){}
 	public void onUpdate(){}
 
 	private void handleMovement(){
@@ -187,6 +188,7 @@ public class Entity extends RenderableObject{
 				moveXOffset+=posMoveSpeed*Math.signum(moveXTile);
 				if(Math.abs(moveXOffset)>=Math.abs(moveXTile)*tileWidth){
 					xTile+=moveXTile;
+					onMoveFinished(xTile,yTile);
 					moveXOffset=0;
 					moveXTile=0;}
 			}
@@ -194,6 +196,7 @@ public class Entity extends RenderableObject{
 				moveYOffset+=posMoveSpeed*Math.signum(moveYTile);
 				if(Math.abs(moveYOffset)>=Math.abs(moveYTile)*tileHeight){
 					yTile+=moveYTile;
+					onMoveFinished(xTile,yTile);
 					moveYOffset=0;
 					moveYTile=0;}
 			}

@@ -32,9 +32,9 @@ public class DebugRenderer extends RenderableObject{
 		for(int i = 0; i < list.size(); i++){
 			Color temp = g.getColor();
 			g.setColor(Color.gray);
-			g.drawString(list.get(i), 0+1, i*18+1);
+			g.drawString(list.get(i), 2+1, 2+i*18+1);
 			g.setColor(temp);
-			g.drawString(list.get(i), 0, i*18);
+			g.drawString(list.get(i), 2, 2+i*18);
 		}
 	}
 }
