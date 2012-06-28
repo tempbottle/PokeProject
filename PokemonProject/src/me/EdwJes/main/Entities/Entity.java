@@ -180,8 +180,7 @@ public class Entity extends RenderableObject{
 	public void onInteract(Entity target){}
 	public void onMoveTile(int xTileTo,int yTileTo){}
 	public void onUpdate(){}
-	public void onRender(Graphics g){}
-	
+
 	private void handleMovement(){
 		if(canMove){
 			if(getMovementX()!=0){
@@ -209,7 +208,6 @@ public class Entity extends RenderableObject{
 	
 	@Override
 	public void render(Graphics g) {
-		onRender(g);
 		Color temp=g.getColor();
 		if(isMoving())
 			g.setColor(Color.gray);

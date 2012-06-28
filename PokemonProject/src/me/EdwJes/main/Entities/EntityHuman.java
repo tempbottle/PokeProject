@@ -12,7 +12,8 @@ public class EntityHuman extends Entity{
 		setPosMoveSpeed(1);
 	}
 	
-	public void onRender(Graphics g){
+	@Override public void render(Graphics g){
+		super.render(g);
 		if(isMoving()){
 			if(dir==Direction.RIGHT)
 				g.drawAnimation(sprite[Direction.RIGHT.get()], getXPos(), getYPos());
