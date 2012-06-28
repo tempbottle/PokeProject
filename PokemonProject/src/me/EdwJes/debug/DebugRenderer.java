@@ -10,6 +10,11 @@ import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.RenderableObject;
 
 public class DebugRenderer extends RenderableObject{
+	
+	public DebugRenderer(){
+		setDepth(100);
+	}
+	
 	@Override
 	public void render(Graphics g) {
 		List<String> l = new ArrayList<String>();
@@ -21,6 +26,7 @@ public class DebugRenderer extends RenderableObject{
 	}
 
 	public void drawList(Graphics g, List<String> list){
+		g.setFont(PokemonProject.font);
 		for(int i = 0; i < list.size(); i++){
 			g.drawString(list.get(i), 0, i*18);
 		}

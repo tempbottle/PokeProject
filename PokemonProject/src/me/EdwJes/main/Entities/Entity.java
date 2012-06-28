@@ -1,6 +1,8 @@
 package me.EdwJes.main.Entities;
 
 import me.EdwJes.main.RenderableObject;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -17,6 +19,20 @@ import org.newdawn.slick.Graphics;
 public class Entity extends RenderableObject{
 	protected int xTile,yTile,moveXTile=0,moveYTile=0;
 	private float moveXOffset=0,moveYOffset=0,posMoveSpeed=2;
+	public float walkingSpeed=1,runningSpeed=2;
+	public boolean canMove=true,canInteract=true,canInteracted=true;
+	public enum Direction{
+		UP(0),
+		RIGHT(1),
+		DOWN(2),
+		LEFT(3);
+		private final int i;
+		Direction(int i){
+			this.i=i;}
+		public int get(){
+			return this.i;}
+	};
+	public Direction dir=Direction.RIGHT;
 	
 	public Entity(int xTile,int yTile/*,EntitySprite sprite*/){
 		this.xTile=xTile;
@@ -46,9 +62,15 @@ public class Entity extends RenderableObject{
 	  * @param xTile x value in tiles
 	  */
 	public boolean posMoveX(int xTile){
-		if(!isMoving()){
-			moveXTile=xTile;
+		if(canMove&&!isMoving()){
 			onMoveTile(xTile,this.yTile);
+			moveXTile=xTile;
+			
+			if(xTile>0)
+				dir=Direction.RIGHT;
+			else if(xTile<0)
+				dir=Direction.LEFT;
+			
 			return true;}
 		else
 			return false;
@@ -60,9 +82,15 @@ public class Entity extends RenderableObject{
 	  * @param yTile y value in tiles
 	  */
 	public boolean posMoveY(int yTile){
-		if(!isMoving()){
-			moveYTile=yTile;
+		if(canMove&&!isMoving()){
 			onMoveTile(this.xTile,yTile);
+			moveYTile=yTile;
+			
+			if(yTile>0)
+				dir=Direction.DOWN;
+			else if(yTile<0)
+				dir=Direction.UP;
+			
 			return true;}
 		else
 			return false;
@@ -154,30 +182,38 @@ public class Entity extends RenderableObject{
 	public void onUpdate(){}
 	public void onRender(Graphics g){}
 	
+	private void handleMovement(){
+		if(canMove){
+			if(getMovementX()!=0){
+				moveXOffset+=posMoveSpeed*Math.signum(moveXTile);
+				if(Math.abs(moveXOffset)>=Math.abs(moveXTile)*tileWidth){
+					xTile+=moveXTile;
+					moveXOffset=0;
+					moveXTile=0;}
+			}
+			else if(getMovementY()!=0){
+				moveYOffset+=posMoveSpeed*Math.signum(moveYTile);
+				if(Math.abs(moveYOffset)>=Math.abs(moveYTile)*tileHeight){
+					yTile+=moveYTile;
+					moveYOffset=0;
+					moveYTile=0;}
+			}
+		}
+	} 
+	
 	@Override
 	public void update(){
 		onUpdate();
-		if(getMovementX()!=0){
-			if(Math.abs(moveXOffset)<Math.abs(moveXTile*tileWidth))
-				moveXOffset+=posMoveSpeed*Math.signum(moveXTile);
-			else{
-				xTile+=moveXTile;
-				moveXTile=0;
-				moveXOffset=0;}
-		}
-		else if(getMovementY()!=0){
-			if(Math.abs(moveYOffset)<Math.abs(moveYTile*tileHeight))
-				moveYOffset+=posMoveSpeed*Math.signum(moveYTile);
-			else{
-				yTile+=moveYTile;
-				moveYTile=0;
-				moveYOffset=0;}
-		}
+		handleMovement();
 	}
 	
 	@Override
 	public void render(Graphics g) {
 		onRender(g);
+		Color temp=g.getColor();
+		if(isMoving())
+			g.setColor(Color.gray);
 		g.drawRect(getXPos(),getYPos(),tileWidth-1,tileHeight-1);
+		g.setColor(temp);
 	}
 }

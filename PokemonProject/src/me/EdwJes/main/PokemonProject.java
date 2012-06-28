@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.EdwJes.debug.Debug;
+import me.EdwJes.main.ImageLoader.Name;
 import me.EdwJes.main.Entities.*;
 
 import org.newdawn.slick.*; 
@@ -17,7 +18,10 @@ public class PokemonProject extends BasicGame{
 	public final int FPS = 60;
 	public static GameContainer container;
 	Keyboard keyboard = new Keyboard();
-	public static Player player=new Player();
+	public static Player player;
+	public static final String WORK_DIR =System.getProperty("user.dir");
+	public static ImageLoader IMAGE_LOADER;
+	public static AngelCodeFont font;
 
 	public PokemonProject(){ 
 		super("PokemonProject");} 
@@ -51,9 +55,13 @@ public class PokemonProject extends BasicGame{
 		PokemonProject.container=container;
 		container.setTargetFrameRate(FPS);
 		container.setShowFPS(false);
+		//TODO: Ful font init för test
+		font =new AngelCodeFont(WORK_DIR+"/resources/images/Pokemon.fnt", new Image(WORK_DIR+"/resources/images/Pokemon_00.png"));
+		IMAGE_LOADER=new ImageLoader("/resources/images/");
 		new Debug();
-		new Trainer(4,4);
-		new Trainer(1,5);
+		new Trainer(4,4,IMAGE_LOADER.anim[Name.May.get()]);
+		new Trainer(1,5,IMAGE_LOADER.anim[Name.May.get()]);
+		player=new Player();
 	}
 
 	private void handleInput(GameContainer container) throws SlickException {

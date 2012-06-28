@@ -9,7 +9,7 @@ public class PlayerEntity implements PlayerControlObject,EntityControl{
 	public PlayerEntity(Entity entity) {
 		this.entity=entity;
 	}
-
+	//TODO: Lätt-tryck för att vända sig istället för att röra sig direkt när man har vänt sig, dir variabeln. Får göra en timer eller något 
 	@Override
 	public void onKeyLeft(){
 		entity.posMoveX(-1);}
@@ -32,11 +32,71 @@ public class PlayerEntity implements PlayerControlObject,EntityControl{
 
 	@Override
 	public void onKeySkip() {
-		entity.setPosMoveSpeed(3);
+		
 	}
 
 	@Override
 	public Entity getEntity() {
 		return entity;
+	}
+
+	@Override
+	public void onKeyLeftPressed() {
+		
+	}
+
+	@Override
+	public void onKeyRightPressed() {
+
+	}
+
+	@Override
+	public void onKeyUpPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onKeyDownPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onKeyActionPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onKeySkipPressed() {
+		entity.setPosMoveSpeed(entity.runningSpeed);
+	}
+
+	@Override
+	public void onKeyLeftReleased() {
+	}
+
+	@Override
+	public void onKeyRightReleased() {
+	}
+
+	@Override
+	public void onKeyUpReleased() {
+	}
+
+	@Override
+	public void onKeyDownReleased() {
+	}
+
+	@Override
+	public void onKeyActionReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onKeySkipReleased() {
+		entity.setPosMoveSpeed(entity.walkingSpeed);
 	}
 }
