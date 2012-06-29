@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.EdwJes.debug.Debug;
+import me.EdwJes.main.config.Config;
+import me.EdwJes.main.config.FileConfig;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
 import me.EdwJes.main.Entities.*;
 import me.EdwJes.main.EntityControl.PlayerInputEntityControl;
@@ -24,11 +26,12 @@ public class PokemonProject extends BasicGame{
 	public final int FPS = 60;
 	Keyboard keyboard = new Keyboard();
 	public static Console cmd = new Console();
-	public static PlayerInput player;
+	public static PlayerInput player,player2;
 	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
 	protected static GameContainer container;
+	public static Config config = new FileConfig();
 	//Dark font color: #504060, shadow: #D0D0B8
 	
 	public PokemonProject(){ 
@@ -83,17 +86,22 @@ public class PokemonProject extends BasicGame{
 		IMAGE_LOADER=new ImageLoader("/resources/images/");
 		Sprite.loadAllEntities(IMAGE_LOADER);
 		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
+		config.loadValues();
+		
 		new Debug();
 		new EntityHuman(4,4,Sprite.getEntity(Sprite.Name.May));
 		new EntityHuman(1,5,Sprite.getEntity(Sprite.Name.May));
 		
-		Entity a,playerEntityObj;
+		Entity a,playerEntityObj,playerEntityObj2;
 		a=new EntityHuman(5,7,Sprite.getEntity(Sprite.Name.Lyra));
 		a=new EntityHuman(5,8,Sprite.getEntity(Sprite.Name.Lyra));
 		a=new EntityHuman(8,6,Sprite.getEntity(Sprite.Name.Lyra));
 		a=new EntityHuman(8,8,Sprite.getEntity(Sprite.Name.Lyra));
 		playerEntityObj=new EntityPlayer(2,6,Sprite.getEntity(Sprite.Name.Brendan));
-		player=new PlayerInput(new PlayerInputEntityControl(playerEntityObj));
+		player=new PlayerInput(new PlayerInputEntityControl(playerEntityObj),config);
+		
+		playerEntityObj2=new EntityPlayer(4,6,Sprite.getEntity(Sprite.Name.May));
+		player2=new PlayerInput(new PlayerInputEntityControl(playerEntityObj2),config);
 	}
 
 	private void handleInput(GameContainer container) throws SlickException {

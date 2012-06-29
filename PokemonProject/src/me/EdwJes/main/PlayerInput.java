@@ -1,108 +1,110 @@
 package me.EdwJes.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import me.EdwJes.main.config.Config;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
 public class PlayerInput extends GameObject{
 	protected PlayerInputControlObject obj,objPrevious;
-	public int KEY_LEFT   = Input.KEY_LEFT,
-	           KEY_RIGHT  = Input.KEY_RIGHT,
-	           KEY_UP     = Input.KEY_UP,
-	           KEY_DOWN   = Input.KEY_DOWN,
-	           KEY_ACTION = Input.KEY_X,
-	           KEY_SKIP   = Input.KEY_Z,
-	           KEY_ENTER  = Input.KEY_ENTER,
-	           KEY_EXIT   = Input.KEY_ESCAPE,
-			   KEY_CHAT   = Input.KEY_T;
+	protected static List<PlayerInput> list = new ArrayList<PlayerInput>();
+	public int playerId=0;
+	private Config config;
 
 	public boolean keyHold[] = new boolean[256]; 
 	Alarm alarm1 = new Alarm(120, this);
 	
-	public PlayerInput(PlayerInputControlObject obj){
+	public PlayerInput(PlayerInputControlObject obj,Config config){
 		this.obj=obj;
+		list.add(this);
+		playerId=list.indexOf(this);
+		this.config=config;
 	}
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
 		obj.onHandleInput(input);
 
-		if(input.isKeyDown(KEY_LEFT)){
+		if(input.isKeyDown(config.getIntArray("KEY_LEFT",playerId))){
 			obj.onKeyLeft();
-			if(!keyHold[KEY_LEFT]){
-				keyHold[KEY_LEFT]=true;
+			if(!keyHold[config.getIntArray("KEY_LEFT",playerId)]){
+				keyHold[config.getIntArray("KEY_LEFT",playerId)]=true;
 				obj.onKeyLeftPressed();}}
-		else if(keyHold[KEY_LEFT]){
-			keyHold[KEY_LEFT]=false;
+		else if(keyHold[config.getIntArray("KEY_LEFT",playerId)]){
+			keyHold[config.getIntArray("KEY_LEFT",playerId)]=false;
 			obj.onKeyLeftReleased();
 		}
 		
-		if(input.isKeyDown(KEY_RIGHT)){
+		if(input.isKeyDown(config.getIntArray("KEY_RIGHT",playerId))){
 			obj.onKeyRight();
-			if(!keyHold[KEY_RIGHT]){
-				keyHold[KEY_RIGHT]=true;
+			if(!keyHold[config.getIntArray("KEY_RIGHT",playerId)]){
+				keyHold[config.getIntArray("KEY_RIGHT",playerId)]=true;
 				obj.onKeyRightPressed();}}
-		else if(keyHold[KEY_RIGHT]){
-			keyHold[KEY_RIGHT]=false;
+		else if(keyHold[config.getIntArray("KEY_RIGHT",playerId)]){
+			keyHold[config.getIntArray("KEY_RIGHT",playerId)]=false;
 			obj.onKeyRightReleased();
 		}
 		
-		if(input.isKeyDown(KEY_UP)){
+		if(input.isKeyDown(config.getIntArray("KEY_UP",playerId))){
 			obj.onKeyUp();
-			if(!keyHold[KEY_UP]){
-				keyHold[KEY_UP]=true;
+			if(!keyHold[config.getIntArray("KEY_UP",playerId)]){
+				keyHold[config.getIntArray("KEY_UP",playerId)]=true;
 				obj.onKeyUpPressed();}}
-		else if(keyHold[KEY_UP]){
-			keyHold[KEY_UP]=false;
+		else if(keyHold[config.getIntArray("KEY_UP",playerId)]){
+			keyHold[config.getIntArray("KEY_UP",playerId)]=false;
 			obj.onKeyUpReleased();
 		}
 		
-		if(input.isKeyDown(KEY_DOWN)){
+		if(input.isKeyDown(config.getIntArray("KEY_DOWN",playerId))){
 			obj.onKeyDown();
-			if(!keyHold[KEY_DOWN]){
-				keyHold[KEY_DOWN]=true;
+			if(!keyHold[config.getIntArray("KEY_DOWN",playerId)]){
+				keyHold[config.getIntArray("KEY_DOWN",playerId)]=true;
 				obj.onKeyDownPressed();}}
-		else if(keyHold[KEY_DOWN]){
-			keyHold[KEY_DOWN]=false;
+		else if(keyHold[config.getIntArray("KEY_DOWN",playerId)]){
+			keyHold[config.getIntArray("KEY_DOWN",playerId)]=false;
 			obj.onKeyDownReleased();
 		}
 		
-		if(input.isKeyDown(KEY_ACTION)){
+		if(input.isKeyDown(config.getIntArray("KEY_ACTION",playerId))){
 			obj.onKeyAction();
-			if(!keyHold[KEY_ACTION]){
-				keyHold[KEY_ACTION]=true;
+			if(!keyHold[config.getIntArray("KEY_ACTION",playerId)]){
+				keyHold[config.getIntArray("KEY_ACTION",playerId)]=true;
 				obj.onKeyActionPressed();}}
-		else if(keyHold[KEY_ACTION]){
-			keyHold[KEY_ACTION]=false;
+		else if(keyHold[config.getIntArray("KEY_ACTION",playerId)]){
+			keyHold[config.getIntArray("KEY_ACTION",playerId)]=false;
 			obj.onKeyActionReleased();
 		}
 		
-		if(input.isKeyDown(KEY_SKIP)){
+		if(input.isKeyDown(config.getIntArray("KEY_SKIP",playerId))){
 			obj.onKeySkip();
-			if(!keyHold[KEY_SKIP]){
-				keyHold[KEY_SKIP]=true;
+			if(!keyHold[config.getIntArray("KEY_SKIP",playerId)]){
+				keyHold[config.getIntArray("KEY_SKIP",playerId)]=true;
 				obj.onKeySkipPressed();}}
-		else if(keyHold[KEY_SKIP]){
-			keyHold[KEY_SKIP]=false;
+		else if(keyHold[config.getIntArray("KEY_SKIP",playerId)]){
+			keyHold[config.getIntArray("KEY_SKIP",playerId)]=false;
 			obj.onKeySkipReleased();
 		}
 		
-		if(input.isKeyDown(KEY_ENTER)){
+		if(input.isKeyDown(config.getIntArray("KEY_ENTER",playerId))){
 			obj.onKeyEnter();
-			if(!keyHold[KEY_ENTER]){
-				keyHold[KEY_ENTER]=true;
+			if(!keyHold[config.getIntArray("KEY_ENTER",playerId)]){
+				keyHold[config.getIntArray("KEY_ENTER",playerId)]=true;
 				obj.onKeyEnterPressed();}}
-		else if(keyHold[KEY_ENTER]){
-			keyHold[KEY_ENTER]=false;
+		else if(keyHold[config.getIntArray("KEY_ENTER",playerId)]){
+			keyHold[config.getIntArray("KEY_ENTER",playerId)]=false;
 			obj.onKeyEnterReleased();
 		}
 		
-		if(input.isKeyDown(KEY_CHAT)){
+		if(input.isKeyDown(config.getIntArray("KEY_CHAT",playerId))){
 			obj.onKeyChat();
-			if(!keyHold[KEY_CHAT]){
-				keyHold[KEY_CHAT]=true;
+			if(!keyHold[config.getIntArray("KEY_CHAT",playerId)]){
+				keyHold[config.getIntArray("KEY_CHAT",playerId)]=true;
 				obj.onKeyChatPressed();}}
-		else if(keyHold[KEY_CHAT]){
-			keyHold[KEY_CHAT]=false;
+		else if(keyHold[config.getIntArray("KEY_CHAT",playerId)]){
+			keyHold[config.getIntArray("KEY_CHAT",playerId)]=false;
 			obj.onKeyChatReleased();
 		}
 	}

@@ -338,7 +338,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		if(isOn){
 			if(keyCTRL==true){
 				if(key==47)//V
-					inputInsert(getClipboard());
+					inputInsert(getClipboard().replaceAll("^[\\x20-\\xFF]"," "));
 				else if(key==46){//C
 					setClipboard(input);
 					outputConsole("Copied to clipboard");}
@@ -347,7 +347,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 					inputReset();}
 			}
 			if(chr>=32&&chr<256){
-				inputInsert(chr);}
+				inputInsert(chr);
+				input=input.replace("shit","skit");}
 			else if(key==14)//Backspace
 				inputDelete(inputPosition-1);
 			else if(key==211)//Delete
