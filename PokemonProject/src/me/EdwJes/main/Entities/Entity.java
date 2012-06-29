@@ -1,8 +1,6 @@
 package me.EdwJes.main.Entities;
 
-import me.EdwJes.main.RenderableObject;
-
-import org.newdawn.slick.Color;
+import me.EdwJes.main.OverworldObject;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -16,7 +14,7 @@ import org.newdawn.slick.Graphics;
 * @author Lolirofle
 * @version 1.0
 */
-public class Entity extends RenderableObject{
+public class Entity extends OverworldObject{
 	protected int xTile,yTile,moveXTile=0,moveYTile=0;
 	private float moveXOffset=0,moveYOffset=0,posMoveSpeed=2;
 	public float walkingSpeed=1,runningSpeed=2;
@@ -37,6 +35,7 @@ public class Entity extends RenderableObject{
 	public Entity(int xTile,int yTile/*,EntitySprite sprite*/){
 		this.xTile=xTile;
 		this.yTile=yTile;
+		setLayer(LAYER_OVERWORLD);
 	}
 
 	
@@ -207,6 +206,7 @@ public class Entity extends RenderableObject{
 	public void update(){
 		onUpdate();
 		handleMovement();
+		setDepth(Math.round(getYPos()));//TODO: +bounding box height to measure the bottom y instead of top y
 	}
 	
 	@Override
@@ -216,5 +216,10 @@ public class Entity extends RenderableObject{
 			g.setColor(Color.gray);
 		g.drawRect(getXPos(),getYPos(),tileWidth-1,tileHeight-1);
 		g.setColor(temp);*/
+	}
+	
+	public void interact(Entity target){
+		onInteract(target);
+		target.onInteracted(this);
 	}
 }

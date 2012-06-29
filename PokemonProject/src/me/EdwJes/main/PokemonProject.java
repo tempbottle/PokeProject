@@ -5,8 +5,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.EdwJes.debug.Debug;
-import me.EdwJes.main.ImageLoader.Name;
+import me.EdwJes.main.fileresourceloader.ImageLoader;
 import me.EdwJes.main.Entities.*;
+import me.EdwJes.main.EntityControl.PlayerInputEntityControl;
 
 import org.newdawn.slick.*; 
 
@@ -21,13 +22,13 @@ public class PokemonProject extends BasicGame{
 	protected static float XSCALE = 2f;
 	protected static float YSCALE = 2f;
 	public final int FPS = 60;
-	public static GameContainer container;
 	Keyboard keyboard = new Keyboard();
 	public static Console cmd = new Console();
 	public static PlayerInput player;
 	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
+	protected static GameContainer container;
 	//Dark font color: #504060, shadow: #D0D0B8
 	
 	public PokemonProject(){ 
@@ -35,7 +36,8 @@ public class PokemonProject extends BasicGame{
 
 	public static void main(String[] args){ 
 		try{
-		AppGameContainer app=createAppGameContainer();}
+		container=createAppGameContainer();
+		Debug.console.print(container.getFPS());}
 		catch(SlickException e){ 
 			e.printStackTrace();}
 	}
@@ -60,11 +62,14 @@ public class PokemonProject extends BasicGame{
 	        public int compare(Object o1, Object o2) {
 	        	RenderableObject v1 = (RenderableObject) o1;
 	        	RenderableObject v2 = (RenderableObject) o2;
-	           return (v1.depth - v2.depth);
+	        	int layerDif=v1.layer - v2.layer;
+	        	if(layerDif==0)
+	        		return(v1.depth - v2.depth);
+	        	else
+	        		return(layerDif);
 	        }});
-
-		
-		for(RenderableObject o : RenderableObject.list){
+	    
+	    for(RenderableObject o : RenderableObject.list){
 			o.render(g);
 		}
 	}
@@ -76,11 +81,19 @@ public class PokemonProject extends BasicGame{
 		container.setShowFPS(false);
 		//TODO: Ful font init för test
 		IMAGE_LOADER=new ImageLoader("/resources/images/");
-		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/main.fnt", IMAGE_LOADER.loadImage("/fonts/main.png"));
+		Sprite.loadAllEntities(IMAGE_LOADER);
+		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
 		new Debug();
-		new EntityHuman(4,4,IMAGE_LOADER.animatedSprite.get(Name.May));
-		new EntityHuman(1,5,IMAGE_LOADER.animatedSprite.get(Name.May));
-		player=new PlayerInput();
+		new EntityHuman(4,4,Sprite.getEntity(Sprite.Name.May));
+		new EntityHuman(1,5,Sprite.getEntity(Sprite.Name.May));
+		
+		Entity a,playerEntityObj;
+		a=new EntityHuman(5,7,Sprite.getEntity(Sprite.Name.Lyra));
+		a=new EntityHuman(5,8,Sprite.getEntity(Sprite.Name.Lyra));
+		a=new EntityHuman(8,6,Sprite.getEntity(Sprite.Name.Lyra));
+		a=new EntityHuman(8,8,Sprite.getEntity(Sprite.Name.Lyra));
+		playerEntityObj=new EntityPlayer(2,6,Sprite.getEntity(Sprite.Name.Brendan));
+		player=new PlayerInput(new PlayerInputEntityControl(playerEntityObj));
 	}
 
 	private void handleInput(GameContainer container) throws SlickException {
@@ -97,6 +110,7 @@ public class PokemonProject extends BasicGame{
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException{
 		handleInput(container);
+		container.setDefaultFont(font);
 		
 		List<GameObject> l = GameObject.list;
 		for(int i=0;i<l.size();i++){
@@ -106,6 +120,13 @@ public class PokemonProject extends BasicGame{
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{
 		setScale((float)app.getWidth()/(float)width,(float)app.getHeight()/(float)height);
 		app.setDisplayMode(width,height,fullscreen);
-		Debug.console.println(XSCALE);
+	}
+	
+	public static int getFPS(){
+		return container.getFPS();
+	}
+	
+	public static GameContainer getContainer(){
+		return container;
 	}
 }

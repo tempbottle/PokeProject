@@ -1,9 +1,5 @@
 package me.EdwJes.main;
 
-import me.EdwJes.main.ImageLoader.Name;
-import me.EdwJes.main.Entities.EntityPlayer;
-import me.EdwJes.main.EntityControl.PlayerEntityControl;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -22,8 +18,8 @@ public class PlayerInput extends GameObject{
 	public boolean keyHold[] = new boolean[256]; 
 	Alarm alarm1 = new Alarm(120, this);
 	
-	public PlayerInput(){
-		obj=new PlayerEntityControl(new EntityPlayer(2,6,PokemonProject.IMAGE_LOADER.animatedSprite.get(Name.Brendan)));
+	public PlayerInput(PlayerInputControlObject obj){
+		this.obj=obj;
 	}
 	
 	public void handleInput(GameContainer container){
@@ -122,7 +118,7 @@ public class PlayerInput extends GameObject{
 	
 	@Override
 	public void onUpdate(){
-		handleInput(PokemonProject.container);}
+		handleInput(PokemonProject.getContainer());}
 	
 	@Override public void callAlarm(Alarm alarm){
 		super.callAlarm(alarm);

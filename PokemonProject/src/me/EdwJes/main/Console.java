@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.EdwJes.debug.Debug;
 import me.EdwJes.main.Entities.EntityHuman;
-import me.EdwJes.main.ImageLoader.Name;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -22,7 +22,7 @@ import org.newdawn.slick.SlickException;
 
 public class Console extends RenderableObject implements PlayerInputControlObject{
 	
-	public boolean isOn = false,keyCTRL=false;
+	private boolean isOn = false,keyCTRL=false;
 	private String input = "",inputFieldPrefix="> ";
 	public char commandPrefix='/';
 	private int inputPosition=0;
@@ -31,13 +31,13 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		test,shit,scale,skit,display,human
+		test,shit,scale,skit,display,human,fullscreen
 	}
 	
 	public Console(){
-		depth = 10;
+		setLayer(LAYER_GUI);
 	}
-	
+	//TODO: Custom input and output stream classes for server communication in the future
 	@Override public void render(Graphics g){
 		Font font=PokemonProject.font;
 		g.setFont(font);
@@ -69,23 +69,24 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		isOn = true;
 	}
 	
-	public void closeConsole(boolean sendInfo){
-		if(sendInfo) executeCommand(input);
-		input = "";
-		isOn = false;
+	public void closeConsole(){
+		inputReset();
+		isOn=false;
 	}
 	
 	public void outputConsole(String str){
 		new ConsoleOutputText(str);
 	}
 	
-	public void executeCommand(String str){
+	public void executeCommand(String str){//TODO:Check argument count and type
 		if(str!=""&&!str.matches("([ ]*)")){
+			onInput(str);
 			if(str.charAt(0)==commandPrefix){
 				str=str.substring(1);
 				String[] command=str.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)",MAX_ARGUMENTS);
 				int argumentCount=command.length-1;
 				command[0]=command[0].toLowerCase();
+				onCommand(command);
 				if(commandExists(command[0])){
 					switch(Command.valueOf(command[0])){
 						case test:
@@ -110,8 +111,26 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 								e.printStackTrace();}
 							outputConsole("Resolution set to "+command[1]+"x"+command[2]);
 							break;
+						case fullscreen:
+							try{
+								boolean fullscreen=PokemonProject.app.isFullscreen();
+								int width,height;
+								if(fullscreen){
+									width=PokemonProject.WINDOW_WIDTH_INIT;
+									height=PokemonProject.WINDOW_HEIGHT_INIT;}
+								else{
+									width=PokemonProject.getContainer().getScreenWidth();
+									height=PokemonProject.getContainer().getScreenHeight();}
+								
+								PokemonProject.setDisplayMode(width,height,!fullscreen);}
+							catch(NumberFormatException e){
+								e.printStackTrace();}
+							catch(SlickException e){
+								e.printStackTrace();}
+							outputConsole("Resolution set to "+command[1]+"x"+command[2]);
+							break;
 						case human:
-							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),PokemonProject.IMAGE_LOADER.animatedSprite.get(Name.May));
+							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
 							break;
 						default:
 							outputConsole("Undefined Command: "+command[0]);
@@ -172,6 +191,9 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		input="";
 		inputPositionSet(0);
 	}
+	
+	public void onInput(String text){}
+	public void onCommand(String[] command){}
 	
 	// If a string is on the system clipboard, this method returns it;
 	// otherwise it returns null.
@@ -245,8 +267,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	@Override
 	public void onKeyEnterPressed() {
 		executeCommand(input);
-		inputReset();
-		isOn=false;
+		closeConsole();
 		PokemonProject.player.setObj(PokemonProject.player.objPrevious);
 	}
 
@@ -314,29 +335,31 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 
 	@Override
 	public void onKeyPressed(int key, char chr) {
-		if(isOn&&chr>=32&&chr<128){
-			inputInsert(chr);}
-		else if(key==14)//Backspace
-			inputDelete(inputPosition-1);
-		else if(key==211)//Delete
-			inputDelete(inputPosition);
-		else if(key==199)//Home
-			inputPositionSet(0);
-		else if(key==207)//End
-			inputPositionSet(input.length());
-		else if(key==29)//CTRL
-			keyCTRL=true;
-		else if(keyCTRL==true){
-			if(key==47)//V
-				inputInsert(getClipboard());
-			else if(key==46){//C
-				setClipboard(input);
-				outputConsole("Copied to clipboard");}
-			else if(key==45){//X
-				setClipboard(input);
-				inputReset();}
+		if(isOn){
+			if(keyCTRL==true){
+				if(key==47)//V
+					inputInsert(getClipboard());
+				else if(key==46){//C
+					setClipboard(input);
+					outputConsole("Copied to clipboard");}
+				else if(key==45){//X
+					setClipboard(input);
+					inputReset();}
+			}
+			if(chr>=32&&chr<256){
+				inputInsert(chr);}
+			else if(key==14)//Backspace
+				inputDelete(inputPosition-1);
+			else if(key==211)//Delete
+				inputDelete(inputPosition);
+			else if(key==199)//Home
+				inputPositionSet(0);
+			else if(key==207)//End
+				inputPositionSet(input.length());
+			else if(key==29)//CTRL
+				keyCTRL=true;
 		}
-	//Debug.console.println(key+", "+chr);
+	Debug.console.println(key+", "+chr+"="+((int)chr));
 	}
 
 	@Override

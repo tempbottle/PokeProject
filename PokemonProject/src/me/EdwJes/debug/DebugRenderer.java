@@ -13,18 +13,26 @@ import me.EdwJes.main.RenderableObject;
 public class DebugRenderer extends RenderableObject{
 	
 	public DebugRenderer(){
-		setDepth(100);
+		setLayer(LAYER_GUI);
+		setDepth(-5);
 	}
 	
 	@Override
-	public void render(Graphics g) {
-		List<String> l = new ArrayList<String>();
-		l.add("FPS: " + PokemonProject.container.getFPS());
-		l.add("GameObject: " + GameObject.list.size());
-		l.add("RenderableObject: " + RenderableObject.list.size());
-		l.add("Player coords: " + PokemonProject.player.getObj().getXPos() + "," + PokemonProject.player.getObj().getYPos() + " (" + PokemonProject.player.getObj().getXTile() + "," + PokemonProject.player.getObj().getYTile() + ")");
-		l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+PokemonProject.SCREEN_WIDTH+","+PokemonProject.SCREEN_HEIGHT+")");
-		drawList(g,l);
+	public void render(Graphics g){
+		if(Debug.renderDebug){
+			List<String> l = new ArrayList<String>();
+			l.add("FPS: " + PokemonProject.getFPS());
+			l.add("GameObject: " + GameObject.list.size());
+			l.add("RenderableObject: " + RenderableObject.list.size());
+			l.add("Player coords: " + PokemonProject.player.getObj().getXPos() + "," + PokemonProject.player.getObj().getYPos() + " (" + PokemonProject.player.getObj().getXTile() + "," + PokemonProject.player.getObj().getYTile() + ")");
+			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+PokemonProject.SCREEN_WIDTH+","+PokemonProject.SCREEN_HEIGHT+")");
+			drawList(g,l);}
+		g.setColor(new Color(255, 255, 255, 10));
+		for(int xi=0;xi<640;xi+=RenderableObject.getTileWidth())
+			g.drawLine(0, xi, 480, xi);
+		for(int yi=0;yi<480;yi+=RenderableObject.getTileHeight())
+			g.drawLine(yi, 0, yi, 640);
+		g.setColor(Color.white);
 	}
 
 	public void drawList(Graphics g, List<String> list){
