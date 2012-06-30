@@ -24,12 +24,19 @@ public class Sprite {
 		Lyra(27,27);
 		
 		private final int id,w,h;
+		private static int counter = 1;
 		
 		Name(int sprWidth,int sprHeight){
-			//this.id=values().length;
-			this.id=0;
+			this.id=counterGet();
+			counterAdd();
+			//this.id=0;
 			this.w=sprWidth;
 			this.h=sprHeight;}
+		
+		private static int counterGet(){
+			return counter;}
+		private static void counterAdd(){
+			counter++;}
 		
 		public int get(){
 			return this.id;}
