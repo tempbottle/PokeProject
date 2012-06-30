@@ -153,8 +153,4 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 		return 0;
 	}
 
-	@Override
-	public void onHandleInput(Input input) {
-	}
-
 }

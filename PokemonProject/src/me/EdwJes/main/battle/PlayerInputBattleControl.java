@@ -136,7 +136,5 @@ public class PlayerInputBattleControl implements PlayerInputControlObject{
 		return 0;
 	}
 
-	@Override
-	public void onHandleInput(Input input) {}
 
 }

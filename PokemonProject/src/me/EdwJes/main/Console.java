@@ -13,6 +13,7 @@ import java.util.List;
 
 import me.EdwJes.debug.Debug;
 import me.EdwJes.main.Entities.EntityHuman;
+import me.EdwJes.main.rooms.Room;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -332,12 +333,6 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 
 	@Override
-	public void onHandleInput(Input input) {
-
-		
-	}
-
-	@Override
 	public void onKeyPressed(int key, char chr) {
 		if(isOn){
 			if(keyCTRL==true){
@@ -403,4 +398,5 @@ class ConsoleOutputText extends GameObject{
 	public void remove(){
 		list.remove(this);
 	}
+	
 }

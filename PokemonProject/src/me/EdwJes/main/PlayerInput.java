@@ -20,11 +20,11 @@ public class PlayerInput extends GameObject{
 	
 	public PlayerInput(PlayerInputControlObject obj){
 		this.obj=obj;
+		setPersistency(true);
 	}
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
-		obj.onHandleInput(input);
 
 		if(input.isKeyDown(KEY_LEFT)){
 			obj.onKeyLeft();

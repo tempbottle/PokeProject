@@ -40,5 +40,4 @@ public interface PlayerInputControlObject{
 	public int getXTile();
 	public int getYTile();
 	
-	public void onHandleInput(Input input);
 }

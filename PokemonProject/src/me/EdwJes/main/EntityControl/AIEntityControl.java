@@ -1,5 +1,5 @@
 package me.EdwJes.main.EntityControl;
 
-public class AIEntityControl implements EntityControl {
+public class AIEntityControl  implements EntityControl {
 
 }

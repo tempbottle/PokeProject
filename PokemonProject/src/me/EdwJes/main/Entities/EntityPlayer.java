@@ -6,6 +6,7 @@ public class EntityPlayer extends EntityHuman{
 
 	public EntityPlayer(int xTile, int yTile, Animation[] sprite) {
 		super(xTile, yTile, sprite);
+		setPersistency(true);
 		// TODO Auto-generated constructor stub
 	}
 
