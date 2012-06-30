@@ -1,17 +1,20 @@
 package me.EdwJes.main.rooms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.EdwJes.main.GameObject;
 
 
 public class RoomLoader {
 	protected Room currentRoom;
 	protected Room previousRoom;
-	public Room[] room = new Room[256];
+	public List<Room> rooms = new ArrayList<Room>();
 	
 	public RoomLoader(){
-		room[0] = new InitRoom("Main");
-		room[1] = new BattleRoom("TestBattle");
-		currentRoom = room[0];
+		rooms.add(new InitRoom("Main"));
+		rooms.add(new BattleRoom("TestBattle"));
+		currentRoom = rooms.get(0);
 	}
 	
 	public Room getCurrentRoom(){
@@ -23,8 +26,8 @@ public class RoomLoader {
 	}
 	
 	public Room getRoom(String name){
-		for(int i = 0; i < room.length; i++){
-			if(room[i].name == name) return room[i];
+		for(int i = 0; i < rooms.size(); i++){
+			if(rooms.get(i).name == name) return rooms.get(i);
 		}
 		return currentRoom;
 	}
@@ -35,7 +38,8 @@ public class RoomLoader {
 		for(GameObject o: GameObject.list){
 			o.roomTransist(rm);
 		}
-		currentRoom.init();
+		if(!currentRoom.entered)currentRoom.init();
+		else currentRoom.revisit();
 	}
 	
 	public void enterRoom(String name){

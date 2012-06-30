@@ -135,7 +135,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
 							break;
 						case enterroom:
-							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.room[Integer.valueOf(command[1])]);
+							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(command[1])));
 							break;
 						default:
 							outputConsole("Undefined Command: "+command[0]);

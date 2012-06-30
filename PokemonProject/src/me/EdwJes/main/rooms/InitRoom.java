@@ -9,6 +9,7 @@ public class InitRoom extends Room {
 	}
 	
 	public void init(){
+		super.init();
 
 	}
 
