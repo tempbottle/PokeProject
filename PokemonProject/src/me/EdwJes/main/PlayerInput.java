@@ -23,10 +23,13 @@ public class PlayerInput extends GameObject{
 		playerId=list.indexOf(this);
 		this.config=config;
 		setPersistency(true);
+
 	}
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
+
+
 
 
 		if(input.isKeyDown(config.getIntArray("KEY_LEFT",playerId))){

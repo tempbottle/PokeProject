@@ -337,7 +337,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		if(isOn){
 			if(keyCTRL==true){
 				if(key==47)//V
-					inputInsert(getClipboard());
+					inputInsert(getClipboard().replaceAll("^[\\x20-\\xFF]"," "));
 				else if(key==46){//C
 					setClipboard(input);
 					outputConsole("Copied to clipboard");}
