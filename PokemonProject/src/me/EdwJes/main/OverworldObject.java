@@ -13,6 +13,11 @@ public class OverworldObject extends RenderableObject{
 		list.add(this);
 	}
 	
+	public void destroy(){
+		super.destroy();
+		list.remove(this);
+	}
+	
 	@Override
 	public void render(Graphics g) {
 		

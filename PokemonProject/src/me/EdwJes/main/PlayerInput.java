@@ -29,9 +29,6 @@ public class PlayerInput extends GameObject{
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
 
-
-
-
 		if(input.isKeyDown(config.getIntArray("KEY_LEFT",playerId))){
 			obj.onKeyLeft();
 			if(!keyHold[config.getIntArray("KEY_LEFT",playerId)]){

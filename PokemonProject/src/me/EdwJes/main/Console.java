@@ -13,12 +13,10 @@ import java.util.List;
 
 import me.EdwJes.debug.Debug;
 import me.EdwJes.main.Entities.EntityHuman;
-import me.EdwJes.main.rooms.Room;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Console extends RenderableObject implements PlayerInputControlObject{
@@ -32,7 +30,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		test,shit,scale,skit,display,human,fullscreen,enterroom
+		help,test,shit,scale,skit,display,human,fullscreen,enterroom
 	}
 	
 	public Console(){
@@ -91,6 +89,13 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				onCommand(command);
 				if(commandExists(command[0])){
 					switch(Command.valueOf(command[0])){
+						case help:
+							String __str="";
+							for(Command cmd:Command.values()){
+								__str+=cmd.toString()+", ";
+							}
+							outputConsole(__str);
+							break;
 						case test:
 							String _str="";
 							for(int i=0;i<command.length;i++)
@@ -346,7 +351,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 					inputReset();}
 			}
 			if(chr>=32&&chr<256){
-				inputInsert(chr);}
+				inputInsert(chr);
+				input=input.replace("(!M)","MEGAFANTASTICMEGALUSPECTACULARYESYESYES");}
 			else if(key==14)//Backspace
 				inputDelete(inputPosition-1);
 			else if(key==211)//Delete
@@ -398,5 +404,6 @@ class ConsoleOutputText extends GameObject{
 	public void remove(){
 		list.remove(this);
 	}
+	
 	
 }
