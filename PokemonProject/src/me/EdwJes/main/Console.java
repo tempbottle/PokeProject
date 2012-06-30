@@ -31,11 +31,12 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		test,shit,scale,skit,display,human,fullscreen
+		test,shit,scale,skit,display,human,fullscreen,enterroom
 	}
 	
 	public Console(){
 		setLayer(LAYER_GUI);
+		setPersistency(true);
 	}
 	//TODO: Custom input and output stream classes for server communication in the future
 	@Override public void render(Graphics g){
@@ -131,6 +132,9 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 							break;
 						case human:
 							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
+							break;
+						case enterroom:
+							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.room[Integer.valueOf(command[1])]);
 							break;
 						default:
 							outputConsole("Undefined Command: "+command[0]);

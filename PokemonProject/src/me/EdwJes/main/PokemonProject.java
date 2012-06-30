@@ -8,6 +8,7 @@ import me.EdwJes.debug.Debug;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
 import me.EdwJes.main.Entities.*;
 import me.EdwJes.main.EntityControl.PlayerInputEntityControl;
+import me.EdwJes.main.rooms.*;
 
 import org.newdawn.slick.*; 
 
@@ -23,11 +24,12 @@ public class PokemonProject extends BasicGame{
 	protected static float YSCALE = 2f;
 	public final int FPS = 60;
 	Keyboard keyboard = new Keyboard();
-	public static Console cmd = new Console();
+	public static Console cmd;
 	public static PlayerInput player;
 	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
+	public static RoomLoader roomLoader;
 	protected static GameContainer container;
 	//Dark font color: #504060, shadow: #D0D0B8
 	
@@ -70,7 +72,7 @@ public class PokemonProject extends BasicGame{
 	        }});
 	    
 	    for(RenderableObject o : RenderableObject.list){
-			o.render(g);
+			if(o.isActivated()) o.render(g);
 		}
 	}
 
@@ -83,15 +85,17 @@ public class PokemonProject extends BasicGame{
 		IMAGE_LOADER=new ImageLoader("/resources/images/");
 		Sprite.loadAllEntities(IMAGE_LOADER);
 		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
+		roomLoader = new RoomLoader();
+		cmd = new Console();
 		new Debug();
 		new EntityHuman(4,4,Sprite.getEntity(Sprite.Name.May));
 		new EntityHuman(1,5,Sprite.getEntity(Sprite.Name.May));
 		
-		Entity a,playerEntityObj;
-		a=new EntityHuman(5,7,Sprite.getEntity(Sprite.Name.Lyra));
-		a=new EntityHuman(5,8,Sprite.getEntity(Sprite.Name.Lyra));
-		a=new EntityHuman(8,6,Sprite.getEntity(Sprite.Name.Lyra));
-		a=new EntityHuman(8,8,Sprite.getEntity(Sprite.Name.Lyra));
+		Entity playerEntityObj;
+		new EntityHuman(5,7,Sprite.getEntity(Sprite.Name.Lyra));
+		new EntityHuman(5,8,Sprite.getEntity(Sprite.Name.Lyra));
+		new EntityHuman(8,6,Sprite.getEntity(Sprite.Name.Lyra));
+		new EntityHuman(8,8,Sprite.getEntity(Sprite.Name.Lyra));
 		playerEntityObj=new EntityPlayer(2,6,Sprite.getEntity(Sprite.Name.Brendan));
 		player=new PlayerInput(new PlayerInputEntityControl(playerEntityObj));
 	}
@@ -114,7 +118,8 @@ public class PokemonProject extends BasicGame{
 		
 		List<GameObject> l = GameObject.list;
 		for(int i=0;i<l.size();i++){
-			l.get(i).update();}
+			if(l.get(i).isActivated()) l.get(i).update();
+			}
 	}
 	
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{

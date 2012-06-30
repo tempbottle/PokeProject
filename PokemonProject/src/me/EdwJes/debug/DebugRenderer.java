@@ -15,6 +15,7 @@ public class DebugRenderer extends RenderableObject{
 	public DebugRenderer(){
 		setLayer(LAYER_GUI);
 		setDepth(-5);
+		setPersistency(true);
 	}
 	
 	@Override

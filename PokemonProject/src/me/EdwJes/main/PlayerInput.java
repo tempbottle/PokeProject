@@ -117,7 +117,8 @@ public class PlayerInput extends GameObject{
 	}
 	
 	@Override
-	public void onUpdate(){
+	public void update(){
+		super.update();
 		handleInput(PokemonProject.getContainer());}
 	
 	@Override public void callAlarm(Alarm alarm){
