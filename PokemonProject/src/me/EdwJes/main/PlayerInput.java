@@ -3,6 +3,7 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.EdwJes.debug.Debug;
 import me.EdwJes.main.config.Config;
 
 import org.newdawn.slick.GameContainer;
@@ -27,7 +28,7 @@ public class PlayerInput extends GameObject{
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
 		obj.onHandleInput(input);
-
+		
 		if(input.isKeyDown(config.getIntArray("KEY_LEFT",playerId))){
 			obj.onKeyLeft();
 			if(!keyHold[config.getIntArray("KEY_LEFT",playerId)]){

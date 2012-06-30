@@ -31,7 +31,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		test,shit,scale,skit,display,human,fullscreen
+		help,test,shit,scale,skit,display,human,fullscreen
 	}
 	
 	public Console(){
@@ -89,6 +89,13 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				onCommand(command);
 				if(commandExists(command[0])){
 					switch(Command.valueOf(command[0])){
+						case help:
+							String __str="";
+							for(Command cmd:Command.values()){
+								__str+=cmd.toString()+", ";
+							}
+							outputConsole(__str);
+							break;
 						case test:
 							String _str="";
 							for(int i=0;i<command.length;i++)
@@ -348,7 +355,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			}
 			if(chr>=32&&chr<256){
 				inputInsert(chr);
-				input=input.replace("shit","skit");}
+				input=input.replace("(!M)","MEGAFANTASTICMEGALUSPECTACULARYESYESYES");}
 			else if(key==14)//Backspace
 				inputDelete(inputPosition-1);
 			else if(key==211)//Delete

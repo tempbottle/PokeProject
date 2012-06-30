@@ -16,6 +16,12 @@ public abstract class RenderableObject extends GameObject{
 		list.add(this);
 	}
 	
+	public void destroy(){
+		super.destroy();
+		list.remove(this);
+	}
+	
+	
 	public static int getTileWidth(){
 		return tileWidth;
 	}
