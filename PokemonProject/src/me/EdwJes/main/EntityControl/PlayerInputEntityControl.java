@@ -150,9 +150,7 @@ public class PlayerInputEntityControl implements PlayerInputControlObject,Entity
 	@Override
 	public void onKeyChatReleased(){
 	}
-	@Override
-	public void onHandleInput(Input input) {
-	}
+
 	@Override
 	public void onKeyPressed(int key, char chr) {
 		// TODO Auto-generated method stub

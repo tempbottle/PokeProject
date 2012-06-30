@@ -3,7 +3,6 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.EdwJes.debug.Debug;
 import me.EdwJes.main.config.Config;
 
 import org.newdawn.slick.GameContainer;
@@ -23,12 +22,13 @@ public class PlayerInput extends GameObject{
 		list.add(this);
 		playerId=list.indexOf(this);
 		this.config=config;
+		setPersistency(true);
+
 	}
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
-		obj.onHandleInput(input);
-		
+
 		if(input.isKeyDown(config.getIntArray("KEY_LEFT",playerId))){
 			obj.onKeyLeft();
 			if(!keyHold[config.getIntArray("KEY_LEFT",playerId)]){
@@ -120,7 +120,8 @@ public class PlayerInput extends GameObject{
 	}
 	
 	@Override
-	public void onUpdate(){
+	public void update(){
+		super.update();
 		handleInput(PokemonProject.getContainer());}
 	
 	@Override public void callAlarm(Alarm alarm){

@@ -17,7 +17,6 @@ import me.EdwJes.main.Entities.EntityHuman;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Console extends RenderableObject implements PlayerInputControlObject{
@@ -31,11 +30,12 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		help,test,shit,scale,skit,display,human,fullscreen
+		help,test,shit,scale,skit,display,human,fullscreen,enterroom
 	}
 	
 	public Console(){
 		setLayer(LAYER_GUI);
+		setPersistency(true);
 	}
 	//TODO: Custom input and output stream classes for server communication in the future
 	@Override public void render(Graphics g){
@@ -138,6 +138,9 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 							break;
 						case human:
 							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
+							break;
+						case enterroom:
+							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.room[Integer.valueOf(command[1])]);
 							break;
 						default:
 							outputConsole("Undefined Command: "+command[0]);
@@ -335,12 +338,6 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 
 	@Override
-	public void onHandleInput(Input input) {
-
-		
-	}
-
-	@Override
 	public void onKeyPressed(int key, char chr) {
 		if(isOn){
 			if(keyCTRL==true){
@@ -407,4 +404,6 @@ class ConsoleOutputText extends GameObject{
 	public void remove(){
 		list.remove(this);
 	}
+	
+	
 }

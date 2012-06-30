@@ -179,7 +179,6 @@ public class Entity extends OverworldObject{
 	public void onInteract(Entity target){}
 	public void onMoveTile(int xTileTo,int yTileTo){}
 	public void onMoveFinished(int xTile,int yTile){}
-	public void onUpdate(){}
 
 	private void handleMovement(){
 		if(canMove){
@@ -204,7 +203,7 @@ public class Entity extends OverworldObject{
 	
 	@Override
 	public void update(){
-		onUpdate();
+		super.update();
 		handleMovement();
 		setDepth(Math.round(getYPos()));//TODO: +bounding box height to measure the bottom y instead of top y
 	}

@@ -12,7 +12,6 @@ import org.newdawn.slick.SlickException;
 //TODO: Import Items: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/items.png
 //TODO: Import Battle GUI: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/hpbars.png
 //TODO: Pokemons: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/pokemonicons.png
-//TODO: Tiles: http://fc01.deviantart.net/fs31/f/2008/228/b/8/Biome_v2_by_Kymotonian.png
 public class ImageLoader {
 	public final String IMAGE_DIR;
 	public final int IMAGE_FILTER=Image.FILTER_NEAREST;

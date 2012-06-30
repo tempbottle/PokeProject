@@ -10,6 +10,7 @@ import me.EdwJes.main.config.FileConfig;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
 import me.EdwJes.main.Entities.*;
 import me.EdwJes.main.EntityControl.PlayerInputEntityControl;
+import me.EdwJes.main.rooms.*;
 
 import org.newdawn.slick.*; 
 
@@ -25,7 +26,7 @@ public class PokemonProject extends BasicGame{
 	protected static float YSCALE = 2f;
 	public final int FPS = 60;
 	Keyboard keyboard = new Keyboard();
-	public static Console cmd = new Console();
+	public static Console cmd;
 	public static PlayerInput player,player2;
 	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
@@ -33,6 +34,7 @@ public class PokemonProject extends BasicGame{
 	protected static GameContainer container;
 	public static Config config = new FileConfig();
 	//Dark font color: #504060, shadow: #D0D0B8
+	public static RoomLoader roomLoader;
 	
 	public PokemonProject(){ 
 		super("PokemonProject");} 
@@ -73,7 +75,7 @@ public class PokemonProject extends BasicGame{
 	        }});
 	    
 	    for(RenderableObject o : RenderableObject.list){
-			o.render(g);
+			if(o.isActivated()) o.render(g);
 		}
 	}
 
@@ -87,6 +89,8 @@ public class PokemonProject extends BasicGame{
 		Sprite.loadAllEntities(IMAGE_LOADER);
 		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
 		config.loadValues();
+		roomLoader = new RoomLoader();
+		cmd = new Console();
 		
 		new Debug();
 		new EntityHuman(4,4,Sprite.getEntity(Sprite.Name.May));
@@ -122,7 +126,7 @@ public class PokemonProject extends BasicGame{
 		
 		List<GameObject> l = GameObject.list;
 		for(int i=0;i<l.size();i++){
-			l.get(i).update();}
+			if(l.get(i).isActivated()) l.get(i).update();}
 	}
 	
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{
