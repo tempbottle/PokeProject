@@ -1,7 +1,5 @@
 package me.EdwJes.main;
 
-import org.newdawn.slick.Input;
-
 public interface PlayerInputControlObject{
 	public void onKeyLeft();
 	public void onKeyRight();

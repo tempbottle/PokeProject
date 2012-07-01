@@ -52,7 +52,7 @@ public class Sprite {
 		SpriteSheet sprSheet;
 		try{
 			for(Name n:Name.values()){
-				String filePath="trainer_"+n.toString()+".png";
+				String filePath="entity_"+n.toString()+".png";
 				
 				rawImage.put(n,loader.loadImage(filePath));
 				sprSheet = new SpriteSheet(rawImage.get(n),n.getWidth(),n.getHeight());

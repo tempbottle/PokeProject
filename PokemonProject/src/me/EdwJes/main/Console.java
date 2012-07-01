@@ -30,7 +30,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int outputMaxLines = 6;*/
 	
 	public enum Command{
-		help,test,shit,scale,skit,display,human,fullscreen,enterroom
+		help,test,shit,scale,skit,display,human,fullscreen,room
 	}
 	
 	public Console(){
@@ -39,9 +39,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	}
 	//TODO: Custom input and output stream classes for server communication in the future
 	@Override public void render(Graphics g){
-		Font font=PokemonProject.font;
-		g.setFont(font);
-		int i=0,lineHeight=font.getLineHeight();
+		int i=0,lineHeight=g.getFont().getLineHeight();
 		for(ConsoleOutputText text:ConsoleOutputText.list){
 			i++;
 			int alpha=255;
@@ -58,7 +56,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			g.fillRect(0,PokemonProject.SCREEN_HEIGHT-lineHeight-4,PokemonProject.SCREEN_WIDTH,PokemonProject.SCREEN_HEIGHT);
 			g.setColor(Color.white);
 			g.drawString(inputFieldPrefix + input, 6, PokemonProject.SCREEN_HEIGHT-lineHeight-2);
-			int inputPositionWidth=PokemonProject.font.getWidth(inputFieldPrefix + input.substring(0,inputPosition) + " ")-2;
+			int inputPositionWidth=g.getFont().getWidth(inputFieldPrefix + input.substring(0,inputPosition))+2;
 			g.setColor(Color.red);
 			g.drawLine(inputPositionWidth+2, PokemonProject.SCREEN_HEIGHT-lineHeight,inputPositionWidth+2, PokemonProject.SCREEN_HEIGHT-4);
 			g.setColor(Color.white);
@@ -139,8 +137,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 						case human:
 							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
 							break;
-						case enterroom:
-							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.room[Integer.valueOf(command[1])]);
+						case room:
+							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(command[1])));
 							break;
 						default:
 							outputConsole("Undefined Command: "+command[0]);
@@ -364,7 +362,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			else if(key==29)//CTRL
 				keyCTRL=true;
 		}
-	Debug.console.println(key+", "+chr+"="+((int)chr));
+	//Debug.console.println(key+", "+chr+"="+((int)chr));
 	}
 
 	@Override
@@ -375,7 +373,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	}
 }
 
-class ConsoleOutputText extends GameObject{
+class ConsoleOutputText extends Updater{
 	private String text;
 	private Date date;
 	public static int fadeOutTimer=1000;

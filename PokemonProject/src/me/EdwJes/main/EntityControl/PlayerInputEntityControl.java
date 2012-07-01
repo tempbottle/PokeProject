@@ -1,7 +1,5 @@
 package me.EdwJes.main.EntityControl;
 
-import org.newdawn.slick.Input;
-
 import me.EdwJes.main.GameObject;
 import me.EdwJes.main.PlayerInputControlObject;
 import me.EdwJes.main.PokemonProject;

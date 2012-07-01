@@ -19,11 +19,19 @@ public class PlayerInput extends GameObject{
 	
 	public PlayerInput(PlayerInputControlObject obj,Config config){
 		this.obj=obj;
+		this.objPrevious=obj;
 		list.add(this);
 		playerId=list.indexOf(this);
 		this.config=config;
 		setPersistency(true);
 
+	}
+	
+	public static PlayerInput getPlayerInput(int playerId){
+		for(PlayerInput obj:list)
+			if(obj.playerId==playerId)
+				return obj;
+		return null;
 	}
 	
 	public void handleInput(GameContainer container){
@@ -111,7 +119,6 @@ public class PlayerInput extends GameObject{
 	}
 	
 	public void setObj(PlayerInputControlObject obj){
-		this.objPrevious=this.obj;
 		this.obj=obj;
 	}
 	

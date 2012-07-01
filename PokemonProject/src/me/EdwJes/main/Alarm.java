@@ -3,7 +3,7 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Alarm extends GameObject {
+public class Alarm extends Updater {
 	/*
 	 * Alarm, timer.
 	 * Currently, if any superclass to the class that makes an alarm

@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import me.EdwJes.main.GameObject;
+import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.RenderableObject;
 
@@ -29,15 +30,14 @@ public class DebugRenderer extends RenderableObject{
 			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+PokemonProject.SCREEN_WIDTH+","+PokemonProject.SCREEN_HEIGHT+")");
 			drawList(g,l);}
 		g.setColor(new Color(255, 255, 255, 10));
-		for(int xi=0;xi<640;xi+=RenderableObject.getTileWidth())
-			g.drawLine(0, xi, 480, xi);
-		for(int yi=0;yi<480;yi+=RenderableObject.getTileHeight())
-			g.drawLine(yi, 0, yi, 640);
+		for(int xi=0;xi<640;xi+=OverworldObject.getTileWidth())
+			g.drawLine(xi, 0, xi, 640);
+		for(int yi=0;yi<480;yi+=OverworldObject.getTileHeight())
+			g.drawLine(0, yi, 480, yi);
 		g.setColor(Color.white);
 	}
 
 	public void drawList(Graphics g, List<String> list){
-		g.setFont(PokemonProject.font);
 		for(int i = 0; i < list.size(); i++){
 			Color temp = g.getColor();
 			g.setColor(Color.gray);

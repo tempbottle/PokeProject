@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 public abstract class RenderableObject extends GameObject{
 	protected static List<RenderableObject> list = new ArrayList<RenderableObject>();
 	protected int depth=0,layer=0;
-	public final static int tileWidth=16,tileHeight=16;
 	public final static int LAYER_GUI=1000,LAYER_OVERWORLD=10,LAYER_BACKGROUND=1;
 	
 	public abstract void render(Graphics g);
@@ -19,15 +18,6 @@ public abstract class RenderableObject extends GameObject{
 	public void destroy(){
 		super.destroy();
 		list.remove(this);
-	}
-	
-	
-	public static int getTileWidth(){
-		return tileWidth;
-	}
-	
-	public static int getTileHeight(){
-		return tileHeight;
 	}
 	
 	public void setDepth(int depth){

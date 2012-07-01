@@ -1,6 +1,8 @@
 package me.EdwJes.main.Entities;
 
+import me.EdwJes.main.CollisionMask;
 import me.EdwJes.main.OverworldObject;
+
 import org.newdawn.slick.Graphics;
 
 /**
@@ -15,7 +17,7 @@ import org.newdawn.slick.Graphics;
 * @version 1.0
 */
 public class Entity extends OverworldObject{
-	protected int xTile,yTile,moveXTile=0,moveYTile=0;
+	protected int moveXTile=0,moveYTile=0;
 	private float moveXOffset=0,moveYOffset=0,posMoveSpeed=2;
 	public float walkingSpeed=1,runningSpeed=2;
 	public boolean canMove=true,canInteract=true,canInteracted=true;
@@ -33,8 +35,7 @@ public class Entity extends OverworldObject{
 	public Direction dir=Direction.RIGHT;
 	
 	public Entity(int xTile,int yTile/*,EntitySprite sprite*/){
-		this.xTile=xTile;
-		this.yTile=yTile;
+		super(xTile,yTile);
 		setLayer(LAYER_OVERWORLD);
 	}
 
@@ -60,19 +61,21 @@ public class Entity extends OverworldObject{
 	  * 
 	  * @param xTile x value in tiles
 	  */
-	public boolean posMoveX(int xTile){
+	@Override
+	public void posMoveX(int xTile){
+		Direction dir=this.dir;
+		if(xTile>0)
+			dir=Direction.RIGHT;
+		else if(xTile<0)
+			dir=Direction.LEFT;
+		
 		if(canMove&&!isMoving()){
-			onMoveTile(xTile,this.yTile);
-			moveXTile=xTile;
-			
-			if(xTile>0)
-				dir=Direction.RIGHT;
-			else if(xTile<0)
-				dir=Direction.LEFT;
-			
-			return true;}
-		else
-			return false;
+			this.dir=dir;
+			if(isDirectionFree(dir)){
+				onMoveTile(xTile,this.yTile);
+				moveXTile=xTile;
+			}
+		}
 	}
 	
 	/**
@@ -80,36 +83,22 @@ public class Entity extends OverworldObject{
 	  * 
 	  * @param yTile y value in tiles
 	  */
-	public boolean posMoveY(int yTile){
+	@Override
+	public void posMoveY(int yTile){
+		Direction dir=this.dir;
+		if(yTile>0)
+			dir=Direction.DOWN;
+		else if(yTile<0)
+			dir=Direction.UP;
+		
 		if(canMove&&!isMoving()){
-			onMoveTile(this.xTile,yTile);
-			moveYTile=yTile;
-			
-			if(yTile>0)
-				dir=Direction.DOWN;
-			else if(yTile<0)
-				dir=Direction.UP;
-			
-			return true;}
-		else
-			return false;
+			this.dir=dir;
+			if(isDirectionFree(dir)){
+				onMoveTile(this.xTile,yTile);
+				moveYTile=yTile;
+			}
+		}
 	}
-	
-	/**
-	  * Sets the x value of the entity in tiles
-	  * 
-	  * @param xTile x value in tiles
-	  */
-	public void posSetX(int xTile){
-		this.xTile=xTile;}
-	
-	/**
-	  * Sets the y value of the entity in tiles
-	  * 
-	  * @param yTile y value in tiles
-	  */
-	public void posSetY(int yTile){
-		this.yTile=yTile;}
 	
 	/**
 	  * Is the entity moving?
@@ -144,6 +133,8 @@ public class Entity extends OverworldObject{
 	  * 
 	  * @return x 
 	  */
+
+	@Override
 	public float getXPos(){
 		return xTile*tileWidth+moveXOffset;
 	}
@@ -153,26 +144,9 @@ public class Entity extends OverworldObject{
 	  * 
 	  * @return y 
 	  */
+	@Override
 	public float getYPos(){
 		return yTile*tileHeight+moveYOffset;
-	}
-	
-	/**
-	  * Returns the x-tile following the grid of the entity in the room
-	  * 
-	  * @return x 
-	  */
-	public int getXTile(){
-		return xTile;
-	}
-
-	/**
-	  * Returns the y-tile following the grid of the entity in the room
-	  * 
-	  * @return y 
-	  */
-	public int getYTile(){
-		return yTile;
 	}
 	
 	public void onInteracted(Entity interactor){}
@@ -210,6 +184,7 @@ public class Entity extends OverworldObject{
 	
 	@Override
 	public void render(Graphics g) {
+		super.render(g);
 		/*Color temp=g.getColor();
 		if(isMoving())
 			g.setColor(Color.gray);
@@ -220,5 +195,16 @@ public class Entity extends OverworldObject{
 	public void interact(Entity target){
 		onInteract(target);
 		target.onInteracted(this);
+	}
+	
+	public boolean isDirectionFree(Direction dir){
+		CollisionMask mask = new CollisionMask(collisionMask);
+		int x=getXTile(),y=getYTile();
+		if(dir==Direction.LEFT)	x--;
+		else if(dir==Direction.RIGHT)x++;
+		else if(dir==Direction.UP)y--;
+		else if(dir==Direction.DOWN)y++;
+		mask.setLocation(x,y);
+		return !isShapeColliding(mask);
 	}
 }

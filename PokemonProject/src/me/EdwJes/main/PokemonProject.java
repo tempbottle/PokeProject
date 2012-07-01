@@ -57,9 +57,33 @@ public class PokemonProject extends BasicGame{
 		app.start();
 		return app;
 	}
-	
+
+	@Override
+	public void init(GameContainer container) throws SlickException{
+		PokemonProject.container=container;
+		container.setTargetFrameRate(FPS);
+		container.setShowFPS(false);
+		//TODO: Ful font init för test
+		IMAGE_LOADER=new ImageLoader("/resources/images/");
+		Sprite.loadAllEntities(IMAGE_LOADER);
+		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
+		config.loadValues();
+		
+		roomLoader = new RoomLoader();
+		cmd = new Console();
+		new Debug();
+		
+		Entity playerEntityObj,playerEntityObj2;
+		playerEntityObj=new EntityPlayer(2,6,Sprite.getEntity(Sprite.Name.Brendan));
+		player=new PlayerInput(new PlayerInputEntityControl(playerEntityObj),config);
+		
+		playerEntityObj2=new EntityPlayer(4,6,Sprite.getEntity(Sprite.Name.May));
+		player2=new PlayerInput(new PlayerInputEntityControl(playerEntityObj2),config);
+	}
+
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException{
+		g.setFont(font);
 		g.scale(XSCALE,YSCALE);
 		//TODO: Depth beroende på Y-koordinater så att man hamnar bakom saker
 	    Collections.sort(RenderableObject.list, new Comparator<Object>(){
@@ -78,36 +102,7 @@ public class PokemonProject extends BasicGame{
 			if(o.isActivated()) o.render(g);
 		}
 	}
-
-	@Override
-	public void init(GameContainer container) throws SlickException{
-		PokemonProject.container=container;
-		container.setTargetFrameRate(FPS);
-		container.setShowFPS(false);
-		//TODO: Ful font init för test
-		IMAGE_LOADER=new ImageLoader("/resources/images/");
-		Sprite.loadAllEntities(IMAGE_LOADER);
-		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
-		config.loadValues();
-		roomLoader = new RoomLoader();
-		cmd = new Console();
-		
-		new Debug();
-		new EntityHuman(4,4,Sprite.getEntity(Sprite.Name.May));
-		new EntityHuman(1,5,Sprite.getEntity(Sprite.Name.May));
-		
-		Entity a,playerEntityObj,playerEntityObj2;
-		a=new EntityHuman(5,7,Sprite.getEntity(Sprite.Name.Lyra));
-		a=new EntityHuman(5,8,Sprite.getEntity(Sprite.Name.Lyra));
-		a=new EntityHuman(8,6,Sprite.getEntity(Sprite.Name.Lyra));
-		a=new EntityHuman(8,8,Sprite.getEntity(Sprite.Name.Lyra));
-		playerEntityObj=new EntityPlayer(2,6,Sprite.getEntity(Sprite.Name.Brendan));
-		player=new PlayerInput(new PlayerInputEntityControl(playerEntityObj),config);
-		
-		playerEntityObj2=new EntityPlayer(4,6,Sprite.getEntity(Sprite.Name.May));
-		player2=new PlayerInput(new PlayerInputEntityControl(playerEntityObj2),config);
-	}
-
+	
 	private void handleInput(GameContainer container) throws SlickException {
 		container.getInput().addKeyListener(keyboard);
 	}
@@ -124,9 +119,9 @@ public class PokemonProject extends BasicGame{
 		handleInput(container);
 		container.setDefaultFont(font);
 		
-		List<GameObject> l = GameObject.list;
-		for(int i=0;i<l.size();i++){
-			if(l.get(i).isActivated()) l.get(i).update();}
+		for(int i=0;i<Updater.list.size();i++){
+			if(Updater.list.get(i).isActivated())
+				Updater.list.get(i).update();}
 	}
 	
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{

@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import me.EdwJes.main.rooms.Room;
 
-public class GameObject {
+public class GameObject extends Updater{
 	public static List<GameObject> list = new ArrayList<GameObject>();
-	protected boolean activated = true;
 	Room homeRoom;
 	private boolean persistent = false;
 	
 	public GameObject(){
-		homeRoom = PokemonProject.roomLoader.getCurrentRoom();
 		list.add(this);
+		homeRoom = PokemonProject.roomLoader.getCurrentRoom();
 	}
 	
-	
+	@Override
 	public void update(){
 
 	}
@@ -24,30 +23,11 @@ public class GameObject {
 		list.remove(this);
 	}
 	
-	public void activate(){
-		activated = true;
-	}
-	
-	public void deactivate(){
-		activated = false;
-	}
-	
-	public boolean isActivated(){
-		return activated;
-	}
-	
-	public void switchActivate(){
-		activated = !activated;
-	}
-	
 	public void roomTransist(Room newRoom){
 		//is called whenever a room is entered. Activate object if the new room is the homeRoom
 		if(!isPersistent()) activated = (homeRoom == newRoom);
 	}
 	
-	public void callAlarm(Alarm alarm){}
-
-
 	public boolean isPersistent() {
 		return persistent;
 	}
@@ -56,4 +36,6 @@ public class GameObject {
 	public void setPersistency(boolean persistent) {
 		this.persistent = persistent;
 	}
+	
+	public void callAlarm(Alarm alarm){}
 }

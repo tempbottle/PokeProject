@@ -1,6 +1,5 @@
 package me.EdwJes.main.rooms;
 
-import me.EdwJes.main.Console;
 import me.EdwJes.main.Sprite;
 import me.EdwJes.main.Entities.EntityHuman;
 
