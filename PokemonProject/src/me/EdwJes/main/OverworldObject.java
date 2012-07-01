@@ -119,8 +119,17 @@ public class OverworldObject extends RenderableObject{
 	
 	public boolean isColliding(){
 		for(OverworldObject o:list){
-			if(collisionMask==o.collisionMask)continue;
+			if(o==this)continue;
 			if(collisionMask.intersects(o.collisionMask))
+				return true;}
+		return false;
+	}
+	
+	public boolean isColliding(int x,int y){
+		CollisionMask mask=new CollisionMask(x,y);
+		for(OverworldObject o:list){
+			if(o==this)continue;
+			if(mask.intersects(o.collisionMask))
 				return true;}
 		return false;
 	}
@@ -143,6 +152,15 @@ public class OverworldObject extends RenderableObject{
 			if(o==this)
 				continue;
 			if(collisionMask.intersects(o.collisionMask))
+				return o;}
+		return null;
+	}
+	
+	public OverworldObject getCollidingObj(int x,int y){
+		CollisionMask mask=new CollisionMask(x,y);
+		for(OverworldObject o:list){
+			if(o==this)continue;
+			if(mask.intersects(o.collisionMask))
 				return o;}
 		return null;
 	}

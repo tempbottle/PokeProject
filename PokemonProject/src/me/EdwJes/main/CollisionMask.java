@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionMask {
-	private int x=0,y=0,xCenter,yCenter;
+	private int x=0,y=0;
 	private List<int[]> tiles=new ArrayList<int[]>();
 	private List<Integer> tempTileIndex=new ArrayList<Integer>();
 	
@@ -19,17 +19,30 @@ public class CollisionMask {
 	
 	public CollisionMask(){}
 	
+	@Override
+	public void finalize(){
+		try{super.finalize();}
+		catch(Throwable e){e.printStackTrace();}
+		tempTileIndex.clear();
+		tiles.clear();
+	}
+	
 	public void addRect(int x1,int y1,int x2,int y2){
 		for(int ix=x1;ix<=x2;ix++)
 			for(int iy=y1;iy<=y2;iy++)
 				tiles.add(new int[]{ix,iy});}
 	
-	public void addPoint(int x,int y){
-		tiles.add(new int[]{x,y});}
+	public int addPoint(int x,int y){
+		if(!tiles.contains(new int[]{x,y})){
+			tiles.add(new int[]{x,y});
+			return tiles.size()-1;}
+		else
+			return tiles.indexOf(new int[]{x,y});}
 	
-	public void addTempPoint(int x,int y){
-		tiles.add(new int[]{x,y});
-		tempTileIndex.add(tiles.size());}
+	public int addTempPoint(int x,int y){
+		int index=addPoint(x,y);
+		tempTileIndex.add(index);
+		return tempTileIndex.size()-1;}
 	
 	public int getX(){
 		return x;}
@@ -52,14 +65,20 @@ public class CollisionMask {
 		setY(y);}
 	
 	public void onMove(){
-		clearTempTiles();
+		//clearTempTiles();
 	}
 	
-	public void clearTempTiles(){
+	public void clearTempPoints(){
 		if(tempTileIndex.size()>0){
-			for(Integer tmpIndex:tempTileIndex)
-				tiles.remove(tmpIndex);
+			for(Integer tmpIndex:tempTileIndex){
+				tiles.remove(tiles.get(tmpIndex));}
 			tempTileIndex.clear();}
+	}
+	
+	public void clearTempPoint(int tmpIndex){
+		if(tempTileIndex.size()>0){
+			tiles.remove(tiles.get(tmpIndex));
+			tempTileIndex.remove(tmpIndex);}
 	}
 	
 	public int getMinX(){

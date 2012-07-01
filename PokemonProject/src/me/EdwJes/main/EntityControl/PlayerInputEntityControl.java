@@ -5,6 +5,8 @@ import me.EdwJes.main.PlayerInputControlObject;
 import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.Entities.Entity;
 import me.EdwJes.main.Entities.Entity.Direction;
+import me.EdwJes.main.Entities.Entity.DirectionX;
+import me.EdwJes.main.Entities.Entity.DirectionY;
 
 public class PlayerInputEntityControl implements PlayerInputControlObject,EntityControl{
 	private Entity entity;
@@ -15,18 +17,18 @@ public class PlayerInputEntityControl implements PlayerInputControlObject,Entity
 	//TODO: Lätt-tryck för att vända sig istället för att röra sig direkt när man har vänt sig, dir variabeln. Får göra en timer eller något 
 	@Override
 	public void onKeyLeft(){
-		entity.posMoveX(-1);}
+		entity.posMoveX(DirectionX.LEFT);}
 	
 	@Override
 	public void onKeyRight(){
-		entity.posMoveX(1);}
+		entity.posMoveX(DirectionX.RIGHT);}
 
 	public void onKeyUp(){
-		entity.posMoveY(-1);}
+		entity.posMoveY(DirectionY.UP);}
 	
 	@Override
 	public void onKeyDown(){
-		entity.posMoveY(1);}
+		entity.posMoveY(DirectionY.DOWN);}
 
 	@Override
 	public void onKeyAction() {
@@ -84,18 +86,26 @@ public class PlayerInputEntityControl implements PlayerInputControlObject,Entity
 
 	@Override
 	public void onKeyLeftReleased() {
+		if(entity.getStopMove()==-1)
+			entity.stopMove(Direction.LEFT);
 	}
 
 	@Override
 	public void onKeyRightReleased() {
+		if(entity.getStopMove()==-1)
+			entity.stopMove(Direction.RIGHT);
 	}
 
 	@Override
 	public void onKeyUpReleased() {
+		if(entity.getStopMove()==-1)
+			entity.stopMove(Direction.UP);
 	}
 
 	@Override
 	public void onKeyDownReleased() {
+		if(entity.getStopMove()==-1)
+			entity.stopMove(Direction.DOWN);
 	}
 
 	@Override
