@@ -2,9 +2,7 @@ package me.EdwJes.main.rooms;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import me.EdwJes.main.OverworldObject;
-
 
 public class RoomLoader {
 	protected Room currentRoom;
@@ -38,7 +36,8 @@ public class RoomLoader {
 		for(OverworldObject o: OverworldObject.list){
 			o.roomTransist(rm);
 		}
-		currentRoom.init();
+		if(!currentRoom.entered)currentRoom.init();
+		else currentRoom.revisit();
 	}
 	
 	public void enterRoom(String name){

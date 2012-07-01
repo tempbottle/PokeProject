@@ -10,7 +10,13 @@ public class BattleRoom extends Room {
 	}
 	
 	@Override public void init(){
+		super.init();
 		System.out.println("Entered Room");
 		new EntityHuman(15,13,Sprite.getEntity(Sprite.Name.Lyra));
+	}
+	
+	@Override public void revisit(){
+		super.revisit();
+		System.out.println("Revisited");
 	}
 }
