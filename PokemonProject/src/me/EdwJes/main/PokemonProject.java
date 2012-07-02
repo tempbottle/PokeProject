@@ -11,6 +11,7 @@ import me.EdwJes.main.fileresourceloader.ImageLoader;
 import me.EdwJes.main.Entities.*;
 import me.EdwJes.main.EntityControl.PlayerInputEntityControl;
 import me.EdwJes.main.rooms.*;
+import me.EdwJes.main.tiles.Tiles;
 
 import org.newdawn.slick.*; 
 
@@ -32,7 +33,7 @@ public class PokemonProject extends BasicGame{
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
 	protected static GameContainer container;
-	public static Config config = new FileConfig();
+	public static Config config = new FileConfig(WORK_DIR+"/config.yml");
 	//Dark font color: #504060, shadow: #D0D0B8
 	public static RoomLoader roomLoader;
 	

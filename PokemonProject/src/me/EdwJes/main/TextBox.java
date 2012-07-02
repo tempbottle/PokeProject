@@ -152,5 +152,4 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 	public int getYTile() {
 		return 0;
 	}
-
 }

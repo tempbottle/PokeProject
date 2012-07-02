@@ -1,7 +1,6 @@
 package me.EdwJes.main.config;
 
 import java.util.HashMap;
-
 import org.newdawn.slick.Input;
 
 public abstract class Config {
@@ -36,5 +35,22 @@ public abstract class Config {
 	
 	public Boolean getBool(String key) {
 		return CONFIG_BOOL.get(key);
+	}
+}
+
+class ConfigData{
+	public enum InputType{
+		KEYBOARD,
+		MOUSE,
+		JOYSTICK;}
+	
+	HashMap<String,int[]> CONFIG_INT_ARRAY = new HashMap<String, int[]>();
+	public String spriteSheet;
+	public InputType inputType;
+	public int inputId;
+	public String name;
+	
+	public ConfigData(){
+		this.name="shit";
 	}
 }

@@ -3,6 +3,8 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.EdwJes.main.Entities.Entity;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -31,10 +33,7 @@ public class OverworldObject extends RenderableObject{
 	
 	@Override
 	public void render(Graphics g) {
-		if(isColliding())
-			g.setColor(Color.red);
-		g.drawRect(collisionMask.getMinX()*tileWidth,collisionMask.getMinY()*tileHeight,(collisionMask.getMaxX()-collisionMask.getMinX()+1)*tileWidth,(collisionMask.getMaxY()-collisionMask.getMinY()+1)*tileWidth);
-		g.setColor(Color.white);
+		
 	}
 	
 	/**
@@ -164,4 +163,8 @@ public class OverworldObject extends RenderableObject{
 				return o;}
 		return null;
 	}
+	
+	public void onInteracted(Entity interactor){
+	}
+	
 }

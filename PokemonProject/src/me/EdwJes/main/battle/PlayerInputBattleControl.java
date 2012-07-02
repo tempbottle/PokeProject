@@ -133,6 +133,4 @@ public class PlayerInputBattleControl implements PlayerInputControlObject{
 	public int getYTile() {
 		return 0;
 	}
-
-
 }

@@ -22,7 +22,7 @@ public class Entity extends OverworldObject{
 	private float moveXOffset=0,moveYOffset=0,posMoveSpeed=2;
 	private int stopMove=-1;
 	public float walkingSpeed=1,runningSpeed=2;
-	public boolean canMove=true,canInteract=true,canInteracted=true;
+	public boolean canMove=true,canInteract=false,canInteracted=false;
 	public enum Direction{
 		UP(0),
 		RIGHT(1),
@@ -257,8 +257,19 @@ public class Entity extends OverworldObject{
 		return yTile*tileHeight+moveYOffset;
 	}
 	
-	public void onInteracted(Entity interactor){}
-	public void onInteract(Entity target){}
+	@Override
+	public void onInteracted(Entity target){
+		super.onInteracted(target);
+		if(target.getXTile()>getXTile())
+			dir=Direction.RIGHT;
+		else if(target.getXTile()<getXTile())
+			dir=Direction.LEFT;
+		else if(target.getYTile()>getYTile())
+			dir=Direction.DOWN;
+		else if(target.getYTile()<getYTile())
+			dir=Direction.UP;
+	}
+	public void onInteract(OverworldObject target){}
 	public void onMoveTile(int xTileTo,int yTileTo){
 		int x=0,y=0;
 		if(dir==Direction.LEFT)	x--;
@@ -340,7 +351,7 @@ public class Entity extends OverworldObject{
 		g.setColor(temp);*/
 	}
 	
-	public void interact(Entity target){
+	public void interact(OverworldObject target){
 		onInteract(target);
 		target.onInteracted(this);
 	}
@@ -353,5 +364,14 @@ public class Entity extends OverworldObject{
 		else if(dir==Direction.DOWN)y++;
 		boolean bool=!isColliding(x,y);
 		return bool;
+	}
+	
+	public OverworldObject getObjCollidedDir(Direction dir){
+		int x=getXTile(),y=getYTile();
+		if(dir==Direction.LEFT)	x--;
+		else if(dir==Direction.RIGHT)x++;
+		else if(dir==Direction.UP)y--;
+		else if(dir==Direction.DOWN)y++;
+		return getCollidingObj(x,y);
 	}
 }

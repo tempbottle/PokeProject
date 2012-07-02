@@ -11,11 +11,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.EdwJes.debug.Debug;
 import me.EdwJes.main.Entities.EntityHuman;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 

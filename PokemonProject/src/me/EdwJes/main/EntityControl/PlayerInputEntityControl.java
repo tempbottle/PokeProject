@@ -1,6 +1,7 @@
 package me.EdwJes.main.EntityControl;
 
 import me.EdwJes.main.GameObject;
+import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.PlayerInputControlObject;
 import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.Entities.Entity;
@@ -67,16 +68,9 @@ public class PlayerInputEntityControl implements PlayerInputControlObject,Entity
 
 	@Override
 	public void onKeyActionPressed() {
-		int xDistance=0,yDistance=0;
-		if(entity.dir==Direction.LEFT)
-			xDistance=-1;
-		if(entity.dir==Direction.RIGHT)
-			xDistance=1;
-		if(entity.dir==Direction.UP)
-			yDistance=-1;
-		if(entity.dir==Direction.DOWN)
-			yDistance=1;
-		//TODO: Implement interaction with entities when collision check code is finished
+		if(!entity.isDirectionFree(entity.dir)){
+			OverworldObject target=entity.getObjCollidedDir(entity.dir);
+			entity.interact(target);}
 	}
 
 	@Override

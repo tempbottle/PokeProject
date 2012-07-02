@@ -126,8 +126,8 @@ public class CollisionMask {
 	public void clearPoints(int index){
 		tiles.clear();}
 	
-	public boolean hasVertex(int x,int y){
-		return indexOf(x-this.x,y-this.y)==-1?false:true;}
+	public boolean hasVertex(int xTile,int yTile){
+		return indexOf(xTile-x,yTile-y)==-1?false:true;}
 	
 	public boolean includes(int x,int y){
 		return indexOf(x,y)==-1?false:true;}

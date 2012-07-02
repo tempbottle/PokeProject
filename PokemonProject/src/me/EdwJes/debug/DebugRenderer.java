@@ -35,6 +35,13 @@ public class DebugRenderer extends RenderableObject{
 		for(int yi=0;yi<480;yi+=OverworldObject.getTileHeight())
 			g.drawLine(0, yi, 480, yi);
 		g.setColor(Color.white);
+		
+		/* FOR OVERWORLDOBJECT COLLISION MASK DRAW
+		 if(isColliding())
+			g.setColor(Color.red);
+		for(int[] pos:collisionMask.getPoints())
+			g.drawRect((getXTile()+pos[0])*tileWidth,(getYTile()+pos[1])*tileHeight,tileWidth,tileHeight);
+		g.setColor(Color.white);*/
 	}
 
 	public void drawList(Graphics g, List<String> list){

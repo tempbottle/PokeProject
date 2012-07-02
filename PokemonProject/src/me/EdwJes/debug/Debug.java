@@ -8,8 +8,6 @@ public class Debug{
 	public static boolean renderDebug=true;
 	
 	public Debug(){
-		console = System.out;
-		console.printf("Testing...");
 		render=new DebugRenderer();
 	}
 }
