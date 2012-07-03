@@ -14,6 +14,7 @@ public class OverworldObject extends RenderableObject{
 	public boolean solid=true;
 	public CollisionMask collisionMask = new CollisionMask(0,0);
 	public final static int tileWidth=16,tileHeight=16;
+	public boolean canInteracted=false;
 
 	public OverworldObject(int xTile,int yTile){
 		list.add(this);

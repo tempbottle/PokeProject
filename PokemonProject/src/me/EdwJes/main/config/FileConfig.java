@@ -1,37 +1,52 @@
 package me.EdwJes.main.config;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-import me.EdwJes.main.config.ConfigData.InputType;
-
-import org.ho.yaml.Yaml;
-import org.ho.yaml.YamlConfig;
-import org.ho.yaml.YamlEncoder;
+import java.io.FileWriter;
+import java.io.IOException;
+import me.EdwJes.main.config.ConfigData.Player;
+import me.EdwJes.main.config.ConfigData.Player.InputType;
+import com.esotericsoftware.yamlbeans.YamlWriter;
 
 public class FileConfig extends Config{
 
 	public FileConfig(String configPath){
 		super();
 		try{
-			File file=new File(configPath);
-			OutputStream out=new FileOutputStream(file);
-			YamlConfig config=new YamlConfig();
+			ConfigData config= new ConfigData();
 			
-			YamlEncoder configWrite=new YamlEncoder(out,config);
-			configWrite.setIndentAmount("  ");
-			configWrite.setMinimalOutput(true);
-
-			ConfigData p= new ConfigData();
-			p.inputId=0;
-			p.inputType=InputType.KEYBOARD;
-			p.spriteSheet="lala.png";
-	
-			configWrite.writeObject(p);
-			config.dump(p, file);
+			Player player=new Player();
+			config.players.put(1,player);
+			player.inputId=0;
+			player.inputType=InputType.KEYBOARD;
+			player.spriteSheet="lala.png";
+			player.keyMapping.put("LEFT",0);
+			player.keyMapping.put("RIGHT",1);
+			player.keyMapping.put("UP",1);
+			player.keyMapping.put("DOWN",1);
+			player.keyMapping.put("ACTION",1);
+			player.keyMapping.put("RUN",1);
+			player.keyMapping.put("PAUSE",1);
+			player.keyMapping.put("EXIT",1);
+			
+			player=new Player();
+			config.players.put(2,player);
+			player.inputId=1;
+			player.inputType=InputType.KEYBOARD;
+			player.spriteSheet="lalas.png";
+			
+			config.game.keyMapping.put("SCREENSHOT",0);
+			config.game.keyMapping.put("DEBUGRENDERING",0);
+			config.game.keyMapping.put("FULLSCREEN",0);
+			config.game.debugMode=true;
+			config.game.sound=true;
+			config.game.music=true;
+			config.game.resourceFolder="C:/";
+			
+			YamlWriter writer = new YamlWriter(new FileWriter(configPath));
+			writer.getConfig().setClassTag("Config", ConfigData.class);
+			writer.getConfig().setClassTag("Player", Player.class);
+			writer.write(config);
+			writer.close();
 			}
-		catch(FileNotFoundException e){e.printStackTrace();}
+		catch(IOException e){e.printStackTrace();}
 	}
 }

@@ -22,7 +22,7 @@ public class Entity extends OverworldObject{
 	private float moveXOffset=0,moveYOffset=0,posMoveSpeed=2;
 	private int stopMove=-1;
 	public float walkingSpeed=1,runningSpeed=2;
-	public boolean canMove=true,canInteract=false,canInteracted=false;
+	public boolean canMove=true,canInteract=false;
 	public enum Direction{
 		UP(0),
 		RIGHT(1),
@@ -277,7 +277,7 @@ public class Entity extends OverworldObject{
 		else if(dir==Direction.UP)y--;
 		else if(dir==Direction.DOWN)y++;
 		collisionMask.addTempPoint(x,y);}
-	public void onMoveFinished(int xTile,int yTile){
+	public void onMoveFinished(int xTile,int yTile,int movedTiles){
 		collisionMask.clearTempPoints();}
 
 	public int getStopMove(){
@@ -293,17 +293,17 @@ public class Entity extends OverworldObject{
 		moveXOffset=0;
 		moveXTile=0;
 		moveXDir=DirectionX.NONE;
-		movedTiles=0;
 		stopMove=-1;
-		onMoveFinished(xTile,yTile);}
+		onMoveFinished(xTile,yTile,movedTiles);
+		movedTiles=0;}
 	
 	private void stopYMovement(){
 		moveYOffset=0;
 		moveYTile=0;
 		moveYDir=DirectionY.NONE;
-		movedTiles=0;
 		stopMove=-1;
-		onMoveFinished(xTile,yTile);}
+		onMoveFinished(xTile,yTile,movedTiles);
+		movedTiles=0;}
 	
 	private void handleMovement(){
 		if(canMove){
@@ -352,8 +352,9 @@ public class Entity extends OverworldObject{
 	}
 	
 	public void interact(OverworldObject target){
-		onInteract(target);
-		target.onInteracted(this);
+		if(canInteract&&target.canInteracted){
+			onInteract(target);
+			target.onInteracted(this);}
 	}
 	
 	public boolean isDirectionFree(Direction dir){

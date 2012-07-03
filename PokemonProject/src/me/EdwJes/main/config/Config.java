@@ -37,20 +37,3 @@ public abstract class Config {
 		return CONFIG_BOOL.get(key);
 	}
 }
-
-class ConfigData{
-	public enum InputType{
-		KEYBOARD,
-		MOUSE,
-		JOYSTICK;}
-	
-	HashMap<String,int[]> CONFIG_INT_ARRAY = new HashMap<String, int[]>();
-	public String spriteSheet;
-	public InputType inputType;
-	public int inputId;
-	public String name;
-	
-	public ConfigData(){
-		this.name="shit";
-	}
-}

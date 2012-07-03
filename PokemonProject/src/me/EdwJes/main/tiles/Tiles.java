@@ -63,7 +63,7 @@ public class Tiles extends RenderableObject{
 }
 
 class Tile {
-	int x,y,w=0,h=0;
+	int x,y,w=0,h=0,depth=0;
 	Image tileImage;
 	
 	public Tile(Image img,int x,int y){
