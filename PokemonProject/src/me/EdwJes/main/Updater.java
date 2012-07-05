@@ -3,7 +3,7 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Updater {
+public abstract class Updater {
 	public static List<Updater> list = new ArrayList<Updater>();
 	protected boolean activated = true;
 	

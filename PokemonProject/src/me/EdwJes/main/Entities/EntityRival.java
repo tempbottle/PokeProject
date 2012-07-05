@@ -1,7 +1,5 @@
 package me.EdwJes.main.Entities;
 
-import me.EdwJes.main.PokemonProject;
-
 import org.newdawn.slick.Animation;
 
 public class EntityRival extends EntityHuman{

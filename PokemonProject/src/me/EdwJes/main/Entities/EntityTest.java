@@ -1,7 +1,6 @@
 package me.EdwJes.main.Entities;
 
-import me.EdwJes.main.PokemonProject;
-
+import me.EdwJes.main.View;
 import org.newdawn.slick.Animation;
 
 public class EntityTest extends EntityHuman{
@@ -13,6 +12,6 @@ public class EntityTest extends EntityHuman{
 	@Override
 	public void onInteracted(Entity interactor){
 		super.onInteracted(interactor);
-		PokemonProject.cmd.outputConsole("YES YES YES");
+		View.getView(0).cmd.outputConsole("YES YES YES");
 	}
 }

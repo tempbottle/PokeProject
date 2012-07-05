@@ -2,11 +2,9 @@ package me.EdwJes.main;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import me.EdwJes.main.Entities.Entity;
-
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 public class OverworldObject extends RenderableObject{
 	public static List<OverworldObject> list = new ArrayList<OverworldObject>();
@@ -15,6 +13,7 @@ public class OverworldObject extends RenderableObject{
 	public CollisionMask collisionMask = new CollisionMask(0,0);
 	public final static int tileWidth=16,tileHeight=16;
 	public boolean canInteracted=false;
+	public Image imageSpr;
 
 	public OverworldObject(int xTile,int yTile){
 		list.add(this);
@@ -33,8 +32,15 @@ public class OverworldObject extends RenderableObject{
 	}
 	
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics g,View view) {
+		if(imageSpr!=null)
+			g.drawImage(imageSpr, getXPos()-view.getDrawX(), getYPos()-view.getDrawY());
 		
+		for(int[] pos:collisionMask.getPoints())
+			g.drawRect((getXTile()+pos[0])*tileWidth-view.getDrawX(),(getYTile()+pos[1])*tileHeight-view.getDrawY(), tileWidth, tileHeight);
+		/*g.setColor(Color.red);
+		g.drawRect((collisionMask.getMinX())*tileWidth,(collisionMask.getMinY())*tileHeight,(collisionMask.getMaxX()-collisionMask.getMinX()+1)*tileWidth,(collisionMask.getMaxY()-collisionMask.getMinY()+1)*tileHeight);
+		g.setColor(Color.white);*/
 	}
 	
 	/**

@@ -9,7 +9,7 @@ public abstract class RenderableObject extends GameObject{
 	protected int depth=0,layer=0;
 	public final static int LAYER_GUI=1000,LAYER_OVERWORLD=10,LAYER_BACKGROUND=1,LAYER_OVERWORLD_GROUND=5;
 	
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics g,View view);
 	
 	public RenderableObject(){
 		list.add(this);

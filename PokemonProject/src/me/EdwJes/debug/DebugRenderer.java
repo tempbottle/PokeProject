@@ -8,8 +8,10 @@ import org.newdawn.slick.Graphics;
 
 import me.EdwJes.main.GameObject;
 import me.EdwJes.main.OverworldObject;
+import me.EdwJes.main.PlayerInput;
 import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.RenderableObject;
+import me.EdwJes.main.View;
 
 public class DebugRenderer extends RenderableObject{
 	
@@ -20,20 +22,23 @@ public class DebugRenderer extends RenderableObject{
 	}
 	
 	@Override
-	public void render(Graphics g){
+	public void render(Graphics g,View view){
 		if(Debug.renderDebug){
+			PlayerInput player=PlayerInput.getPlayerInput(0);
 			List<String> l = new ArrayList<String>();
 			l.add("FPS: " + PokemonProject.getFPS());
 			l.add("GameObject: " + GameObject.list.size());
 			l.add("RenderableObject: " + RenderableObject.list.size());
-			l.add("Player coords: " + PokemonProject.player.getObj().getXPos() + "," + PokemonProject.player.getObj().getYPos() + " (" + PokemonProject.player.getObj().getXTile() + "," + PokemonProject.player.getObj().getYTile() + ")");
-			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+PokemonProject.SCREEN_WIDTH+","+PokemonProject.SCREEN_HEIGHT+")");
+			l.add("Player coords: " + player.getObj().getXPos() + "," + player.getObj().getYPos() + " (" + player.getObj().getXTile() + "," + player.getObj().getYTile() + ")");
+			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+player.view.viewWidth+","+player.view.viewHeight+")");
+			l.add("View: " +view.getDrawX()+","+view.getDrawY());
 			drawList(g,l);}
 		g.setColor(new Color(255, 255, 255, 10));
+		
 		for(int xi=0;xi<640;xi+=OverworldObject.getTileWidth())
-			g.drawLine(xi, 0, xi, 640);
+			g.drawLine(xi-view.getDrawX(), 0-view.getDrawY(), xi-view.getDrawX(), 480-view.getDrawY());
 		for(int yi=0;yi<480;yi+=OverworldObject.getTileHeight())
-			g.drawLine(0, yi, 480, yi);
+			g.drawLine(0-view.getDrawX(), yi-view.getDrawY(), 640-view.getDrawX(), yi-view.getDrawY());
 		g.setColor(Color.white);
 		
 		/* FOR OVERWORLDOBJECT COLLISION MASK DRAW

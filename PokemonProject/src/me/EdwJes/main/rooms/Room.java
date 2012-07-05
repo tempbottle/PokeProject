@@ -1,6 +1,6 @@
 package me.EdwJes.main.rooms;
 
-public class Room {
+public abstract class Room {
 	
 	String name;
 	public boolean initiated;

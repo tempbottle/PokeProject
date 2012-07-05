@@ -1,5 +1,7 @@
 package me.EdwJes.main.Entities;
 
+import me.EdwJes.main.View;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 
@@ -15,26 +17,23 @@ public class EntityHuman extends Entity{
 		spriteOffsetY=-(sprite[0].getHeight()-16);
 	}
 	
-	@Override public void render(Graphics g){
-		super.render(g);
-		if(isMoving()){
-			if(dir==Direction.RIGHT)
-				g.drawAnimation(sprite[Direction.RIGHT.get()], getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
-			else if(dir==Direction.LEFT)
-				g.drawAnimation(sprite[Direction.LEFT.get()], getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
-			else if(dir==Direction.DOWN)
-				g.drawAnimation(sprite[Direction.DOWN.get()], getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
-			else if(dir==Direction.UP)
-				g.drawAnimation(sprite[Direction.UP.get()], getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);}
-		else{
-			if(dir==Direction.RIGHT)
-				g.drawImage(sprite[Direction.RIGHT.get()].getImage(0), getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
-			else if(dir==Direction.LEFT)
-				g.drawImage(sprite[Direction.LEFT.get()].getImage(0), getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
-			else if(dir==Direction.DOWN)
-				g.drawImage(sprite[Direction.DOWN.get()].getImage(0), getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
-			else if(dir==Direction.UP)
-				g.drawImage(sprite[Direction.UP.get()].getImage(0), getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);}
+	@Override public void render(Graphics g,View view){
+		super.render(g,view);
+		
+		Animation drawSpr;
+		if(dir==Direction.RIGHT)
+			drawSpr=sprite[Direction.RIGHT.get()];
+		else if(dir==Direction.LEFT)
+			drawSpr=sprite[Direction.LEFT.get()];
+		else if(dir==Direction.UP)
+			drawSpr=sprite[Direction.UP.get()];
+		else// if(dir==Direction.DOWN)
+			drawSpr=sprite[Direction.DOWN.get()];
+			
+		if(isMoving())
+			g.drawAnimation(drawSpr, getXPos()+spriteOffsetX-view.getDrawX(), getYPos()+spriteOffsetY-view.getDrawY());
+		else
+			g.drawImage(drawSpr.getImage(0), getXPos()+spriteOffsetX-view.getDrawX(), getYPos()+spriteOffsetY-view.getDrawY());
 	}
 
 }

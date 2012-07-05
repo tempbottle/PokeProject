@@ -1,6 +1,7 @@
 package me.EdwJes.main.Entities;
 
 import me.EdwJes.main.OverworldObject;
+import me.EdwJes.main.View;
 
 import org.newdawn.slick.Graphics;
 
@@ -20,7 +21,7 @@ public class Entity extends OverworldObject{
 	private DirectionX moveXDir=DirectionX.NONE;
 	private DirectionY moveYDir=DirectionY.NONE;
 	private float moveXOffset=0,moveYOffset=0,posMoveSpeed=2;
-	private int stopMove=-1;
+	private Movement stopMove=Movement.NONE;
 	public float walkingSpeed=1,runningSpeed=2;
 	public boolean canMove=true,canInteract=false;
 	public enum Direction{
@@ -33,6 +34,11 @@ public class Entity extends OverworldObject{
 			this.i=i;}
 		public int get(){
 			return this.i;}
+		public static Direction valueOf(int i){
+			for(Direction value:Direction.values())
+				if(value.get()==i)
+					return value;
+			return Direction.UP;}
 	};
 	public enum DirectionX{
 		LEFT(-1),
@@ -72,6 +78,24 @@ public class Entity extends OverworldObject{
 			return getDir(this);
 		}
 	};
+	public enum Movement{
+			NONE(-1),
+			UP(0),
+			RIGHT(1),
+			DOWN(2),
+			LEFT(3),
+			ANY(4);
+			private final int i;
+			Movement(int i){
+				this.i=i;}
+			public int get(){
+				return this.i;}
+			public static Movement valueOf(int i){
+				for(Movement value:Movement.values())
+					if(value.get()==i)
+						return value;
+				return Movement.NONE;}
+	};
 	public Direction dir=Direction.RIGHT;
 	
 	public Entity(int xTile,int yTile/*,EntitySprite sprite*/){
@@ -79,6 +103,34 @@ public class Entity extends OverworldObject{
 		setLayer(LAYER_OVERWORLD);
 	}
 
+	/**
+	  * Sets the direction {@link #dir}
+	  * 
+	  * @param dir Direction to turn to
+	  */
+	public void turn(Direction dir){
+			this.dir=dir;}
+	
+	/**
+	  * Rotates relatively to its direction {@link #dir}
+	  * 
+	  * @param dir Direction to rotate
+	  */
+	public void rotate(Direction dir){
+		if(dir==Direction.LEFT)
+			rotate(-1);
+		if(dir==Direction.RIGHT)
+			rotate(1);
+		if(dir==Direction.UP)
+			rotate(2);}
+	
+	/**
+	  * Rotates relatively to its direction {@link #dir}
+	  * 
+	  * @param turns How many turns it should rotate
+	  */
+	public void rotate(int turns){
+		this.dir=Direction.valueOf((this.dir.get()-turns)%3);}
 	
 	/**
 	  * Changes the smooth movement speed when the {@link #posMoveX} and {@link #posMoveY} contructors are used
@@ -241,7 +293,6 @@ public class Entity extends OverworldObject{
 	  * 
 	  * @return x 
 	  */
-
 	@Override
 	public float getXPos(){
 		return xTile*tileWidth+moveXOffset;
@@ -280,20 +331,20 @@ public class Entity extends OverworldObject{
 	public void onMoveFinished(int xTile,int yTile,int movedTiles){
 		collisionMask.clearTempPoints();}
 
-	public int getStopMove(){
+	public Movement getStopMove(){
 		return stopMove;}
 	
 	public void stopMove(){
-		stopMove=4;}
+		stopMove=Movement.ANY;}
 	
 	public void stopMove(Direction dir){
-		stopMove=dir.get();}
+		stopMove=Movement.valueOf(dir.get());}
 	
 	private void stopXMovement(){
 		moveXOffset=0;
 		moveXTile=0;
 		moveXDir=DirectionX.NONE;
-		stopMove=-1;
+		stopMove=Movement.NONE;
 		onMoveFinished(xTile,yTile,movedTiles);
 		movedTiles=0;}
 	
@@ -301,7 +352,7 @@ public class Entity extends OverworldObject{
 		moveYOffset=0;
 		moveYTile=0;
 		moveYDir=DirectionY.NONE;
-		stopMove=-1;
+		stopMove=Movement.NONE;
 		onMoveFinished(xTile,yTile,movedTiles);
 		movedTiles=0;}
 	
@@ -313,7 +364,7 @@ public class Entity extends OverworldObject{
 					xTile+=moveXDir.get();
 					movedTiles++;
 					moveXOffset=0;
-					if(stopMove==4||stopMove==dir.get()||!isDirectionFree(dir))
+					if(stopMove==Movement.ANY||stopMove==Movement.valueOf(dir.get())||!isDirectionFree(dir))
 						stopXMovement();}
 				
 				if(moveXTile>0&&movedTiles*tileWidth+Math.abs(moveXOffset)>=moveXTile*tileWidth){
@@ -325,7 +376,7 @@ public class Entity extends OverworldObject{
 					yTile+=moveYDir.get();
 					movedTiles++;
 					moveYOffset=0;
-					if(stopMove==4||stopMove==dir.get()||!isDirectionFree(dir))
+					if(stopMove==Movement.ANY||stopMove==Movement.valueOf(dir.get())||!isDirectionFree(dir))
 						stopYMovement();}
 				
 				if(moveYTile>0&&movedTiles*tileHeight+Math.abs(moveYOffset)>=moveYTile*tileHeight){
@@ -338,12 +389,12 @@ public class Entity extends OverworldObject{
 	public void update(){
 		super.update();
 		handleMovement();
-		setDepth(Math.round(getYPos()));//TODO: +bounding box height to measure the bottom y instead of top y
+		setDepth(Math.round(getYPos())+collisionMask.getMaxY());//TODO: +bounding box height to measure the bottom y instead of top y
 	}
 	
 	@Override
-	public void render(Graphics g) {
-		super.render(g);
+	public void render(Graphics g,View view) {
+		super.render(g,view);
 		/*Color temp=g.getColor();
 		if(isMoving())
 			g.setColor(Color.gray);

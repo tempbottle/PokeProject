@@ -12,9 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 import me.EdwJes.main.Entities.EntityHuman;
+import me.EdwJes.main.config.Config;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Console extends RenderableObject implements PlayerInputControlObject{
@@ -24,8 +26,11 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	public char commandPrefix='/';
 	private int inputPosition=0;
 	private int MAX_ARGUMENTS=32;
-	/*private int outputLines = 0;
-	private int outputMaxLines = 6;*/
+	private Config config=PokemonProject.config;
+	public View view;
+	/*TODO:Output lines in console and limit text to boundaries of the window + black transparent box under console 
+	 * private int outputLines = 0;
+	 * private int outputMaxLines = 6;*/
 	
 	public enum Command{
 		help,test,shit,scale,skit,display,human,fullscreen,room
@@ -36,27 +41,27 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		setPersistency(true);
 	}
 	//TODO: Custom input and output stream classes for server communication in the future
-	@Override public void render(Graphics g){
+	@Override public void render(Graphics g,View view){
 		int i=0,lineHeight=g.getFont().getLineHeight();
 		for(ConsoleOutputText text:ConsoleOutputText.list){
 			i++;
 			int alpha=255;
 			if(text.fadeOutTick<ConsoleOutputText.fadeOutTimer||isOn){
-				int y=PokemonProject.SCREEN_HEIGHT - lineHeight*2-6 - ((ConsoleOutputText.list.size()-i)*16);
+				int y=(int)view.viewHeight - lineHeight*2-6 - ((ConsoleOutputText.list.size()-i)*16);
 				if(!isOn)
 					alpha=255-((int)(((float)text.fadeOutTick/ConsoleOutputText.fadeOutTimer)*255));
 				g.setColor(new Color(255,255,255,alpha));
-				g.drawString(text.getText(), 6, y);
+				g.drawString(text.getText(), 6+view.getDrawScreenX(), y+view.getDrawScreenY());
 				g.setColor(Color.white);}
 		}
 		if(isOn){
 			g.setColor(Color.darkGray);
-			g.fillRect(0,PokemonProject.SCREEN_HEIGHT-lineHeight-4,PokemonProject.SCREEN_WIDTH,PokemonProject.SCREEN_HEIGHT);
+			g.fillRect(0-view.getDrawScreenX(),view.viewHeight-lineHeight-4-view.getDrawScreenY(),view.viewWidth-view.getDrawScreenX(),view.viewHeight-view.getDrawScreenY());
 			g.setColor(Color.white);
-			g.drawString(inputFieldPrefix + input, 6, PokemonProject.SCREEN_HEIGHT-lineHeight-2);
+			g.drawString(inputFieldPrefix + input, 6-view.getDrawScreenX(), view.viewHeight-lineHeight-2-view.getDrawScreenY());
 			int inputPositionWidth=g.getFont().getWidth(inputFieldPrefix + input.substring(0,inputPosition))+2;
 			g.setColor(Color.red);
-			g.drawLine(inputPositionWidth+2, PokemonProject.SCREEN_HEIGHT-lineHeight,inputPositionWidth+2, PokemonProject.SCREEN_HEIGHT-4);
+			g.drawLine(inputPositionWidth+2-view.getDrawScreenX(), view.viewHeight-lineHeight-view.getDrawScreenY(),inputPositionWidth+2-view.getDrawScreenX(), view.viewHeight-4-view.getDrawScreenY());
 			g.setColor(Color.white);
 		}
 	}
@@ -72,6 +77,10 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 	public void outputConsole(String str){
 		new ConsoleOutputText(str);
+	}
+	
+	public boolean isOn(){
+		return isOn;
 	}
 	
 	public void executeCommand(String str){//TODO:Check argument count and type
@@ -102,7 +111,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 							outputConsole("Yes shit");
 							break;
 						case scale:
-							PokemonProject.setScale(Float.valueOf(command[1].trim()).floatValue(),Float.valueOf(command[1].trim()).floatValue());
+							view.setScale(Float.valueOf(command[1].trim()).floatValue(),Float.valueOf(command[1].trim()).floatValue());
 							outputConsole("Scaled the screen to "+command[1]+"x");
 							break;
 						case display:
@@ -223,91 +232,6 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	    StringSelection ss = new StringSelection(str);
 	    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 	}
-	
-	@Override
-	public void onKeyLeft() {}
-
-	@Override
-	public void onKeyRight() {}
-
-	@Override
-	public void onKeyUp() {}
-
-	@Override
-	public void onKeyDown() {}
-
-	@Override
-	public void onKeyAction() {}
-
-	@Override
-	public void onKeySkip() {}
-
-	@Override
-	public void onKeyEnter(){}
-
-	@Override
-	public void onKeyChat() {}
-
-	@Override
-	public void onKeyLeftPressed() {
-		inputPositionMove(-1);
-	}
-
-	@Override
-	public void onKeyRightPressed() {
-		inputPositionMove(1);
-	}
-
-	@Override
-	public void onKeyUpPressed() {}
-
-	@Override
-	public void onKeyDownPressed() {}
-
-	@Override
-	public void onKeyActionPressed() {}
-
-	@Override
-	public void onKeySkipPressed() {}
-
-	@Override
-	public void onKeyEnterPressed() {
-		executeCommand(input);
-		closeConsole();
-		PokemonProject.player.setObj(PokemonProject.player.objPrevious);
-	}
-
-	@Override
-	public void onKeyChatPressed() {}
-
-	@Override
-	public void onKeyLeftReleased() {}
-
-	@Override
-	public void onKeyRightReleased() {}
-
-	@Override
-	public void onKeyUpReleased() {}
-
-	@Override
-	public void onKeyDownReleased() {}
-
-	@Override
-	public void onKeyActionReleased() {}
-
-	@Override
-	public void onKeySkipReleased() {}
-
-	@Override
-	public void onKeyEnterReleased() {}
-
-	@Override
-	public void onKeyChatReleased() {}
-
-	@Override
-	public GameObject getControlledObject() {
-		return null;
-	}
 
 	@Override
 	public float getXPos() {
@@ -334,7 +258,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 
 	@Override
-	public void onKeyPressed(int key, char chr) {
+	public void onKeyPressed(int key, char chr,int playerId) {
 		if(isOn){
 			if(keyCTRL==true){
 				if(key==47)//V
@@ -359,15 +283,29 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				inputPositionSet(input.length());
 			else if(key==29)//CTRL
 				keyCTRL=true;
+			else if(key==config.getIntArray("KEY_LEFT",playerId)){
+				inputPositionMove(-1);}
+			else if(key==config.getIntArray("KEY_RIGHT",playerId)){
+				inputPositionMove(1);}
+			else if(key==config.getIntArray("KEY_ENTER",playerId)){
+				executeCommand(input);
+				closeConsole();
+				PlayerInput player=PlayerInput.getPlayerInput(playerId);
+				player.setObj(player.objPrevious);}
 		}
 	//Debug.console.println(key+", "+chr+"="+((int)chr));
 	}
 
 	@Override
-	public void onKeyReleased(int key, char chr) {
+	public void onKeyReleased(int key, char chr,int playerId) {
 		if(key==29){//CTRL
 			keyCTRL=false;
 		}
+	}
+
+	@Override
+	public void handleInput(Input input, int playerId) {
+
 	}
 }
 

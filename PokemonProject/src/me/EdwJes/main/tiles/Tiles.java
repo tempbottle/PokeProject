@@ -12,6 +12,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.RenderableObject;
+import me.EdwJes.main.View;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
 
 public class Tiles extends RenderableObject{
@@ -28,21 +29,35 @@ public class Tiles extends RenderableObject{
 	public List<Tile> getTiles(){
 		return list;}
 	
+	public void destroy(){
+		super.destroy();
+		for(SpriteSheet spr:sprSheet.values()){
+			try{spr.destroy();}
+			catch(SlickException e){e.printStackTrace();}}
+		sprSheet=null;
+		
+		for(Image img:rawImage.values()){
+			try{img.destroy();}
+			catch(SlickException e){e.printStackTrace();}}
+		rawImage=null;
+		list.clear();
+	}
+	
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics g,View view) {
 		for(Tile tile:getTiles()){
 			for(int ix=0;ix<tile.w;ix++)
 				for(int iy=0;iy<tile.h;iy++)
-					g.drawImage(tile.tileImage, (tile.x+ix)*OverworldObject.tileWidth, (tile.y+iy)*OverworldObject.tileHeight);
+					g.drawImage(tile.tileImage, (tile.x+ix)*OverworldObject.tileWidth-view.getDrawX(), (tile.y+iy)*OverworldObject.tileHeight-view.getDrawY());
 		}
 	}
 	
 	public void LOAD_TESTING(ImageLoader loader){
 		String name="NAMEOFTILESET";
 		try{
-			rawImage.put(name,loader.loadImage("/tiles/frlg.png"));
+			rawImage.put(name,loader.loadImage("/tiles/FRLG/ground.png"));
 			sprSheet.put(name,new SpriteSheet(rawImage.get(name),rawImage.get(name).getWidth(),rawImage.get(name).getHeight()));
-			TESTTILE=sprSheet.get(name).getSubImage(103, 1, 16, 16);
+			TESTTILE=sprSheet.get(name).getSubImage(16, 16, 16, 16);
 		}catch(SlickException e){
 			e.printStackTrace();}
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class CollisionMask {
 	private int x=0,y=0;
+	//TODO: Have Set instead?
 	private List<int[]> tiles=new ArrayList<int[]>();
 	private List<Integer> tempTileIndex=new ArrayList<Integer>();
 	
@@ -104,6 +105,12 @@ public class CollisionMask {
 		for(int[] point:tiles)
 			i=Math.max(point[1],i);
 		return i+y;}
+	
+	public List<int[]> getNonTempTiles(){
+		List<int[]> realTiles=new ArrayList<int[]>(tiles);
+		for(int index:tempTileIndex)
+			realTiles.remove(index);
+		return realTiles;}
 	
 	public List<int[]> getPoints(){
 		return tiles;}
