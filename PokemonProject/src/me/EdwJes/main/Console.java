@@ -101,7 +101,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		return isOn;
 	}
 	
-	public void executeCommand(String str){//TODO:Check argument count and type
+	public void executeCommand(String str){
 		if(str!=""&&!str.matches("([ ]*)")){
 			onInput(str);
 			if(str.charAt(0)==commandPrefix){
@@ -172,13 +172,18 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 	public String commandGetSyntax(Command command){
 		String str=command.name()+"(";
+		int i=0;
 		for(Arg arg:command.getArgs()){
+			if(i==0)
+				i=1;
+			else
+				str+=", ";
 			if(arg.getFlag()==Arg.Flag.OPTIONAL)
-				str+="<"+arg.getType().toStringShort()+" "+arg.getName()+">, ";
+				str+="["+arg.getType().toStringShort()+" "+arg.getName()+"]";
 			else if(arg.getFlag()==Arg.Flag.INFINITE)
-				str+="<"+arg.getType().toStringShort()+" "+arg.getName()+" ... ";
+				str+="["+arg.getType().toStringShort()+" "+arg.getName()+" ... ";
 			else 
-				str+="["+arg.getType().toStringShort()+" "+arg.getName()+"], ";
+				str+=arg.getType().toStringShort()+" "+arg.getName();
 		}
 		return str+")";
     }
