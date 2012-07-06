@@ -356,7 +356,7 @@ public class Entity extends OverworldObject{
 		onMoveFinished(xTile,yTile,movedTiles);
 		movedTiles=0;}
 	
-	private void handleMovement(){
+	private void handleMovement(){//TODO: Bug: Walks through entities when both is moving
 		if(canMove){
 			if(moveXDir!=DirectionX.NONE){
 				moveXOffset+=posMoveSpeed*moveXDir.get();
@@ -389,7 +389,7 @@ public class Entity extends OverworldObject{
 	public void update(){
 		super.update();
 		handleMovement();
-		setDepth(Math.round(getYPos())+collisionMask.getMaxY());//TODO: +bounding box height to measure the bottom y instead of top y
+		setDepth(Math.round(getYPos())+collisionMask.getMaxY());
 	}
 	
 	@Override

@@ -60,6 +60,7 @@ public class Config{
 		public int FPS;
 		public String resourceFolder;
 		public int players;
+		public int views;
 	}
 	
 	public void load(Config config){
@@ -77,6 +78,7 @@ public class Config{
 		game.sound=true;
 		game.music=true;
 		game.players=2;
+		game.views=1;
 		game.resourceFolder="/resources/";
 		game.windowWidth=640;
 		game.windowHeight=480;

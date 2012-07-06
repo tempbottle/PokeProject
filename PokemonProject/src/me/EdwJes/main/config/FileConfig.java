@@ -4,15 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
 
 import org.yaml.snakeyaml.Yaml;
 

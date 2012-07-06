@@ -35,9 +35,6 @@ public class OverworldObject extends RenderableObject{
 	public void render(Graphics g,View view) {
 		if(imageSpr!=null)
 			g.drawImage(imageSpr, getXPos()-view.getDrawX(), getYPos()-view.getDrawY());
-		
-		for(int[] pos:collisionMask.getPoints())
-			g.drawRect((getXTile()+pos[0])*tileWidth-view.getDrawX(),(getYTile()+pos[1])*tileHeight-view.getDrawY(), tileWidth, tileHeight);
 		/*g.setColor(Color.red);
 		g.drawRect((collisionMask.getMinX())*tileWidth,(collisionMask.getMinY())*tileHeight,(collisionMask.getMaxX()-collisionMask.getMinX()+1)*tileWidth,(collisionMask.getMaxY()-collisionMask.getMinY()+1)*tileHeight);
 		g.setColor(Color.white);*/

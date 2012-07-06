@@ -171,19 +171,19 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
     }
 	
 	public String commandGetSyntax(Command command){
-		String str=command.name()+"(";
+		String str=command.name()+"(",delimiter="";
 		int i=0;
 		for(Arg arg:command.getArgs()){
 			if(i==0)
 				i=1;
 			else
-				str+=", ";
+				delimiter=", ";
 			if(arg.getFlag()==Arg.Flag.OPTIONAL)
-				str+="["+arg.getType().toStringShort()+" "+arg.getName()+"]";
+				str+="["+delimiter+arg.getType().toStringShort()+" "+arg.getName()+"]";
 			else if(arg.getFlag()==Arg.Flag.INFINITE)
-				str+="["+arg.getType().toStringShort()+" "+arg.getName()+" ... ";
+				str+="["+delimiter+arg.getType().toStringShort()+" "+arg.getName()+" ... ";
 			else 
-				str+=arg.getType().toStringShort()+" "+arg.getName();
+				str+=delimiter+arg.getType().toStringShort()+" "+arg.getName();
 		}
 		return str+")";
     }
