@@ -1,5 +1,7 @@
 package me.EdwJes.main;
 
+import me.EdwJes.main.config.Config;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
@@ -48,17 +50,17 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 	}
 
 	@Override
-	public void handleInput(Input input, int playerId) {
+	public void handleInput(Input input, int playerId,Config config) {
 
 	}
 
 	@Override
-	public void onKeyPressed(int key, char chr, int playerId) {
+	public void onKeyPressed(int key, char chr, int playerId,Config config) {
 
 	}
 
 	@Override
-	public void onKeyReleased(int key, char chr, int playerId) {
+	public void onKeyReleased(int key, char chr, int playerId,Config config) {
 		
 	}
 }

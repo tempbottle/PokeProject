@@ -32,7 +32,7 @@ public class DebugRenderer extends RenderableObject{
 			l.add("Player coords: " + player.getObj().getXPos() + "," + player.getObj().getYPos() + " (" + player.getObj().getXTile() + "," + player.getObj().getYTile() + ")");
 			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+player.view.viewWidth+","+player.view.viewHeight+")");
 			l.add("View: " +view.getDrawX()+","+view.getDrawY());
-			drawList(g,l);}
+			drawList(g,l,view);}
 		g.setColor(new Color(255, 255, 255, 10));
 		
 		for(int xi=0;xi<640;xi+=OverworldObject.getTileWidth())
@@ -49,9 +49,9 @@ public class DebugRenderer extends RenderableObject{
 		g.setColor(Color.white);*/
 	}
 
-	public void drawList(Graphics g, List<String> list){
+	public void drawList(Graphics g, List<String> list,View view){
 		for(int i = 0; i < list.size(); i++){
-			g.drawString(list.get(i), 2, 2+i*18);
+			g.drawString(list.get(i), 2-view.getDrawScreenX(), (2+i*18)-view.getDrawScreenY());
 		}
 	}
 }

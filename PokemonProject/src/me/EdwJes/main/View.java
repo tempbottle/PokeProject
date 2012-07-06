@@ -56,6 +56,10 @@ public class View extends Updater{
 	}
 	
 	public void setScale(float xscale,float yscale){
+		viewXOffset*=viewXScale/xscale;
+		viewYOffset*=viewYScale/yscale;
+		/*viewWidth*=viewXScale/xscale;
+		viewHeight*=viewYScale/yscale;*/
 		viewXScale=xscale*((float)PokemonProject.WINDOW_WIDTH_INIT/(float)PokemonProject.app.getWidth());
 		viewYScale=yscale*((float)PokemonProject.WINDOW_HEIGHT_INIT/(float)PokemonProject.app.getHeight());
 		viewWidth=Math.round(PokemonProject.app.getWidth()/xscale);
@@ -123,19 +127,19 @@ public class View extends Updater{
 	}
 	
 	public float getDrawX(){
-		return drawX+viewXOffset;
+		return drawX-viewXOffset;
 	}
 
 	public float getDrawY(){
-		return drawY+viewYOffset;
+		return drawY-viewYOffset;
 	}
 	
 	public float getDrawScreenX(){
-		return viewXOffset;
+		return -viewXOffset;
 	}
 
 	public float getDrawScreenY(){
-		return viewXOffset;
+		return -viewYOffset;
 	}
 	
 	@Override

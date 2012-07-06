@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.EdwJes.debug.Debug;
+import me.EdwJes.main.config.Config;
+import me.EdwJes.main.config.Config.GlobalKey;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
 public class PlayerInput extends GameObject{
 	protected PlayerInputControlObject obj,objPrevious;
-	protected static List<PlayerInput> list = new ArrayList<PlayerInput>();
+	public static List<PlayerInput> list = new ArrayList<PlayerInput>();
 	public int playerId=0;
 	public View view;
+	public static Config config;
 	Alarm alarm1 = new Alarm(120, this);
 	
-	public PlayerInput(PlayerInputControlObject obj,View view){
+	public PlayerInput(PlayerInputControlObject obj,View view,Config config){
 		this.obj=obj;
 		this.view=view;
 		this.objPrevious=obj;
+		PlayerInput.config=config;
 		list.add(this);
 		playerId=list.indexOf(this);
 		setPersistency(true);
@@ -33,13 +37,13 @@ public class PlayerInput extends GameObject{
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
-		obj.handleInput(input,playerId);}
+		obj.handleInput(input,playerId,config);}
 	
 	public static void keyPress(int key,char chr){
-		if(key==Input.KEY_ESCAPE)
+		if(key==config.game.keyMap.get(GlobalKey.EXIT))
 			PokemonProject.container.exit();
 		
-		else if(key==Input.KEY_F1){
+		else if(key==config.game.keyMap.get(GlobalKey.DEBUGRENDERING)){
 			Debug.renderDebug=!Debug.renderDebug;
 		}
 		
@@ -51,10 +55,10 @@ public class PlayerInput extends GameObject{
 			player.onKeyReleased(key,chr);}
 	
 	public void onKeyPressed(int key,char chr){
-		obj.onKeyPressed(key,chr,playerId);}
+		obj.onKeyPressed(key,chr,playerId,config);}
 	
 	public void onKeyReleased(int key,char chr){
-		obj.onKeyReleased(key,chr,playerId);}
+		obj.onKeyReleased(key,chr,playerId,config);}
 		
 	public void setObj(PlayerInputControlObject obj){
 		this.obj=obj;

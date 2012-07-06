@@ -1,52 +1,54 @@
 package me.EdwJes.main.config;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import me.EdwJes.main.config.ConfigData.Player;
-import me.EdwJes.main.config.ConfigData.Player.InputType;
-import com.esotericsoftware.yamlbeans.YamlWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
+import org.yaml.snakeyaml.Yaml;
 
 public class FileConfig extends Config{
-
+	private String configPath;
+	
 	public FileConfig(String configPath){
 		super();
+		this.configPath=configPath;
+	}
+	
+	public FileConfig(){
+		super();
+	}
+	
+	@Override
+	public void loadValues(){
+		super.loadValues();
+
 		try{
-			ConfigData config= new ConfigData();
-			
-			Player player=new Player();
-			config.players.put(1,player);
-			player.inputId=0;
-			player.inputType=InputType.KEYBOARD;
-			player.spriteSheet="lala.png";
-			player.keyMapping.put("LEFT",0);
-			player.keyMapping.put("RIGHT",1);
-			player.keyMapping.put("UP",1);
-			player.keyMapping.put("DOWN",1);
-			player.keyMapping.put("ACTION",1);
-			player.keyMapping.put("RUN",1);
-			player.keyMapping.put("PAUSE",1);
-			player.keyMapping.put("EXIT",1);
-			
-			player=new Player();
-			config.players.put(2,player);
-			player.inputId=1;
-			player.inputType=InputType.KEYBOARD;
-			player.spriteSheet="lalas.png";
-			
-			config.game.keyMapping.put("SCREENSHOT",0);
-			config.game.keyMapping.put("DEBUGRENDERING",0);
-			config.game.keyMapping.put("FULLSCREEN",0);
-			config.game.debugMode=true;
-			config.game.sound=true;
-			config.game.music=true;
-			config.game.resourceFolder="C:/";
-			
-			YamlWriter writer = new YamlWriter(new FileWriter(configPath));
-			writer.getConfig().setClassTag("Config", ConfigData.class);
-			writer.getConfig().setClassTag("Player", Player.class);
-			writer.write(config);
-			writer.close();
-			}
+			InputStream input = new FileInputStream(new File(configPath));
+			Yaml yaml=new Yaml();
+			Config config=yaml.loadAs(input,Config.class);
+			load(config);
+		}
+		catch(FileNotFoundException e1){
+			e1.printStackTrace();}
+	}
+	
+	public void saveValues(){
+		try{
+			FileWriter fstream = new FileWriter(configPath);
+			BufferedWriter out=new BufferedWriter(fstream);
+			Yaml yaml=new Yaml();
+			out.write(yaml.dump(this));
+			out.close();}
 		catch(IOException e){e.printStackTrace();}
 	}
 }

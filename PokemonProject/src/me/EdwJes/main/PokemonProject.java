@@ -2,6 +2,7 @@ package me.EdwJes.main;
 
 import java.util.Collections;
 import java.util.Comparator;
+
 import me.EdwJes.debug.Debug;
 import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.FileConfig;
@@ -13,35 +14,43 @@ import org.newdawn.slick.*;
 
 public class PokemonProject extends BasicGame{
 	public static AppGameContainer app;
-	protected static int WINDOW_WIDTH_INIT = 640;
-	protected static int WINDOW_HEIGHT_INIT = 480;
 	public static final String TITLE = "Pokemon Project";
-	protected static boolean FULLSCREEN_INIT = false;
-	public final int FPS = 60;
 	Keyboard keyboard = new Keyboard();
-	public static int players=2;
 	public static final String WORK_DIR = System.getProperty("user.dir");
 	public static ImageLoader IMAGE_LOADER;
 	public static AngelCodeFont font;
 	protected static GameContainer container,container2;
-	public static Config config = new FileConfig(WORK_DIR+"/config.yml");
+	public static Config config;
+	protected static int WINDOW_WIDTH_INIT = 640;
+	protected static int WINDOW_HEIGHT_INIT = 480;
+	protected static boolean FULLSCREEN_INIT = false;
+	public static int FPS = 60;
+	public static int players = 1;
 	//Dark font color: #504060, shadow: #D0D0B8
 	public static RoomLoader roomLoader;
 	
 	public PokemonProject(){ 
 		super("PokemonProject");} 
 
-	public static void main(String[] args){ 
+	public static void main(String[] args){
+		config = new FileConfig(WORK_DIR+"/config.yml");
+		config.loadValues();
+		//config.saveValues();
+		
+		players=Math.min(config.game.players,config.player.size());
+		WINDOW_WIDTH_INIT = config.game.windowWidth;
+		WINDOW_HEIGHT_INIT = config.game.windowHeight;
+		FULLSCREEN_INIT = config.game.fullscreen;
+		FPS = config.game.FPS;
+		
 		try{
-		container=createAppGameContainer();
-		Debug.console.print(container.getFPS());}
+		container=createAppGameContainer();}
 		catch(SlickException e){ 
 			e.printStackTrace();}
 	}
 	
 	public static AppGameContainer createAppGameContainer() throws SlickException{
-		app=new AppGameContainer(new ScalableGame(new PokemonProject(), WINDOW_WIDTH_INIT, WINDOW_HEIGHT_INIT, false));
-		app.setDisplayMode(WINDOW_WIDTH_INIT,WINDOW_HEIGHT_INIT,FULLSCREEN_INIT);
+		app=new AppGameContainer(new ScalableGame(new PokemonProject(), WINDOW_WIDTH_INIT, WINDOW_HEIGHT_INIT, FULLSCREEN_INIT));
 		app.setVSync(true);
 		app.setTitle(TITLE);
 		app.setDefaultFont(font);
@@ -59,17 +68,21 @@ public class PokemonProject extends BasicGame{
 		IMAGE_LOADER=new ImageLoader("/resources/images/");
 		Sprite.loadAllEntities(IMAGE_LOADER);
 		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
-		config.loadValues();
 		
 		roomLoader = new RoomLoader();
 		
-		View view=new View();
-		new Debug();
+		View view=new View(),view2=new View();
+		view2.viewXOffset=160;
+		view.viewWidth=160;
+		view2.viewWidth=160;
 		
 		for(int i=0;i<players;i++){
 			Entity playerEntityObj;
 			playerEntityObj=new EntityPlayer(2+i,6,Sprite.getEntity(Sprite.Name.Brendan));
-			new PlayerInput(new PlayerInputEntityControl(playerEntityObj),view);}
+			new PlayerInput(new PlayerInputEntityControl(playerEntityObj),view,config);}
+		
+		if(config.game.debugMode)
+			new Debug();
 	}
 
 	@Override
@@ -92,9 +105,11 @@ public class PokemonProject extends BasicGame{
 	    	g.setClip(Math.round(view.viewXOffset*view.viewXScale), Math.round(view.viewYOffset*view.viewYScale), Math.round((view.viewXOffset+view.viewWidth)*view.viewXScale), Math.round((view.viewYOffset+view.viewHeight)*view.viewYScale));
 	    	
 		    for(RenderableObject o : RenderableObject.list){
-				if(o.isActivated())
+				if(o.isActivated()){
 					o.render(g,view);
 		    	}
+		    }
+		    g.scale(1/view.viewXScale,1/view.viewYScale);
 		}
 	}
 	
@@ -113,9 +128,11 @@ public class PokemonProject extends BasicGame{
 	}
 	
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{
-		int views=View.list.size();
-		for(View view:View.list)
-			view.setScale(((float)app.getWidth()/(float)width)/views,(float)app.getHeight()/(float)height);
+		for(View view:View.list){
+			view.setScale(((float)app.getWidth()/(float)width),(float)app.getHeight()/(float)height);
+			view.viewXScale=(float)app.getWidth()/(float)width;
+			view.viewYScale=(float)app.getHeight()/(float)height;
+		}
 		app.setDisplayMode(width,height,fullscreen);
 	}
 	

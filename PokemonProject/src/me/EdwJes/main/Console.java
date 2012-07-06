@@ -13,6 +13,7 @@ import java.util.List;
 
 import me.EdwJes.main.Entities.EntityHuman;
 import me.EdwJes.main.config.Config;
+import me.EdwJes.main.config.Config.Key;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -26,14 +27,31 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	public char commandPrefix='/';
 	private int inputPosition=0;
 	private int MAX_ARGUMENTS=32;
-	private Config config=PokemonProject.config;
 	public View view;
 	/*TODO:Output lines in console and limit text to boundaries of the window + black transparent box under console 
 	 * private int outputLines = 0;
 	 * private int outputMaxLines = 6;*/
 	
-	public enum Command{
-		help,test,shit,scale,skit,display,human,fullscreen,room
+	public static enum Command{
+		helpold,
+		help,
+		test(new Arg[]{new Arg("arg",Arg.Type.STRING,Arg.Flag.INFINITE)}),
+		shit(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)}),
+		scale(new Arg[]{new Arg("scale",Arg.Type.DOUBLE)}),
+		skit,
+		display(new Arg[]{new Arg("width",Arg.Type.INTEGER),new Arg("height",Arg.Type.INTEGER)}),
+		human(new Arg[]{new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)}),
+		fullscreen(new Arg[]{new Arg("fullscreen",Arg.Type.BOOLEAN,Arg.Flag.OPTIONAL)}),
+		room(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)});
+		private Arg[] args;
+		Command(Arg[] args){
+			this.args=args;}
+		Command(){
+			this.args=new Arg[]{};}
+		public Arg[] getArgs(){
+			return args;}
+		public Arg getArg(int index){
+			return args[index];}
 	}
 	
 	public Console(){
@@ -88,71 +106,56 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			onInput(str);
 			if(str.charAt(0)==commandPrefix){
 				str=str.substring(1);
-				String[] command=str.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)",MAX_ARGUMENTS);
-				int argumentCount=command.length-1;
-				command[0]=command[0].toLowerCase();
-				onCommand(command);
-				if(commandExists(command[0])){
-					switch(Command.valueOf(command[0])){
-						case help:
-							String __str="";
-							for(Command cmd:Command.values()){
-								__str+=cmd.toString()+", ";
+				String[] input=str.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)",MAX_ARGUMENTS);
+				int argumentCount=input.length-1;
+				input[0]=input[0].toLowerCase();
+				onCommand(input);
+				if(commandExists(input[0])){
+					Command command=Command.valueOf(Command.class,input[0]);
+					
+					boolean isInfinite=false;
+					int countedArg=0,countedRequiredArg=0,isWrongType=0;
+					ARGLOOP: for(Arg arg:command.getArgs()){
+						countedArg++;
+						if(argumentCount>=countedArg){
+							if(arg.getType()==Arg.Type.INTEGER){
+								try{Integer.parseInt(input[countedArg]);}
+								catch(NumberFormatException e){isWrongType=countedArg;break;}}
+							else if(arg.getType()==Arg.Type.DOUBLE){
+								try{Double.parseDouble(input[countedArg]);}
+								catch(NumberFormatException e){isWrongType=countedArg;break;}}
+							else if(arg.getType()==Arg.Type.BOOLEAN){
+								switch(input[countedArg]){
+									case"on":
+									case"true":
+									case"1":
+										input[countedArg]="true";
+										break;
+									case"off":
+									case"false":
+									case"0":
+										input[countedArg]="true";
+										break;
+									default:	
+										isWrongType=countedArg;
+										break ARGLOOP;}
 							}
-							outputConsole(__str);
-							break;
-						case test:
-							String _str="";
-							for(int i=0;i<command.length;i++)
-								_str+="["+i+"]="+command[i]+"; ";
-							outputConsole(_str);
-							break;
-						case shit:
-							outputConsole("Yes shit");
-							break;
-						case scale:
-							view.setScale(Float.valueOf(command[1].trim()).floatValue(),Float.valueOf(command[1].trim()).floatValue());
-							outputConsole("Scaled the screen to "+command[1]+"x");
-							break;
-						case display:
-							try{
-								PokemonProject.setDisplayMode(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),PokemonProject.app.isFullscreen());}
-							catch(NumberFormatException e){
-								e.printStackTrace();}
-							catch(SlickException e){
-								e.printStackTrace();}
-							outputConsole("Resolution set to "+command[1]+"x"+command[2]);
-							break;
-						case fullscreen:
-							try{
-								boolean fullscreen=PokemonProject.app.isFullscreen();
-								int width,height;
-								if(fullscreen){
-									width=PokemonProject.WINDOW_WIDTH_INIT;
-									height=PokemonProject.WINDOW_HEIGHT_INIT;}
-								else{
-									width=PokemonProject.getContainer().getScreenWidth();
-									height=PokemonProject.getContainer().getScreenHeight();}
-								
-								PokemonProject.setDisplayMode(width,height,!fullscreen);}
-							catch(NumberFormatException e){
-								e.printStackTrace();}
-							catch(SlickException e){
-								e.printStackTrace();}
-							outputConsole("Resolution set to "+command[1]+"x"+command[2]);
-							break;
-						case human:
-							new EntityHuman(Integer.valueOf(command[1].trim()).intValue(),Integer.valueOf(command[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
-							break;
-						case room:
-							PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(command[1])));
-							break;
-						default:
-							outputConsole("Undefined Command: "+command[0]);
-							break;
+						}
+						if (arg.getFlag()==Arg.Flag.NONE){
+							countedRequiredArg++;}
+						else if(arg.getFlag()==Arg.Flag.INFINITE){
+							isInfinite=true;
+							break ARGLOOP;}
 					}
+					if(isWrongType!=0){
+						outputConsole("Wrong type on argument "+isWrongType);outputConsole("Syntax: "+commandGetSyntax(command));}
+					else if((argumentCount<=countedArg&&argumentCount>=countedRequiredArg)||(isInfinite&&argumentCount>=countedRequiredArg)){
+						executeRawCommand(command,input,argumentCount);
+					}
+					else if(argumentCount>countedArg){outputConsole("Too many arguments, expecting"+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
+					else{outputConsole("Too few arguments, expecting "+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
 				}
-				else outputConsole("Unknown Command: "+command[0]);
+				else outputConsole("Unknown Command: "+input[0]);
 			}
 			else outputConsole("> "+str);
 		}
@@ -166,7 +169,87 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		}
 		return false;
     }
+	
+	public String commandGetSyntax(Command command){
+		String str=command.name()+"(";
+		for(Arg arg:command.getArgs()){
+			if(arg.getFlag()==Arg.Flag.OPTIONAL)
+				str+="<"+arg.getType().toStringShort()+" "+arg.getName()+">, ";
+			else if(arg.getFlag()==Arg.Flag.INFINITE)
+				str+="<"+arg.getType().toStringShort()+" "+arg.getName()+" ... ";
+			else 
+				str+="["+arg.getType().toStringShort()+" "+arg.getName()+"], ";
+		}
+		return str+")";
+    }
 
+	public void executeRawCommand(Command command,String[] arg,int argumentCount){
+
+		switch(command){
+			case helpold:
+				String __str="";
+				for(Command cmd:Command.values()){
+					__str+=cmd.toString()+", ";
+				}
+				outputConsole(__str);
+				break;
+			case help:
+				for(Command cmd:Command.values()){
+					outputConsole(commandGetSyntax(cmd));
+				}
+				break;
+			case test:
+				String _str="";
+				for(int i=0;i<arg.length;i++)
+					_str+="["+i+"]="+arg[i]+"; ";
+				outputConsole(_str);
+				break;
+			case shit:
+				outputConsole("Yes shit");
+				break;
+			case scale:
+				view.setScale(Float.valueOf(arg[1].trim()).floatValue(),Float.valueOf(arg[1].trim()).floatValue());
+				outputConsole("Scaled the screen to "+arg[1]+"x");
+				break;
+			case display:
+				try{
+					PokemonProject.setDisplayMode(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),PokemonProject.app.isFullscreen());}
+				catch(NumberFormatException e){
+					e.printStackTrace();}
+				catch(SlickException e){
+					e.printStackTrace();}
+				outputConsole("Resolution set to "+arg[1]+"x"+arg[2]);
+				break;
+			case fullscreen:
+				try{
+					boolean fullscreen=PokemonProject.app.isFullscreen();
+					int width,height;
+					if(fullscreen){
+						width=PokemonProject.WINDOW_WIDTH_INIT;
+						height=PokemonProject.WINDOW_HEIGHT_INIT;}
+					else{
+						width=PokemonProject.getContainer().getScreenWidth();
+						height=PokemonProject.getContainer().getScreenHeight();}
+					
+					PokemonProject.setDisplayMode(width,height,!fullscreen);}
+				catch(NumberFormatException e){
+					e.printStackTrace();}
+				catch(SlickException e){
+					e.printStackTrace();}
+				outputConsole("Resolution set to "+arg[1]+"x"+arg[2]);
+				break;
+			case human:
+				new EntityHuman(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
+				break;
+			case room:
+				PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(arg[1])));
+				break;
+			default:
+				outputConsole("Undefined Command: "+arg[0]);
+				break;
+		}
+	}
+	
 	public String strInsert(String str,String insertStr,int index){
 		return str.substring(0,index)+insertStr+str.substring(index);
 	}
@@ -258,7 +341,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 
 	@Override
-	public void onKeyPressed(int key, char chr,int playerId) {
+	public void onKeyPressed(int key, char chr,int playerId,Config config) {
 		if(isOn){
 			if(keyCTRL==true){
 				if(key==47)//V
@@ -283,11 +366,11 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				inputPositionSet(input.length());
 			else if(key==29)//CTRL
 				keyCTRL=true;
-			else if(key==config.getIntArray("KEY_LEFT",playerId)){
+			else if(key==config.player.get(playerId).keyMap.get(Key.LEFT)){
 				inputPositionMove(-1);}
-			else if(key==config.getIntArray("KEY_RIGHT",playerId)){
+			else if(key==config.player.get(playerId).keyMap.get(Key.RIGHT)){
 				inputPositionMove(1);}
-			else if(key==config.getIntArray("KEY_ENTER",playerId)){
+			else if(key==config.player.get(playerId).keyMap.get(Key.ENTER)){
 				executeCommand(input);
 				closeConsole();
 				PlayerInput player=PlayerInput.getPlayerInput(playerId);
@@ -297,14 +380,14 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	}
 
 	@Override
-	public void onKeyReleased(int key, char chr,int playerId) {
+	public void onKeyReleased(int key, char chr,int playerId,Config config) {
 		if(key==29){//CTRL
 			keyCTRL=false;
 		}
 	}
 
 	@Override
-	public void handleInput(Input input, int playerId) {
+	public void handleInput(Input input, int playerId,Config config) {
 
 	}
 }
@@ -322,7 +405,9 @@ class ConsoleOutputText extends Updater{
 		this.text=text;
 	}
 	
-	public void onUpdate(){
+	@Override
+	public void update(){
+		super.update();
 		if(fadeOutTick<fadeOutTimer)
 			fadeOutTick++;
 	}
@@ -340,4 +425,39 @@ class ConsoleOutputText extends Updater{
 	}
 	
 	
+}
+
+class Arg{
+	static enum Type{
+		INTEGER("int"),
+		STRING("str"),
+		DOUBLE("double"),
+		BOOLEAN("bool");
+		private String shortName;
+		Type(String shortName){
+			this.shortName=shortName;}
+		public String toStringShort(){
+			return shortName;}
+		}
+	static enum Flag{
+		NONE,
+		OPTIONAL,
+		INFINITE;}
+	private String name;
+	private Type type;
+	private Flag flag;
+	Arg(String name,Type type,Flag flag){
+		this.name=name;
+		this.type=type;
+		this.flag=flag;}
+	Arg(String name,Type type){
+		this.name=name;
+		this.type=type;
+		this.flag=Flag.NONE;}
+	public Type getType(){
+		return type;}
+	public Flag getFlag(){
+		return flag;}
+	public String getName(){
+		return name;}
 }
