@@ -11,7 +11,6 @@ public class GameObject extends Updater{
 	
 	public GameObject(){
 		list.add(this);
-		System.out.println(PokemonProject.roomLoader);
 		homeRoom = PokemonProject.roomLoader.getCurrentRoom();
 	}
 	
