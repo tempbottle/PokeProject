@@ -3,13 +3,9 @@ package me.EdwJes.main;
 import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
-
-import me.EdwJes.debug.Debug;
 import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.FileConfig;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
-import me.EdwJes.main.Entities.*;
-import me.EdwJes.main.EntityControl.PlayerInputEntityControl;
 import me.EdwJes.main.rooms.*;
 import org.newdawn.slick.*; 
 
@@ -26,12 +22,11 @@ public class PokemonProject extends BasicGame{
 	protected static int WINDOW_HEIGHT_INIT = 480;
 	protected static boolean FULLSCREEN_INIT = false;
 	public static int FPS = 60;
-	public static int players = 1;
 	//Dark font color: #504060, shadow: #D0D0B8
 	public static RoomLoader roomLoader;
 	
 	public PokemonProject(){ 
-		super("PokemonProject");} 
+		super(TITLE);} 
 
 	public static void main(String[] args){
 		config = new FileConfig(WORK_DIR+"/config.yml");
@@ -41,7 +36,6 @@ public class PokemonProject extends BasicGame{
 			config.loadDefaultValues();
 			config.saveValues();}
 		
-		players=Math.min(config.game.players,config.player.size());
 		WINDOW_WIDTH_INIT = config.game.windowWidth;
 		WINDOW_HEIGHT_INIT = config.game.windowHeight;
 		FULLSCREEN_INIT = config.game.fullscreen;
@@ -73,25 +67,12 @@ public class PokemonProject extends BasicGame{
 		Sprite.loadAllEntities(IMAGE_LOADER);
 		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
 		
-		roomLoader = new RoomLoader();
-		
-		for(int i=0;i<(config.game.views<1?config.game.players:config.game.views);i++)
+		for(int i=0;i<(config.game.views<1?config.getPlayers():config.game.views);i++)
 			new View();
 		View.alignViews();
 		
-		for(int i=0;i<players;i++){
-			Entity playerEntityObj;
-			playerEntityObj=new EntityPlayer(2+i,6,Sprite.getEntity(Sprite.Name.Brendan));
-			View view;
-			if(i>View.countViews()-1)
-				view=View.list.get(0);
-			else{
-				view=View.list.get(i);
-				view.followsObject=playerEntityObj;}
-			new PlayerInput(new PlayerInputEntityControl(playerEntityObj),view,config);}
-		
-		if(config.game.debugMode)
-			new Debug();
+		roomLoader = new RoomLoader();
+		roomLoader.enterRoom(roomLoader.getCurrentRoom());
 	}
 
 	@Override

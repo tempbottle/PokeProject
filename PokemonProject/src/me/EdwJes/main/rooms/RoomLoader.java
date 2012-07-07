@@ -2,7 +2,7 @@ package me.EdwJes.main.rooms;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.EdwJes.main.OverworldObject;
+import me.EdwJes.main.GameObject;
 
 public class RoomLoader {
 	protected Room currentRoom;
@@ -10,7 +10,8 @@ public class RoomLoader {
 	public List<Room> rooms = new ArrayList<Room>();
 	
 	public RoomLoader(){
-		rooms.add(new InitRoom("Main"));
+		rooms.add(new InitRoom("Init"));
+		rooms.add(new MainRoom("Main"));
 		rooms.add(new BattleRoom("TestBattle"));
 		currentRoom = rooms.get(0);
 	}
@@ -33,7 +34,7 @@ public class RoomLoader {
 	public void enterRoom(Room rm){
 		previousRoom = currentRoom;
 		currentRoom = rm;
-		for(OverworldObject o: OverworldObject.list){
+		for(GameObject o: GameObject.list){
 			o.roomTransist(rm);
 		}
 		if(!currentRoom.entered)currentRoom.init();

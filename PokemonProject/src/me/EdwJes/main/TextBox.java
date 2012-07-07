@@ -56,7 +56,8 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 
 	@Override
 	public void onKeyPressed(int key, char chr, int playerId,Config config) {
-
+		PlayerInput player=PlayerInput.getPlayerInput(playerId);
+		player.setObj(player.objPrevious);
 	}
 
 	@Override

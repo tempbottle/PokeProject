@@ -10,13 +10,12 @@ import me.EdwJes.main.config.Config.GlobalKey;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-public class PlayerInput extends GameObject{
+public class PlayerInput extends Updater{
 	protected PlayerInputControlObject obj,objPrevious;
 	public static List<PlayerInput> list = new ArrayList<PlayerInput>();
 	public int playerId=0;
 	public View view;
 	public static Config config;
-	Alarm alarm1 = new Alarm(120, this);
 	
 	public PlayerInput(PlayerInputControlObject obj,View view,Config config){
 		this.obj=obj;
@@ -25,7 +24,6 @@ public class PlayerInput extends GameObject{
 		PlayerInput.config=config;
 		list.add(this);
 		playerId=list.indexOf(this);
-		setPersistency(true);
 	}
 	
 	public static PlayerInput getPlayerInput(int playerId){
@@ -40,10 +38,10 @@ public class PlayerInput extends GameObject{
 		obj.handleInput(input,playerId,config);}
 	
 	public static void keyPress(int key,char chr){
-		if(key==config.game.keyMap.get(GlobalKey.EXIT))
+		if(key==PokemonProject.config.game.keyMap.get(GlobalKey.EXIT))
 			PokemonProject.container.exit();
 		
-		else if(key==config.game.keyMap.get(GlobalKey.DEBUGRENDERING)){
+		else if(key==PokemonProject.config.game.keyMap.get(GlobalKey.DEBUGRENDERING)){
 			Debug.renderDebug=!Debug.renderDebug;
 		}
 		
@@ -72,9 +70,4 @@ public class PlayerInput extends GameObject{
 	public void update(){
 		super.update();
 		handleInput(PokemonProject.getContainer());}
-	
-	@Override public void callAlarm(Alarm alarm){
-		super.callAlarm(alarm);
-		if(alarm == alarm1)System.out.println("ALARM TEST FROM PLAYER INPUT "+playerId);
-	}
 }

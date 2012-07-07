@@ -35,12 +35,11 @@ public class View extends Updater{
 	
 	public Entity followsObject=null;
 	
-	public Console cmd=new Console();
+	public Console cmd;
 	
 	public View(){
 		list.add(this);
 		viewId=list.indexOf(this);
-		cmd.view=this;
 	}
 	
 	public void destroy(){

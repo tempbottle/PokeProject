@@ -126,4 +126,8 @@ public class Config{
 	}
 	
 	public void saveValues(){}
+	
+	public int getPlayers(){
+		return Math.min(game.players,player.size());
+	}
 }

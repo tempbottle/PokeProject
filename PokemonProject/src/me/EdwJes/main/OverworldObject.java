@@ -168,7 +168,7 @@ public class OverworldObject extends RenderableObject{
 		return null;
 	}
 	
-	public void onInteracted(Entity interactor){
-	}
+	public void onInteracted(Entity interactor){}
+	public void onInteracted(Entity interactor,PlayerInput player){}
 	
 }

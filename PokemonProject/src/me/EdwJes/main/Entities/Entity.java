@@ -1,6 +1,7 @@
 package me.EdwJes.main.Entities;
 
 import me.EdwJes.main.OverworldObject;
+import me.EdwJes.main.PlayerInput;
 import me.EdwJes.main.View;
 
 import org.newdawn.slick.Graphics;
@@ -307,7 +308,7 @@ public class Entity extends OverworldObject{
 	public float getYPos(){
 		return yTile*tileHeight+moveYOffset;
 	}
-	
+
 	@Override
 	public void onInteracted(Entity target){
 		super.onInteracted(target);
@@ -320,7 +321,9 @@ public class Entity extends OverworldObject{
 		else if(target.getYTile()<getYTile())
 			dir=Direction.UP;
 	}
+	
 	public void onInteract(OverworldObject target){}
+	
 	public void onMoveTile(int xTileTo,int yTileTo){
 		int x=0,y=0;
 		if(dir==Direction.LEFT)	x--;

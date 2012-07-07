@@ -11,6 +11,7 @@ public class GameObject extends Updater{
 	
 	public GameObject(){
 		list.add(this);
+		System.out.println(PokemonProject.roomLoader);
 		homeRoom = PokemonProject.roomLoader.getCurrentRoom();
 	}
 	
@@ -28,6 +29,9 @@ public class GameObject extends Updater{
 		if(!isPersistent()) activated = (homeRoom == newRoom);
 	}
 	
+	public Room getRoom(){
+		return homeRoom;}
+	
 	public boolean isPersistent() {
 		return persistent;
 	}
@@ -38,4 +42,12 @@ public class GameObject extends Updater{
 	}
 	
 	public void callAlarm(Alarm alarm){}
+	
+	public static List<GameObject> getObjectInRoom(Room room){
+		List<GameObject> _list=new ArrayList<GameObject>();
+		for(GameObject obj:list)
+			if(obj.homeRoom==room)
+				_list.add(obj);
+		return _list;
+	}
 }

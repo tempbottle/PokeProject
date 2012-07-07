@@ -1,7 +1,6 @@
 package me.EdwJes.main.Entities;
 
 import me.EdwJes.main.View;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 
@@ -19,5 +18,4 @@ public class EntityPlayer extends EntityHuman{
 		for(int[] pos:collisionMask.getPoints())
 			g.drawRect((getXTile()+pos[0])*tileWidth-view.getDrawX(),(getYTile()+pos[1])*tileHeight-view.getDrawY(), tileWidth, tileHeight);
 	}
-
 }
