@@ -22,10 +22,11 @@ public class FileConfig extends Config{
 		super();
 	}
 	
+	public void loadDefaultValues(){
+		super.loadValues();}
+	
 	@Override
 	public void loadValues(){
-		super.loadValues();
-
 		try{
 			InputStream input = new FileInputStream(new File(configPath));
 			Yaml yaml=new Yaml();

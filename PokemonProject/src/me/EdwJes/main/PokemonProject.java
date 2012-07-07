@@ -1,5 +1,6 @@
 package me.EdwJes.main;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -34,8 +35,11 @@ public class PokemonProject extends BasicGame{
 
 	public static void main(String[] args){
 		config = new FileConfig(WORK_DIR+"/config.yml");
-		config.loadValues();
-		//config.saveValues();
+		if((new File(WORK_DIR+"/config.yml")).exists())
+			config.loadValues();
+		else{
+			config.loadDefaultValues();
+			config.saveValues();}
 		
 		players=Math.min(config.game.players,config.player.size());
 		WINDOW_WIDTH_INIT = config.game.windowWidth;

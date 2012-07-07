@@ -67,6 +67,10 @@ public class Config{
 		this.game=config.game;
 	}
 	
+	public void loadDefaultValues(){
+		loadValues();
+	}
+	
 	public void loadValues(){
 		game.keyMap=new EnumMap<GlobalKey,Integer>(GlobalKey.class);
 		game.keyMap.put(GlobalKey.SCREENSHOT,Input.KEY_F3);
@@ -77,7 +81,7 @@ public class Config{
 		game.sound=true;
 		game.music=true;
 		game.players=2;
-		game.views=1;
+		game.views=-1;
 		game.resourceFolder="/resources/";
 		game.windowWidth=640;
 		game.windowHeight=480;
