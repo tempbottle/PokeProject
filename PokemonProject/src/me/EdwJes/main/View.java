@@ -91,9 +91,9 @@ public class View extends Updater{
 			i++;
 			int row=(int)Math.ceil((i-1)/values[0]),column=(i-1)%(values[0]);
 			view.viewXOffset=(column*values[2])/view.viewXScale;
-			view.viewYOffset=(row*values[3]);//view.viewYScale;
-			view.viewWidth=(float)values[2];
-			view.viewHeight=(float)values[3];
+			view.viewYOffset=(row*values[3])/view.viewYScale;
+			view.viewWidth=(float)values[2]/view.viewXScale;
+			view.viewHeight=(float)values[3]/view.viewYScale;
 			System.out.println(view.viewXOffset+" "+view.viewYOffset+" "+view.viewWidth+" "+view.viewHeight+" ");
 		}
 	}

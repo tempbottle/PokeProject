@@ -71,11 +71,19 @@ public class PokemonProject extends BasicGame{
 		
 		roomLoader = new RoomLoader();
 		
-		View view=new View();
+		for(int i=0;i<(config.game.views<1?config.game.players:config.game.views);i++)
+			new View();
+		View.alignViews();
 		
 		for(int i=0;i<players;i++){
 			Entity playerEntityObj;
 			playerEntityObj=new EntityPlayer(2+i,6,Sprite.getEntity(Sprite.Name.Brendan));
+			View view;
+			if(i>View.countViews()-1)
+				view=View.list.get(0);
+			else{
+				view=View.list.get(i);
+				view.followsObject=playerEntityObj;}
 			new PlayerInput(new PlayerInputEntityControl(playerEntityObj),view,config);}
 		
 		if(config.game.debugMode)

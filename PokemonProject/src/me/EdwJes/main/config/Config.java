@@ -53,7 +53,6 @@ public class Config{
 		public int windowHeight;
 		public int screenWidth;
 		public int screenHeight;
-		public boolean splitScreen;
 		public boolean fullscreen;
 		public float xScale;
 		public float yScale;
@@ -84,7 +83,6 @@ public class Config{
 		game.windowHeight=480;
 		game.screenWidth=320;
 		game.screenHeight=240;
-		game.splitScreen=false;
 		game.fullscreen=false;
 		game.xScale=2f;
 		game.yScale=2f;
