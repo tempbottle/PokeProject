@@ -55,6 +55,49 @@ public class View extends Updater{
 		return null;
 	}
 	
+	public static int countViews(){
+		return list.size();
+	}
+	
+	public static int[] alignViews(int viewCount,int windowWidth,int windowHeight){
+		double
+			windowRatioX=(double)windowWidth/(double)windowHeight,
+			xCount=viewCount,
+			yCount=1,
+			xCountPrevious=xCount,
+			yCountPrevious=yCount;
+		while(Math.ceil(xCount)/Math.ceil(yCount)>windowRatioX){
+			xCountPrevious=xCount;
+			yCountPrevious=yCount;
+			yCount++;
+			xCount=viewCount/yCount;}
+		if(Math.ceil(xCountPrevious)/Math.ceil(yCountPrevious)-windowRatioX<windowRatioX-(Math.ceil(xCount)/Math.ceil(yCount))){
+			xCount=xCountPrevious;
+			yCount=yCountPrevious;}
+			
+		return new int[]{(int)Math.ceil(xCount),(int)Math.ceil(yCount),(int)Math.ceil(windowWidth/Math.ceil(xCount)),(int)Math.ceil(windowHeight/Math.ceil(yCount))};
+	}
+	
+	public static void alignViews(){
+		int[] values=alignViews(countViews(),PokemonProject.app.getWidth(),PokemonProject.app.getHeight());
+		
+		/*for(int i=1;i<20;i++){
+			int[] str=alignViews(i,PokemonProject.app.getWidth(),PokemonProject.app.getHeight());
+			System.out.println(i+": "+str[0]+" x "+str[1]+" = "+(str[0]*str[1])+" ["+str[2]+"x,"+str[3]+"y]");}*/
+		
+		int i=0;
+		//System.out.println(values[0]+" "+values[1]+" "+values[2]+" "+values[3]+" ");
+		for(View view:list){
+			i++;
+			int row=(int)Math.ceil((i-1)/values[0]),column=(i-1)%(values[0]);
+			view.viewXOffset=(column*values[2])/view.viewXScale;
+			view.viewYOffset=(row*values[3]);//view.viewYScale;
+			view.viewWidth=(float)values[2];
+			view.viewHeight=(float)values[3];
+			System.out.println(view.viewXOffset+" "+view.viewYOffset+" "+view.viewWidth+" "+view.viewHeight+" ");
+		}
+	}
+	
 	public void setScale(float xscale,float yscale){
 		viewXOffset*=viewXScale/xscale;
 		viewYOffset*=viewYScale/yscale;
@@ -134,12 +177,12 @@ public class View extends Updater{
 		return drawY-viewYOffset;
 	}
 	
-	public float getDrawScreenX(){
-		return -viewXOffset;
+	public float getDrawScreenX(float x){
+		return x+viewXOffset;
 	}
 
-	public float getDrawScreenY(){
-		return -viewYOffset;
+	public float getDrawScreenY(float y){
+		return y+viewYOffset;
 	}
 	
 	@Override

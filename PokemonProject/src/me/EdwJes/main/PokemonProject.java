@@ -71,10 +71,7 @@ public class PokemonProject extends BasicGame{
 		
 		roomLoader = new RoomLoader();
 		
-		View view=new View(),view2=new View();
-		view2.viewXOffset=160;
-		view.viewWidth=160;
-		view2.viewWidth=160;
+		View view=new View();
 		
 		for(int i=0;i<players;i++){
 			Entity playerEntityObj;
@@ -130,8 +127,8 @@ public class PokemonProject extends BasicGame{
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{
 		for(View view:View.list){
 			view.setScale(((float)app.getWidth()/(float)width),(float)app.getHeight()/(float)height);
-			view.viewXScale=(float)app.getWidth()/(float)width;
-			view.viewYScale=(float)app.getHeight()/(float)height;
+			//view.viewXScale=(float)app.getWidth()/(float)width;
+			//view.viewYScale=(float)app.getHeight()/(float)height;
 		}
 		app.setDisplayMode(width,height,fullscreen);
 	}

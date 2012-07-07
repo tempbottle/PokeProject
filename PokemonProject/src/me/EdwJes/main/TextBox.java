@@ -18,9 +18,9 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 	public void render(Graphics g,View view) {
 		Font font=g.getFont();
 		g.setColor(Color.darkGray);
-		g.fillRect(4, view.viewHeight-font.getLineHeight()*2-4-view.getDrawScreenX(), view.viewWidth-8, font.getLineHeight()*2-view.getDrawScreenY());
+		g.fillRect(view.getDrawScreenY(4), view.getDrawScreenY(view.viewHeight-font.getLineHeight()*2-4), view.viewWidth-8, font.getLineHeight()*2);
 		g.setColor(Color.white);
-		g.drawString(text, 2-view.getDrawScreenX(), view.viewHeight-font.getLineHeight()*2-2-view.getDrawScreenY());
+		g.drawString(text, view.getDrawScreenX(2), view.getDrawScreenY(view.viewHeight-font.getLineHeight()*2-2));
 		
 	}
 

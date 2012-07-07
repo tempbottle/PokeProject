@@ -42,7 +42,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		display(new Arg[]{new Arg("width",Arg.Type.INTEGER),new Arg("height",Arg.Type.INTEGER)}),
 		human(new Arg[]{new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)}),
 		fullscreen(new Arg[]{new Arg("fullscreen",Arg.Type.BOOLEAN,Arg.Flag.OPTIONAL)}),
-		room(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)});
+		room(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)}),
+		view(new Arg[]{new Arg("subCommand and arg",Arg.Type.STRING,Arg.Flag.INFINITE)});
 		private Arg[] args;
 		Command(Arg[] args){
 			this.args=args;}
@@ -69,17 +70,17 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				if(!isOn)
 					alpha=255-((int)(((float)text.fadeOutTick/ConsoleOutputText.fadeOutTimer)*255));
 				g.setColor(new Color(255,255,255,alpha));
-				g.drawString(text.getText(), 6+view.getDrawScreenX(), y+view.getDrawScreenY());
+				g.drawString(text.getText(), view.getDrawScreenX(6), view.getDrawScreenY(y));
 				g.setColor(Color.white);}
 		}
 		if(isOn){
 			g.setColor(Color.darkGray);
-			g.fillRect(0-view.getDrawScreenX(),view.viewHeight-lineHeight-4-view.getDrawScreenY(),view.viewWidth-view.getDrawScreenX(),view.viewHeight-view.getDrawScreenY());
+			g.fillRect(view.getDrawScreenX(0),view.getDrawScreenY(view.viewHeight-lineHeight-4),view.getDrawScreenX(view.viewWidth),view.getDrawScreenY(view.viewHeight));
 			g.setColor(Color.white);
-			g.drawString(inputFieldPrefix + input, 6-view.getDrawScreenX(), view.viewHeight-lineHeight-2-view.getDrawScreenY());
+			g.drawString(inputFieldPrefix + input, view.getDrawScreenX(6), view.getDrawScreenY(view.viewHeight-lineHeight-2));
 			int inputPositionWidth=g.getFont().getWidth(inputFieldPrefix + input.substring(0,inputPosition))+2;
 			g.setColor(Color.red);
-			g.drawLine(inputPositionWidth+2-view.getDrawScreenX(), view.viewHeight-lineHeight-view.getDrawScreenY(),inputPositionWidth+2-view.getDrawScreenX(), view.viewHeight-4-view.getDrawScreenY());
+			g.drawLine(view.getDrawScreenX(inputPositionWidth+2), view.getDrawScreenY(view.viewHeight-lineHeight),view.getDrawScreenX(inputPositionWidth+2), view.getDrawScreenY(view.viewHeight-4));
 			g.setColor(Color.white);
 		}
 	}
@@ -248,6 +249,25 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				break;
 			case room:
 				PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(arg[1])));
+				break;
+			case view:
+				switch(arg[1]){
+					case"align":
+						View.alignViews();
+						break;
+					case"add":
+						new View();
+						View.alignViews();
+						break;
+					case"remove":
+						View.getView(View.countViews()-1).destroy();
+						View.alignViews();
+						break;
+					case"set":
+						break;
+					default:
+						outputConsole("Syntax: view(align|add|remove|set)");
+						break;}
 				break;
 			default:
 				outputConsole("Undefined Command: "+arg[0]);

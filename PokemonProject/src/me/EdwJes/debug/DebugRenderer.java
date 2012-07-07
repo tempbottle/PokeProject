@@ -51,7 +51,7 @@ public class DebugRenderer extends RenderableObject{
 
 	public void drawList(Graphics g, List<String> list,View view){
 		for(int i = 0; i < list.size(); i++){
-			g.drawString(list.get(i), 2-view.getDrawScreenX(), (2+i*18)-view.getDrawScreenY());
+			g.drawString(list.get(i), view.getDrawScreenX(2), view.getDrawScreenY((2+i*18)));
 		}
 	}
 }
