@@ -107,54 +107,57 @@ public class OverworldObject extends RenderableObject{
 	
 	public static boolean isObjInPos(int xTile,int yTile){
 		for(OverworldObject o:list){
-			if(o.collisionMask.hasVertex(xTile,yTile))
+			if(!o.isActivated())continue;
+			if(o.collisionMask.occupies(xTile,yTile))
 				return true;}
 		return false;
 	}
 	
 	public static boolean isShapeColliding(CollisionMask mask){
 		for(OverworldObject o:list){
-			if(o.collisionMask==mask)continue;
-			if(mask.intersects(o.collisionMask))
+			if(o.collisionMask==mask||!o.isActivated())continue;
+			if(mask.inside(o.collisionMask))
 				return true;}
 		return false;
 	}
 	
 	public boolean isColliding(){
 		for(OverworldObject o:list){
-			if(o==this)continue;
-			if(collisionMask.intersects(o.collisionMask))
+			if(o==this||!o.isActivated())continue;
+			if(collisionMask.inside(o.collisionMask))
 				return true;}
 		return false;
 	}
 	
 	public boolean isColliding(int x,int y){
-		CollisionMask mask=new CollisionMask(x,y);
+		CollisionMask mask=new CollisionMask(0,0);
+		mask.setX(x);
+		mask.setY(y);
 		for(OverworldObject o:list){
-			if(o==this)continue;
-			if(mask.intersects(o.collisionMask))
+			if(o==this||!o.isActivated())continue;
+			if(mask.inside(o.collisionMask))
 				return true;}
 		return false;
 	}
 	
 	public static OverworldObject getObjInPos(int xTile,int yTile){
 		for(OverworldObject o:list){
-			if(o.collisionMask.hasVertex(xTile,yTile))
+			if(!o.isActivated())continue;
+			if(o.collisionMask.occupies(xTile,yTile))
 				return o;}
 		return null;
 	}
 	
 	public boolean isCollidingObj(OverworldObject obj){
-		if(collisionMask.intersects(obj.collisionMask))
+		if(collisionMask.inside(obj.collisionMask))
 			return true;
 		return false;
 	}
 	
 	public OverworldObject getCollidingObj(){
 		for(OverworldObject o:list){
-			if(o==this)
-				continue;
-			if(collisionMask.intersects(o.collisionMask))
+			if(o==this||!o.isActivated())continue;
+			if(collisionMask.inside(o.collisionMask))
 				return o;}
 		return null;
 	}
@@ -162,8 +165,8 @@ public class OverworldObject extends RenderableObject{
 	public OverworldObject getCollidingObj(int x,int y){
 		CollisionMask mask=new CollisionMask(x,y);
 		for(OverworldObject o:list){
-			if(o==this)continue;
-			if(mask.intersects(o.collisionMask))
+			if(o==this||!o.isActivated())continue;
+			if(mask.inside(o.collisionMask))
 				return o;}
 		return null;
 	}

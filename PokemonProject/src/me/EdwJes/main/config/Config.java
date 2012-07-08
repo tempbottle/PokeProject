@@ -51,11 +51,8 @@ public class Config{
 		public boolean music;
 		public int windowWidth;
 		public int windowHeight;
-		public int screenWidth;
-		public int screenHeight;
 		public boolean fullscreen;
-		public float xScale;
-		public float yScale;
+		public float scale;
 		public int FPS;
 		public String resourceFolder;
 		public int players;
@@ -77,19 +74,16 @@ public class Config{
 		game.keyMap.put(GlobalKey.DEBUGRENDERING,Input.KEY_F1);
 		game.keyMap.put(GlobalKey.FULLSCREEN,Input.KEY_F4);
 		game.keyMap.put(GlobalKey.EXIT,Input.KEY_ESCAPE);
-		game.debugMode=true;
+		game.debugMode=false;
 		game.sound=true;
 		game.music=true;
-		game.players=2;
+		game.players=1;
 		game.views=-1;
 		game.resourceFolder="/resources/";
 		game.windowWidth=640;
 		game.windowHeight=480;
-		game.screenWidth=320;
-		game.screenHeight=240;
 		game.fullscreen=false;
-		game.xScale=2f;
-		game.yScale=2f;
+		game.scale=2f;
 		game.FPS=60;
 		
 		Player _player=new Player();

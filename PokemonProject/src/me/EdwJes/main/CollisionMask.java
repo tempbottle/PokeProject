@@ -18,7 +18,8 @@ public class CollisionMask {
 	public CollisionMask(CollisionMask mask){
 		this.tiles=mask.tiles;}
 	
-	public CollisionMask(){}
+	public CollisionMask(){
+	}
 	
 	@Override
 	public void finalize(){
@@ -133,16 +134,23 @@ public class CollisionMask {
 	public void clearPoints(int index){
 		tiles.clear();}
 	
-	public boolean hasVertex(int xTile,int yTile){
-		return indexOf(xTile-x,yTile-y)==-1?false:true;}
+	public boolean occupies(int xTile,int yTile){
+		for(int[] tile:tiles){
+			if(tile[0]+x==xTile&&tile[1]+y==yTile)
+				return true;}
+		return false;}
 	
-	public boolean includes(int x,int y){
-		return indexOf(x,y)==-1?false:true;}
+	public boolean contains(int x,int y){
+		for(int[] tile:tiles){
+			if(tile[0]==x&&tile[1]==y)
+				return true;}
+		return false;}
 	
-	public boolean intersects(CollisionMask mask){
-		if(getMaxX()>=mask.getMinX()&&getMinX()<=mask.getMaxX()&&getMaxY()>=mask.getMinY()&&getMinY()<=mask.getMaxY())
-			return true;
-		else
-			return false;
+	public boolean inside(CollisionMask mask){
+		//if(getMaxX()>=mask.getMinX()&&getMinX()<=mask.getMaxX()&&getMaxY()>=mask.getMinY()&&getMinY()<=mask.getMaxY())
+		for(int[] tile:mask.tiles){
+			if(occupies(tile[0]+mask.x,tile[1]+mask.y))
+				return true;}
+		return false;
 	}
 }

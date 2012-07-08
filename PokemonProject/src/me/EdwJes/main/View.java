@@ -2,9 +2,18 @@ package me.EdwJes.main;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import me.EdwJes.main.Entities.Entity;
-
+/**
+* View Class
+* 
+* <P>The view port system. 
+*  
+* <P>Testing links, class: {@link BigDecimal} 
+* See constructor {@link #posMoveX(int)} for more information.
+*  
+* @author Lolirofle
+* @version 1.0
+*/
 public class View extends Updater{
 	public static List<View> list=new ArrayList<View>();
 	
@@ -16,11 +25,11 @@ public class View extends Updater{
 	private float drawX_followMargin=0;
 	private float drawY_followMargin=0;
 	
-	public boolean drawX_minEnabled=false;
+	public boolean drawX_minEnabled=true;
 	public float drawX_min=0;
 	public boolean drawX_maxEnabled=false;
 	public float drawX_max=0;
-	public boolean drawY_minEnabled=false;
+	public boolean drawY_minEnabled=true;
 	public float drawY_min=0;
 	public boolean drawY_maxEnabled=false;
 	public float drawY_max=1000;
@@ -30,8 +39,8 @@ public class View extends Updater{
 	
 	public float viewWidth=320;
 	public float viewHeight=240;
-	public float viewXScale=2f;
-	public float viewYScale=2f;
+	public float viewXScale=PokemonProject.config.game.scale;
+	public float viewYScale=PokemonProject.config.game.scale;
 	
 	public Entity followsObject=null;
 	
@@ -42,11 +51,19 @@ public class View extends Updater{
 		viewId=list.indexOf(this);
 	}
 	
+	/**
+	  * Destroys view
+	  */
 	public void destroy(){
 		super.destroy();
 		list.remove(this);
 	}
 	
+	/**
+	  * Returns view by id integer
+	  * @param id
+	  * @return View object if id exists, else null
+	  */
 	public static View getView(int id){
 		for(View view:list)
 			if(view.viewId==id)
@@ -54,10 +71,27 @@ public class View extends Updater{
 		return null;
 	}
 	
+	/**
+	  * Returns the total of views that exists
+	  * @return Integer of the view count
+	  */
 	public static int countViews(){
 		return list.size();
 	}
 	
+	/**
+	  * <p>Returns aligns of the views. The size will be the same in all views. Note that it will try to return values based on the aspect ratio of the window.</p> 
+	  * 
+	  * @param viewCount The number of views that should be aligned
+ 	  * @param windowWidth Width of the total area that the views should fit in
+ 	  * @param windowHeight Height of the total area that the views should fit in
+	  * @return int[4] { 
+	  * <p>xCount = Number of columns ,</p> 
+	  * <p>yCount = Number of rows ,</p> 
+	  * <p>viewWidth = The width on each view ,</p> 
+	  * <p>viewHeight = The height on each view</p> 
+	  * }
+	  */
 	public static int[] alignViews(int viewCount,int windowWidth,int windowHeight){
 		double
 			windowRatioX=(double)windowWidth/(double)windowHeight,
@@ -77,6 +111,9 @@ public class View extends Updater{
 		return new int[]{(int)Math.ceil(xCount),(int)Math.ceil(yCount),(int)Math.ceil(windowWidth/Math.ceil(xCount)),(int)Math.ceil(windowHeight/Math.ceil(yCount))};
 	}
 	
+	/**
+	  * <p>An automatic version of:</p><p>{@link #alignViews(viewCount,windowWidth,windowHeight)}</p>It uses parameters from the static variables  
+	  */
 	public static void alignViews(){
 		int[] values=alignViews(countViews(),PokemonProject.app.getWidth(),PokemonProject.app.getHeight());
 		
@@ -97,6 +134,11 @@ public class View extends Updater{
 		}
 	}
 	
+	/**
+	  * Sets the scale of the view
+	  * @param xscale Horizontal scale
+	  * @param yscale Vertical scale  
+	  */
 	public void setScale(float xscale,float yscale){
 		viewXOffset*=viewXScale/xscale;
 		viewYOffset*=viewYScale/yscale;

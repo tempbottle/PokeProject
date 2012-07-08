@@ -16,9 +16,7 @@ public abstract class Room {
 		entered = true;
 	}
 	
-	public void revisit(){
-	}
+	public void revisit(){}
 	
-	
-
+	public void onLeave(Room rmDestination){}
 }

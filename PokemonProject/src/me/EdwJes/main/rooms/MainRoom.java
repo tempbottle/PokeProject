@@ -15,6 +15,7 @@ public class MainRoom extends Room{
 	
 	@Override
 	public void init(){
+		super.init();
 		new EntityRival(4,10,Sprite.getEntity(Sprite.Name.May));
 		new EntityTest(1,5,Sprite.getEntity(Sprite.Name.May));
 		new EntityHuman(5,7,Sprite.getEntity(Sprite.Name.Lyra));
@@ -26,5 +27,4 @@ public class MainRoom extends Room{
 		tiles.LOAD_TESTING(PokemonProject.IMAGE_LOADER);
 		tiles.tileAdd(tiles.TESTTILE, 0, 0, 40, 30);
 	}
-	
 }

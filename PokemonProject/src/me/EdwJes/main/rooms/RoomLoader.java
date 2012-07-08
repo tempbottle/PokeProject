@@ -37,12 +37,22 @@ public class RoomLoader {
 		for(GameObject o: GameObject.list){
 			o.roomTransist(rm);
 		}
-		if(!currentRoom.entered)currentRoom.init();
-		else currentRoom.revisit();
+		if(!currentRoom.entered)
+			currentRoom.init();
+		else
+			currentRoom.revisit();
+		previousRoom.onLeave(rm);
 	}
 	
 	public void enterRoom(String name){
 		enterRoom(getRoom(name));
+	}
+	
+	public void unloadRoom(Room rm){//TODO: Fix unload room
+		/*for(GameObject obj:GameObject.list)
+			if(obj.getRoom()==rm&&!obj.isPersistent()){
+				obj.destroy();}
+		rm.initiated=false;*/
 	}
 
 }

@@ -1,13 +1,12 @@
 package me.EdwJes.main.Entities;
 
 import me.EdwJes.main.OverworldObject;
-import me.EdwJes.main.PlayerInput;
 import me.EdwJes.main.View;
 
 import org.newdawn.slick.Graphics;
 
 /**
-* Entity Model Object.
+* Entity Class
 * 
 * <P>No comment
 *  
@@ -25,6 +24,11 @@ public class Entity extends OverworldObject{
 	private Movement stopMove=Movement.NONE;
 	public float walkingSpeed=1,runningSpeed=2;
 	public boolean canMove=true,canInteract=false;
+	/**
+	  * Directions
+	  * 
+	  * UP, DOWN, LEFT, RIGHT
+	  */
 	public enum Direction{
 		UP(0),
 		RIGHT(1),
@@ -41,6 +45,11 @@ public class Entity extends OverworldObject{
 					return value;
 			return Direction.UP;}
 	};
+	/**
+	  * Horizontal Direction State
+	  * 
+	  * NONE, LEFT, RIGHT
+	  */
 	public enum DirectionX{
 		LEFT(-1),
 		NONE(0),
@@ -60,6 +69,11 @@ public class Entity extends OverworldObject{
 			return getDir(this);
 		}
 	};
+	/**
+	  * Vertical Direction State
+	  * 
+	  * NONE, UP, DOWN
+	  */
 	public enum DirectionY{
 		UP(-1),
 		NONE(0),
@@ -79,6 +93,11 @@ public class Entity extends OverworldObject{
 			return getDir(this);
 		}
 	};
+	/**
+	  * Movement state
+	  * 
+	  * NONE, ANY, UP, DOWN, LEFT, RIGHT
+	  */
 	public enum Movement{
 			NONE(-1),
 			UP(0),
@@ -309,6 +328,11 @@ public class Entity extends OverworldObject{
 		return yTile*tileHeight+moveYOffset;
 	}
 
+	/**
+	  * Called when being interacted by another entity
+	  * 
+	  * @param target The Entity object that interacts with this 
+	  */
 	@Override
 	public void onInteracted(Entity target){
 		super.onInteracted(target);
@@ -321,9 +345,19 @@ public class Entity extends OverworldObject{
 		else if(target.getYTile()<getYTile())
 			dir=Direction.UP;
 	}
-	
+	/**
+	  * Called when this interacts another entity
+	  * 
+	  * @param target The OverworldObject object that this interacts with 
+	  */
 	public void onInteract(OverworldObject target){}
 	
+	/**
+	  * Called when this begins to move
+	  * 
+	  * @param xTileTo Destination X-Tile
+	  * @param yTileTo Destination Y-Tile 
+	  */
 	public void onMoveTile(int xTileTo,int yTileTo){
 		int x=0,y=0;
 		if(dir==Direction.LEFT)	x--;
@@ -331,15 +365,36 @@ public class Entity extends OverworldObject{
 		else if(dir==Direction.UP)y--;
 		else if(dir==Direction.DOWN)y++;
 		collisionMask.addTempPoint(x,y);}
+	
+	/**
+	  * Called when this have completed it's movement
+	  * 
+	  * @param xTile Destination X-Tile
+	  * @param yTile Destination Y-Tile 
+	  * @param movedTiles How many tiles it moved in it's movement
+	  */
 	public void onMoveFinished(int xTile,int yTile,int movedTiles){
-		collisionMask.clearTempPoints();}
+		collisionMask.clearTempPoints();
+		collisionMask.setLocation(xTile,yTile);}
 
+	/**
+	  * Returns which Movement direction it will stop next time
+	  * 
+	  * @return {@link Movement} 
+	  */
 	public Movement getStopMove(){
 		return stopMove;}
 	
+	/**
+	  * Stops any Movement direction when finished moving
+	  */
 	public void stopMove(){
 		stopMove=Movement.ANY;}
 	
+	/**
+	  * Stops any Movement direction when finished moving
+	  * @param dir Direction of movement
+	  */
 	public void stopMove(Direction dir){
 		stopMove=Movement.valueOf(dir.get());}
 	
@@ -359,7 +414,7 @@ public class Entity extends OverworldObject{
 		onMoveFinished(xTile,yTile,movedTiles);
 		movedTiles=0;}
 	
-	private void handleMovement(){//TODO: Bug: Walks through entities when both is moving
+	private void handleMovement(){
 		if(canMove){
 			if(moveXDir!=DirectionX.NONE){
 				moveXOffset+=posMoveSpeed*moveXDir.get();
