@@ -23,7 +23,7 @@ public class Tiles extends RenderableObject{
 	public Image TESTTILE;
 	
 	public Tiles(){
-		layer=LAYER_OVERWORLD_GROUND;
+		layer=LAYER_BELOWNORMAL;
 	}
 	
 	public List<Tile> getTiles(){
@@ -54,12 +54,9 @@ public class Tiles extends RenderableObject{
 	
 	public void LOAD_TESTING(ImageLoader loader){
 		String name="NAMEOFTILESET";
-		try{
-			rawImage.put(name,loader.loadImage("/tiles/FRLG/ground.png"));
-			sprSheet.put(name,new SpriteSheet(rawImage.get(name),rawImage.get(name).getWidth(),rawImage.get(name).getHeight()));
-			TESTTILE=sprSheet.get(name).getSubImage(16, 16, 16, 16);
-		}catch(SlickException e){
-			e.printStackTrace();}
+		rawImage.put(name,loader.loadImage("/tiles/FRLG/ground.png"));
+		sprSheet.put(name,new SpriteSheet(rawImage.get(name),rawImage.get(name).getWidth(),rawImage.get(name).getHeight()));
+		TESTTILE=sprSheet.get(name).getSubImage(16, 16, 16, 16);
 	}
 	
 	public Tile tileAdd(Image img,int x,int y){

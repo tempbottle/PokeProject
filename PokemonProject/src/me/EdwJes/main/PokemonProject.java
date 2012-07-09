@@ -95,9 +95,9 @@ public class PokemonProject extends BasicGame{
 	    	g.setClip(Math.round(view.viewXOffset*view.viewXScale), Math.round(view.viewYOffset*view.viewYScale), Math.round((view.viewXOffset+view.viewWidth)*view.viewXScale), Math.round((view.viewYOffset+view.viewHeight)*view.viewYScale));
 	    	
 		    for(RenderableObject o : RenderableObject.list){
-				if(o.isActivated()){
-					o.render(g,view);
-		    	}
+		    	if(o.view==null||o.view==view)
+		    		if(o.isActivated())
+		    			o.render(g,view);
 		    }
 		    g.scale(1/view.viewXScale,1/view.viewYScale);
 		}

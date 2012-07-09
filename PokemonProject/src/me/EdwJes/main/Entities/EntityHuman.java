@@ -15,6 +15,7 @@ public class EntityHuman extends Entity{
 		setPosMoveSpeed(1);
 		spriteOffsetX=-(sprite[0].getWidth()-16)/2;
 		spriteOffsetY=-(sprite[0].getHeight()-16);
+		canInteracted=true;
 	}
 	
 	@Override public void render(Graphics g,View view){
@@ -35,5 +36,4 @@ public class EntityHuman extends Entity{
 		else
 			g.drawImage(drawSpr.getImage(0), getXPos()+spriteOffsetX-view.getDrawX(), getYPos()+spriteOffsetY-view.getDrawY());
 	}
-
 }

@@ -172,6 +172,6 @@ public class OverworldObject extends RenderableObject{
 	}
 	
 	public void onInteracted(Entity interactor){}
-	public void onInteracted(Entity interactor,PlayerInput player){}
+	public void onInteracted(Entity target, int playerId){}
 	
 }

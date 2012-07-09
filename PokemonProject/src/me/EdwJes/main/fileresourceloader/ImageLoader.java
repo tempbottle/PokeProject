@@ -5,6 +5,7 @@ import java.io.File;
 import me.EdwJes.main.PokemonProject;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
 
 //TODO: Fix better code, needs to be more flexible
@@ -14,7 +15,8 @@ import org.newdawn.slick.SlickException;
 //TODO: Pokemons: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/pokemonicons.png
 public class ImageLoader {
 	public final String IMAGE_DIR;
-	public final int IMAGE_FILTER=Image.FILTER_NEAREST;
+	public static final int IMAGE_FILTER=Image.FILTER_NEAREST;
+	public static final Image nullImage=new ImageBuffer(32,32).getImage(IMAGE_FILTER);
 	
 	public ImageLoader(String dir){
 		IMAGE_DIR = PokemonProject.WORK_DIR + dir;
@@ -23,9 +25,15 @@ public class ImageLoader {
 	public boolean fileExists(String filePath){
 		return (new File(filePath)).exists();}
 	
-	public Image loadImage(String filePath) throws SlickException{
-		Image img = new Image(IMAGE_DIR + filePath);
-		img.setFilter(IMAGE_FILTER);
+	public Image loadImage(String filePath){
+		Image img;
+		try{
+			img = new Image(IMAGE_DIR + filePath);
+			img.setFilter(IMAGE_FILTER);}
+		catch(SlickException e){
+			img = nullImage;
+			e.printStackTrace();
+		}
 		return img;
 	}
 	

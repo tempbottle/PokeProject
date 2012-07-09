@@ -1,5 +1,6 @@
 package me.EdwJes.main.Entities;
 
+import me.EdwJes.main.PlayerInput;
 import org.newdawn.slick.Animation;
 
 public class EntityRival extends EntityHuman{
@@ -8,6 +9,7 @@ public class EntityRival extends EntityHuman{
 	public EntityRival(int xTile, int yTile, Animation[] sprite) {
 		super(xTile, yTile, sprite);
 		posMoveX(move);
+		canInteracted=true;
 	}
 
 	@Override
@@ -26,5 +28,11 @@ public class EntityRival extends EntityHuman{
 		super.update();
 		if(!isMoving())
 			posMoveX(plannedMoveX);
+	}
+	
+	@Override
+	public void onInteracted(Entity interactor,int playerId){
+		super.onInteracted(interactor);
+		PlayerInput.getPlayerInput(playerId).view.createTextbox("I'm apparently your rival...");
 	}
 }

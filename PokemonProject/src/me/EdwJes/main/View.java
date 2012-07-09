@@ -2,6 +2,9 @@ package me.EdwJes.main;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.newdawn.slick.Image;
+
 import me.EdwJes.main.Entities.Entity;
 /**
 * View Class
@@ -45,6 +48,8 @@ public class View extends Updater{
 	public Entity followsObject=null;
 	
 	public Console cmd;
+	public TextBox textbox=null;
+	public Image textboxImage=PokemonProject.IMAGE_LOADER.loadImage("/textbox/1.png");
 	
 	public View(){
 		list.add(this);
@@ -232,5 +237,20 @@ public class View extends Updater{
 			setX(followsObject.getXPos()-(viewWidth/2)+drawX_followMargin);
 			setY(followsObject.getYPos()-(viewHeight/2)+drawY_followMargin);
 		}
+	}
+
+	public void createTextbox(String string) {
+		if(haveTextbox())
+			removeTextbox();
+		textbox=new TextBox(string,this);
+	}
+	
+	public void removeTextbox() {
+		textbox.destroy();
+		textbox=null;
+	}
+	
+	public boolean haveTextbox() {
+		return textbox!=null;
 	}
 }

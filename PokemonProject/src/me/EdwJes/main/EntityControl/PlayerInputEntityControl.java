@@ -71,7 +71,7 @@ public class PlayerInputEntityControl implements PlayerInputControlObject,Entity
 		if(key==configGetKeymap(config,playerId,Key.ACTION)){
 			if(!entity.isDirectionFree(entity.dir)){
 				OverworldObject target=entity.getObjCollidedDir(entity.dir);
-				entity.interact(target);}
+				entity.interact(target,playerId);}
 		}
 		
 		else if(key==configGetKeymap(config,playerId,Key.SKIP)){

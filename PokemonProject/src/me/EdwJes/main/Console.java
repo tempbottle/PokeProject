@@ -27,7 +27,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	public char commandPrefix='/';
 	private int inputPosition=0;
 	private int MAX_ARGUMENTS=32;
-	public View view;
+	private List<ConsoleOutputText> outputList=new ArrayList<ConsoleOutputText>(); 
 	/*TODO:Output lines in console and limit text to boundaries of the window + black transparent box under console 
 	 * private int outputLines = 0;
 	 * private int outputMaxLines = 6;*/
@@ -62,11 +62,11 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	//TODO: Custom input and output stream classes for server communication in the future
 	@Override public void render(Graphics g,View view){
 		int i=0,lineHeight=g.getFont().getLineHeight();
-		for(ConsoleOutputText text:ConsoleOutputText.list){
+		for(ConsoleOutputText text:outputList){
 			i++;
 			int alpha=255;
 			if(text.fadeOutTick<ConsoleOutputText.fadeOutTimer||isOn){
-				int y=(int)view.viewHeight - lineHeight*2-6 - ((ConsoleOutputText.list.size()-i)*16);
+				int y=(int)view.viewHeight - lineHeight*2-6 - ((outputList.size()-i)*lineHeight);
 				if(!isOn)
 					alpha=255-((int)(((float)text.fadeOutTick/ConsoleOutputText.fadeOutTimer)*255));
 				g.setColor(new Color(255,255,255,alpha));
@@ -74,7 +74,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				g.setColor(Color.white);}
 		}
 		if(isOn){
-			g.setColor(Color.darkGray);
+			g.setColor(new Color(64,64,64,128));
 			g.fillRect(view.getDrawScreenX(0),view.getDrawScreenY(view.viewHeight-lineHeight-4),view.getDrawScreenX(view.viewWidth),view.getDrawScreenY(view.viewHeight));
 			g.setColor(Color.white);
 			g.drawString(inputFieldPrefix + input, view.getDrawScreenX(6), view.getDrawScreenY(view.viewHeight-lineHeight-2));
@@ -95,7 +95,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	}
 	
 	public void outputConsole(String str){
-		new ConsoleOutputText(str);
+		outputList.add(new ConsoleOutputText(str));
 	}
 	
 	public boolean isOn(){
@@ -423,10 +423,11 @@ class ConsoleOutputText extends Updater{
 	public static int fadeOutTimer=1000;
 	public int fadeOutTick=0;
 	public DateFormat format;
-	protected static List<ConsoleOutputText> list = new ArrayList<ConsoleOutputText>();
+	//protected static List<ConsoleOutputText> list = new ArrayList<ConsoleOutputText>();
 	
 	public ConsoleOutputText(String text){
-		list.add(this);
+		super();
+		//list.add(this);
 		this.text=text;
 	}
 	

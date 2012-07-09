@@ -6,8 +6,9 @@ import org.newdawn.slick.Graphics;
 
 public abstract class RenderableObject extends GameObject{
 	protected static List<RenderableObject> list = new ArrayList<RenderableObject>();
-	protected int depth=0,layer=0;
-	public final static int LAYER_GUI=1000,LAYER_OVERWORLD=10,LAYER_BACKGROUND=1,LAYER_OVERWORLD_GROUND=5;
+	public View view=null;
+	public final static int LAYER_GUI=1000,LAYER_NORMAL=10,LAYER_BACKGROUND=-10,LAYER_BELOWNORMAL=-5;
+	protected int depth=0,layer=LAYER_NORMAL;
 	
 	public abstract void render(Graphics g,View view);
 	
@@ -26,5 +27,13 @@ public abstract class RenderableObject extends GameObject{
 	
 	public void setLayer(int layer){
 		this.layer=layer;
+	}
+
+	public static List<RenderableObject> getList() {
+		return list;
+	}
+
+	public static void setList(List<RenderableObject> list) {
+		RenderableObject.list = list;
 	}
 }

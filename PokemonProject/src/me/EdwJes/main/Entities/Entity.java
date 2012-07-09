@@ -120,7 +120,7 @@ public class Entity extends OverworldObject{
 	
 	public Entity(int xTile,int yTile/*,EntitySprite sprite*/){
 		super(xTile,yTile);
-		setLayer(LAYER_OVERWORLD);
+		setLayer(LAYER_NORMAL);
 	}
 
 	/**
@@ -346,12 +346,29 @@ public class Entity extends OverworldObject{
 			dir=Direction.UP;
 	}
 	/**
+	  * Called when being interacted by player
+	  * 
+	  * @param target The Entity object that interacts with this 
+	  */
+	@Override
+	public void onInteracted(Entity target,int playerId){
+		super.onInteracted(target,playerId);
+		onInteracted(target);
+	}
+	/**
 	  * Called when this interacts another entity
 	  * 
 	  * @param target The OverworldObject object that this interacts with 
 	  */
 	public void onInteract(OverworldObject target){}
 	
+	/**
+	  * Called when this interacts another entity
+	  * 
+	  * @param target The OverworldObject object that this interacts with
+	  * @param playerId The playerId from this entity 
+	  */
+	public void onInteract(OverworldObject target,int playerId){}
 	/**
 	  * Called when this begins to move
 	  * 
@@ -464,6 +481,12 @@ public class Entity extends OverworldObject{
 		if(canInteract&&target.canInteracted){
 			onInteract(target);
 			target.onInteracted(this);}
+	}
+	
+	public void interact(OverworldObject target, int playerId){
+		if(canInteract&&target.canInteracted){
+			onInteract(target,playerId);
+			target.onInteracted(this,playerId);}
 	}
 	
 	public boolean isDirectionFree(Direction dir){

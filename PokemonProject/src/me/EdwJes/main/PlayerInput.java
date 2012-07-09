@@ -16,6 +16,7 @@ public class PlayerInput extends Updater{
 	public int playerId=0;
 	public View view;
 	public static Config config;
+	public String playerName="Anon";
 	
 	public PlayerInput(PlayerInputControlObject obj,View view,Config config){
 		this.obj=obj;
@@ -29,6 +30,13 @@ public class PlayerInput extends Updater{
 	public static PlayerInput getPlayerInput(int playerId){
 		for(PlayerInput obj:list)
 			if(obj.playerId==playerId)
+				return obj;
+		return null;
+	}
+	
+	public static PlayerInput getPlayerInput(String playerName){
+		for(PlayerInput obj:list)
+			if(obj.playerName==playerName)
 				return obj;
 		return null;
 	}

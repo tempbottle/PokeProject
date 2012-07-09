@@ -2,12 +2,9 @@ package me.EdwJes.main;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import me.EdwJes.main.fileresourceloader.ImageLoader;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public class Sprite {
@@ -50,15 +47,12 @@ public class Sprite {
 	
 	public static void loadAllEntities(ImageLoader loader){
 		SpriteSheet sprSheet;
-		try{
-			for(Name n:Name.values()){
-				String filePath="entity_"+n.toString()+".png";
-				
-				rawImage.put(n,loader.loadImage(filePath));
-				sprSheet = new SpriteSheet(rawImage.get(n),n.getWidth(),n.getHeight());
-				animatedSpriteEntity.put(n,getAnimatedSpriteEntity(sprSheet));}}
-		catch(SlickException e){
-			e.printStackTrace();}
+		for(Name n:Name.values()){
+			String filePath="entity_"+n.toString()+".png";
+			
+			rawImage.put(n,loader.loadImage(filePath));
+			sprSheet = new SpriteSheet(rawImage.get(n),n.getWidth(),n.getHeight());
+			animatedSpriteEntity.put(n,getAnimatedSpriteEntity(sprSheet));}
 	}
 	
 	public static Animation[] getEntity(Name name){

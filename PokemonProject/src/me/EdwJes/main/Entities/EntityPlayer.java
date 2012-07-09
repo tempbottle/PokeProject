@@ -15,7 +15,7 @@ public class EntityPlayer extends EntityHuman{
 	@Override
 	public void render(Graphics g,View view){
 		super.render(g,view);
-		for(int[] pos:collisionMask.getPoints())
-			g.drawRect((getXTile()+pos[0])*tileWidth-view.getDrawX(),(getYTile()+pos[1])*tileHeight-view.getDrawY(), tileWidth, tileHeight);
+		/*for(int[] pos:collisionMask.getPoints())
+			g.drawRect((getXTile()+pos[0])*tileWidth-view.getDrawX(),(getYTile()+pos[1])*tileHeight-view.getDrawY(), tileWidth, tileHeight);*/
 	}
 }
