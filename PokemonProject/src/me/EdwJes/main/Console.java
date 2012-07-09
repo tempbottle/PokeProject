@@ -126,21 +126,17 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 								try{Double.parseDouble(input[countedArg]);}
 								catch(NumberFormatException e){isWrongType=countedArg;break;}}
 							else if(arg.getType()==Arg.Type.BOOLEAN){
-								switch(input[countedArg]){
-									case"on":
-									case"true":
-									case"1":
-										input[countedArg]="true";
-										break;
-									case"off":
-									case"false":
-									case"0":
-										input[countedArg]="true";
-										break;
-									default:	
-										isWrongType=countedArg;
-										break ARGLOOP;}
-							}
+								
+								if (input[countedArg] == "on" || input[countedArg] == "true" || input[countedArg] == "1"){
+									input[countedArg]="true";
+								}
+								else if (input[countedArg] == "off" || input[countedArg] == "false" || input[countedArg] == "0"){
+									input[countedArg]="true";
+								}
+								else	
+									isWrongType=countedArg;
+									break ARGLOOP;}
+							
 						}
 						if (arg.getFlag()==Arg.Flag.NONE){
 							countedRequiredArg++;}
@@ -251,23 +247,23 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(arg[1])));
 				break;
 			case view:
-				switch(arg[1]){
-					case"align":
-						View.alignViews();
-						break;
-					case"add":
-						new View();
-						View.alignViews();
-						break;
-					case"remove":
-						View.getView(View.countViews()-1).destroy();
-						View.alignViews();
-						break;
-					case"set":
-						break;
-					default:
-						outputConsole("Syntax: view(align|add|remove|set)");
-						break;}
+				if(arg[1] == "align"){
+					View.alignViews();
+				}
+
+				if(arg[1] == "add"){
+					new View();
+					View.alignViews();
+				}
+				else if(arg[1] == "remove"){
+					View.getView(View.countViews()-1).destroy();
+					View.alignViews();
+				}
+				else if(arg[1] == "set"){
+					//TODO Antar att det ska vara något här.
+				}
+				else
+					outputConsole("Syntax: view(align|add|remove|set)");
 				break;
 			default:
 				outputConsole("Undefined Command: "+arg[0]);
