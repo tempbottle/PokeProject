@@ -36,4 +36,13 @@ public abstract class RenderableObject extends GameObject{
 	public static void setList(List<RenderableObject> list) {
 		RenderableObject.list = list;
 	}
+	
+	public static String strWrap(String in,int len) {
+		in=in.trim();
+		if(in.length()<len) return in;
+		if(in.substring(0, len).contains("\n"))
+		return in.substring(0, in.indexOf("\n")).trim() + "\n\n" + strWrap(in.substring(in.indexOf("\n") + 1), len);
+		int place=Math.max(Math.max(in.lastIndexOf(" ",len),in.lastIndexOf("\t",len)),in.lastIndexOf("-",len));
+		return in.substring(0,place).trim()+"\n"+strWrap(in.substring(place),len);
+		}
 }

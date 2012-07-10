@@ -41,6 +41,13 @@ public class PlayerInput extends Updater{
 		return null;
 	}
 	
+	public static PlayerInput getPlayerInput(View view){
+		for(PlayerInput obj:list)
+			if(obj.view==view)
+				return obj;
+		return null;
+	}
+	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
 		obj.handleInput(input,playerId,config);}

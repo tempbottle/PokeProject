@@ -62,6 +62,10 @@ public class View extends Updater{
 	public void destroy(){
 		super.destroy();
 		list.remove(this);
+		for(PlayerInput obj:PlayerInput.list){
+			if(obj.view==this)
+				obj.view=list.get(list.size()-1);
+		}
 	}
 	
 	/**
@@ -135,7 +139,7 @@ public class View extends Updater{
 			view.viewYOffset=(row*values[3])/view.viewYScale;
 			view.viewWidth=(float)values[2]/view.viewXScale;
 			view.viewHeight=(float)values[3]/view.viewYScale;
-			System.out.println(view.viewXOffset+" "+view.viewYOffset+" "+view.viewWidth+" "+view.viewHeight+" ");
+			System.out.println("View Create: x"+view.viewXOffset+", y"+view.viewYOffset+", w"+view.viewWidth+", h"+view.viewHeight);
 		}
 	}
 	

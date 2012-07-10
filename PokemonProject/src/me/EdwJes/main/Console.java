@@ -247,19 +247,15 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(arg[1])));
 				break;
 			case view:
-				if(arg[1] == "align"){
-					View.alignViews();
-				}
-
-				if(arg[1] == "add"){
+				if(arg[1].equals("align")){
+					View.alignViews();}
+				else if(arg[1].equals("add")){
 					new View();
-					View.alignViews();
-				}
-				else if(arg[1] == "remove"){
+					View.alignViews();}
+				else if(arg[1].equals("remove")){
 					View.getView(View.countViews()-1).destroy();
-					View.alignViews();
-				}
-				else if(arg[1] == "set"){
+					View.alignViews();}
+				else if(arg[1].equals("set")){
 					//TODO Antar att det ska vara något här.
 				}
 				else

@@ -1,6 +1,8 @@
 package me.EdwJes.main;
 
 import me.EdwJes.main.config.Config;
+import me.EdwJes.main.config.Config.Key;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
@@ -14,33 +16,46 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 	public Color boxInnerColor;
 	public int textSpeedDivider=4;
 	private int processTextTick=0,processedTextCount=0;
+	private boolean finished=false;
+	private PlayerInput player;
+	private int rows=3;
 	
 	public TextBox(String text,View view){
+		init(text,view,PlayerInput.getPlayerInput(view));
+	}
+	
+	public TextBox(String text,PlayerInput player){
+		init(text,player.view,player);
+	}
+	
+	private void init(String text,View view,PlayerInput player){
 		this.text=text;
-		this.view=view;
 		this.layer=LAYER_GUI;
-		this.boxImg=new TextboxImage(view.textboxImage,7,4,18,4);
-		this.boxInnerColor=new Color(248,248,248);
+		this.boxImg=new TextboxImage(view.textboxImage,7,4,18,4);//TODO: Textbox style to be defined in configuration file, make new class named TextboxStyle and a new yml containing the style information in the textbox resource folder
+		this.boxInnerColor=new Color(248,248,248,176);
+		this.view=view;
+		this.player=player;
+		player.setObj(this);
 	}
 	
 	@Override
 	public void render(Graphics g,View view) {
 		Font font=g.getFont();
-		g.setColor(Color.white);
-		float drawRight=view.viewWidth-boxImg.rightW,drawTop=font.getLineHeight()*3;
+		float drawRight=view.viewWidth-boxImg.rightW,drawTop=font.getLineHeight()*rows;
 		
 		//BACKGROUND
 		for(int ix=boxImg.leftW;ix<drawRight;ix+=boxImg.innerW){
-			g.drawImage(boxImg.topSide,ix,view.getDrawScreenY(view.viewHeight-drawTop-boxImg.borderH));
-			g.drawImage(boxImg.bottomSide,ix,view.getDrawScreenY(view.viewHeight-boxImg.bottomH));}
+			g.drawImage(boxImg.topSide,view.getDrawScreenX(ix),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.borderH));
+			g.drawImage(boxImg.bottomSide,view.getDrawScreenX(ix),view.getDrawScreenY(view.viewHeight-boxImg.bottomH));}
 		for(int iy=(int)(view.viewHeight-drawTop-boxImg.bottomH);iy<view.viewHeight-boxImg.bottomH;iy+=boxImg.innerH){
-			g.drawImage(boxImg.sideLeft,0,iy);
-			g.drawImage(boxImg.sideRight,view.getDrawScreenX(drawRight),iy);}
+			g.drawImage(boxImg.sideLeft,view.getDrawScreenX(0),view.getDrawScreenY(iy));
+			g.drawImage(boxImg.sideRight,view.getDrawScreenX(drawRight),view.getDrawScreenY(iy));}
+		g.setColor(boxInnerColor);
 		g.fillRect(view.getDrawScreenX(boxImg.leftW),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.bottomH),drawRight-boxImg.leftW,drawTop);
+		g.setColor(Color.white);
 		
 		//Text
 		g.drawString(processedText, view.getDrawScreenX(boxImg.leftW),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.bottomH));
-		
 		//TOP LEFT BORDER
 		g.drawImage(boxImg.topLeft,view.getDrawScreenX(0),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.borderH));
 		//BOTTOM LEFT BORDER
@@ -57,19 +72,37 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 	}*/
 
 	@Override
+	public void destroy(){
+		player.setObj(PlayerInput.getPlayerInput(view).objPrevious);
+		super.destroy();
+	}
+	
+	@Override
 	public void update(){
 		super.update();
 		
-		if(processedTextCount<text.length()){
-			if(processTextTick>=textSpeedDivider){
-				processTextTick=0;
-				processedTextCount++;
-				processedText=text.substring(0,processedTextCount);}
-			else
-				processTextTick++;
+		if(!finished){
+			if(processedTextCount<text.length()){
+				if(processTextTick>=textSpeedDivider){
+					processTextTick=0;
+					addProcessedText(1);}
+				else
+					processTextTick++;
+			}
+			else finished=true;
 		}
 	}
 	
+	public void addProcessedText(int i) {
+		processedTextCount=Math.max(Math.min(processedTextCount+i,text.length()),0);
+		processedText=text.substring(0,processedTextCount);
+	}
+	
+	public void setProcessedText(int i) {
+		processedTextCount=Math.max(Math.min(i,text.length()),0);
+		processedText=text.substring(0,processedTextCount);
+	}
+
 	@Override
 	public float getXPos() {
 		return 0;
@@ -97,8 +130,14 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 
 	@Override
 	public void onKeyPressed(int key, char chr, int playerId,Config config) {
-		PlayerInput player=PlayerInput.getPlayerInput(playerId);
-		player.setObj(player.objPrevious);
+		/*PlayerInput player=PlayerInput.getPlayerInput(playerId);
+		player.setObj(player.objPrevious);*/
+		if(key==config.player.get(playerId).keyMap.get(Key.ACTION)){
+			if(finished)
+				destroy();
+			else
+				addProcessedText(2);
+		}
 	}
 
 	@Override
