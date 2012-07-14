@@ -52,9 +52,9 @@ public class Tiles extends RenderableObject{
 		}
 	}
 	
-	public void LOAD_TESTING(ImageLoader loader){
+	public void LOAD_TESTING(){
 		String name="NAMEOFTILESET";
-		rawImage.put(name,loader.loadImage("/tiles/FRLG/ground.png"));
+		rawImage.put(name,ImageLoader.loadImage("/tiles/FRLG/ground.png"));
 		sprSheet.put(name,new SpriteSheet(rawImage.get(name),rawImage.get(name).getWidth(),rawImage.get(name).getHeight()));
 		TESTTILE=sprSheet.get(name).getSubImage(16, 16, 16, 16);
 	}

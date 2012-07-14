@@ -1,0 +1,54 @@
+# The Syntax of sprite Data for PokemonProject
+#
+# *         = Required
+# '         = Partly required, means that the variable is needed if another variable don't exist
+# [ Value ] = Default value when optional
+#
+#*Name:                                          = [ str] The access name for this sprite
+#  *filename:                                    = [ str] The filename for the resource
+#   path: [ /resources/image/ ]                  = [ str] The filepath to the resource
+#   xOffset: [ 0 ]                               = [ int] Sets the horizontal offset for the whole sprite, it will only import a part of the image if this is defined, in pixels
+#   yOffset: [ 0 ]                               = [ int] Sets the vertical offset for the whole sprite, it will only import a part of the image if this is defined, in pixels
+#   spriteSheet:                                 = [void] Defines if this image is a spritesheet or not. 
+#    'imageWidth:       or width/imageXCount     = [ int] Width of the images in the spritesheet in pixels
+#    'imageHeight:       or height/imageYCount   = [ int] Height o the images in the spritesheet in pixels
+#    'imageXCount:       or imageWidth           = [ int] Number of images horizontally in the spritesheet
+#    'imageYCount:       or imageHeight          = [ int] Number of images vertically in the spritesheet
+#     spacing: [ 0 ]                             = [ int] 
+#     imageCount :                               = [ int] 
+#     animation:                                 = [void] 
+#       animationSpeed: [ 100 ]                  = [ int]/[list] 
+#       loop: [ true ]                           = [bool] 
+#       pingpong: [ false ]                      = [bool] 
+#       imagesInGroup: [ false ]                 = [ int]/[bool] 
+#
+
+Brendan:
+  filename: entity_Brendan.png
+  spriteSheet:
+    imageXCount: 3
+    imageYCount: 4
+    imageCount: 12
+    animation:
+      animationSpeed: 100
+      imagesInGroup: true
+
+May:
+  filename: entity_May.png
+  spriteSheet:
+    imageXCount: 3
+    imageYCount: 4
+    imageCount: 12
+    animation:
+      animationSpeed: 100
+      imagesInGroup: true
+
+Lyra:
+  filename: entity_Lyra.png
+  spriteSheet:
+    imageXCount: 3
+    imageYCount: 4
+    imageCount: 12
+    animation:
+      animationSpeed: 100
+      imagesInGroup: true

@@ -24,6 +24,8 @@ public class Entity extends OverworldObject{
 	private Movement stopMove=Movement.NONE;
 	public float walkingSpeed=1,runningSpeed=2;
 	public boolean canMove=true,canInteract=false;
+	private Path path=null;
+
 	/**
 	  * Directions
 	  * 
@@ -506,5 +508,17 @@ public class Entity extends OverworldObject{
 		else if(dir==Direction.UP)y--;
 		else if(dir==Direction.DOWN)y++;
 		return getCollidingObj(x,y);
+	}
+	
+	public boolean havePath(){
+		return path==null?false:true;
+	}
+	
+	public Path getPath(){
+		return path;
+	}
+
+	public void setPath(Path path){
+		this.path=path;
 	}
 }

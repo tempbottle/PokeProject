@@ -1,12 +1,13 @@
 package me.EdwJes.main.Entities;
 
+import java.util.ArrayList;
 import me.EdwJes.main.View;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 
 public class EntityPlayer extends EntityHuman{
 
-	public EntityPlayer(int xTile, int yTile, Animation[] sprite) {
+	public EntityPlayer(int xTile, int yTile, ArrayList<Animation> sprite) {
 		super(xTile, yTile, sprite);
 		setPersistency(true);
 		canInteract=true;

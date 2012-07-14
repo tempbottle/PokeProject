@@ -1,12 +1,11 @@
 package me.EdwJes.main.Entities;
 
+import java.util.ArrayList;
 import me.EdwJes.main.PlayerInput;
-import me.EdwJes.main.TextBox;
-import me.EdwJes.main.View;
 import org.newdawn.slick.Animation;
 
 public class EntityTest extends EntityHuman{
-	public EntityTest(int xTile, int yTile,Animation[] sprite){
+	public EntityTest(int xTile, int yTile,ArrayList<Animation> sprite){
 		super(xTile, yTile, sprite);
 		canInteracted=true;
 	}

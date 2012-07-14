@@ -1,7 +1,7 @@
 package me.EdwJes.main.rooms;
 
-import me.EdwJes.main.Sprite;
 import me.EdwJes.main.Entities.EntityHuman;
+import me.EdwJes.main.resources.Sprite;
 
 public class BattleRoom extends Room {
 
@@ -12,7 +12,7 @@ public class BattleRoom extends Room {
 	@Override public void init(){
 		super.init();
 		System.out.println("Entered Room");
-		new EntityHuman(15,13,Sprite.getEntity(Sprite.Name.Lyra));
+		new EntityHuman(15,13,Sprite.getAnimationGroup("Lyra"));
 	}
 	
 	@Override public void revisit(){

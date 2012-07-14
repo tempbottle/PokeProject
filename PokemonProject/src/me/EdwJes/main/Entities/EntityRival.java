@@ -1,12 +1,13 @@
 package me.EdwJes.main.Entities;
 
+import java.util.ArrayList;
 import me.EdwJes.main.PlayerInput;
 import org.newdawn.slick.Animation;
 
 public class EntityRival extends EntityHuman{
 	int move=4,plannedMoveX=move;
 	
-	public EntityRival(int xTile, int yTile, Animation[] sprite) {
+	public EntityRival(int xTile, int yTile, ArrayList<Animation> sprite) {
 		super(xTile, yTile, sprite);
 		posMoveX(move);
 		canInteracted=true;

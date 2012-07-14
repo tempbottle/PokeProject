@@ -1,9 +1,8 @@
 package me.EdwJes.main.fileresourceloader;
 
 import java.io.File;
-
 import me.EdwJes.main.PokemonProject;
-
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
@@ -13,31 +12,36 @@ import org.newdawn.slick.SlickException;
 //TODO: Import Items: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/items.png
 //TODO: Import Battle GUI: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/hpbars.png
 //TODO: Pokemons: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/pokemonicons.png
-public class ImageLoader {
-	public final String IMAGE_DIR;
+public abstract class ImageLoader {
+	public static String IMAGE_DIR="/resources/images/";
 	public static final int IMAGE_FILTER=Image.FILTER_NEAREST;
-	public static final Image nullImage=new ImageBuffer(32,32).getImage(IMAGE_FILTER);
+	public static final Image nullImage=getNullImage();
+	public static final Animation nullAnimation=new Animation(new Image[]{nullImage},100);
 	
-	public ImageLoader(String dir){
-		IMAGE_DIR = PokemonProject.WORK_DIR + dir;
+	private static Image getNullImage(){
+		ImageBuffer img=new ImageBuffer(32,32);
+		for(int ix=0;ix<32;ix++)
+			for(int iy=0;iy<32;iy++)
+				img.setRGBA(ix, iy, 0, 0, 255, 96);
+		return img.getImage(IMAGE_FILTER);
 	}
 	
-	public boolean fileExists(String filePath){
+	public static boolean fileExists(String filePath){
 		return (new File(filePath)).exists();}
 	
-	public Image loadImage(String filePath){
+	public static Image loadImage(String filePath){
 		Image img;
 		try{
-			img = new Image(IMAGE_DIR + filePath);
-			img.setFilter(IMAGE_FILTER);}
+			img = new Image(PokemonProject.WORK_DIR+IMAGE_DIR + filePath,false,IMAGE_FILTER);}
 		catch(SlickException e){
+			System.out.println("File: \""+PokemonProject.WORK_DIR+IMAGE_DIR + filePath+"\" don't exist");
 			img = nullImage;
 			e.printStackTrace();
 		}
 		return img;
 	}
 	
-	public Image unloadImage(Image img) throws SlickException{
+	public static Image unloadImage(Image img) throws SlickException{
 		img.destroy();
 		return null;
 	}

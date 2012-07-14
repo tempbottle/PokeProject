@@ -40,6 +40,7 @@ public class Alarm extends Updater {
 	}
 	
 	public Alarm loop(){
+		//TODO: Ny Alarm skapas, men den gamla är kvar och ingen destroy() har kallats?
 		return new Alarm(maxTicks, host);
 	}
 

@@ -37,7 +37,7 @@ public class Config{
 	
 	public static class Player{
 		public Map<Key,Integer> keyMap;
-		public String spriteSheet;
+		public String sprite;
 		public InputType inputType;
 		public int inputId;
 		public String defaultName;
@@ -99,7 +99,7 @@ public class Config{
 		_player.keyMap.put(Key.CHAT,   Input.KEY_T);
 		_player.inputId=0;
 		_player.inputType=InputType.KEYBOARD;
-		_player.spriteSheet="entity_Brendan.png";
+		_player.sprite="Brendan";
 		_player.defaultName="Brendan";
 		
 		_player=new Player();
@@ -115,7 +115,7 @@ public class Config{
 		_player.keyMap.put(Key.CHAT,   Input.KEY_INSERT);
 		_player.inputId=0;
 		_player.inputType=InputType.KEYBOARD;
-		_player.spriteSheet="entity_May.png";
+		_player.sprite="May";
 		_player.defaultName="May";	
 	}
 	

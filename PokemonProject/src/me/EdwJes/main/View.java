@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.Image;
 
 import me.EdwJes.main.Entities.Entity;
+import me.EdwJes.main.fileresourceloader.ImageLoader;
 /**
 * View Class
 * 
@@ -49,7 +50,7 @@ public class View extends Updater{
 	
 	public Console cmd;
 	public TextBox textbox=null;
-	public Image textboxImage=PokemonProject.IMAGE_LOADER.loadImage("/textbox/1.png");
+	public Image textboxImage=ImageLoader.loadImage("/textbox/1.png");
 	
 	public View(){
 		list.add(this);

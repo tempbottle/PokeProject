@@ -10,11 +10,10 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import me.EdwJes.main.Entities.EntityHuman;
 import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.Config.Key;
-
+import me.EdwJes.main.resources.Sprite;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -103,7 +102,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	}
 	
 	public void executeCommand(String str){
-		if(str!=""&&!str.matches("([ ]*)")){
+		str=str.trim();
+		if(str!=""){
 			onInput(str);
 			if(str.charAt(0)==commandPrefix){
 				str=str.substring(1);
@@ -241,7 +241,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				outputConsole("Resolution set to "+arg[1]+"x"+arg[2]);
 				break;
 			case human:
-				new EntityHuman(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Sprite.getEntity(Sprite.Name.May));
+				new EntityHuman(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Sprite.getAnimationGroup("Lyra"));
 				break;
 			case room:
 				PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(arg[1])));

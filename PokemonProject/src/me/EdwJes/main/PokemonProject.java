@@ -1,11 +1,13 @@
 package me.EdwJes.main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.FileConfig;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
+import me.EdwJes.main.resources.Sprite;
 import me.EdwJes.main.rooms.*;
 import org.newdawn.slick.*; 
 
@@ -14,7 +16,7 @@ public class PokemonProject extends BasicGame{
 	public static final String TITLE = "Pokemon Project";
 	Keyboard keyboard = new Keyboard();
 	public static final String WORK_DIR = System.getProperty("user.dir");
-	public static ImageLoader IMAGE_LOADER;
+	public static final String RESOURCES_DIR = WORK_DIR+"/resources/";
 	public static AngelCodeFont font;
 	protected static GameContainer container,container2;
 	public static Config config;
@@ -62,10 +64,23 @@ public class PokemonProject extends BasicGame{
 		PokemonProject.container=container;
 		container.setTargetFrameRate(FPS);
 		container.setShowFPS(false);
+		
 		//TODO: Ful font init för test
-		IMAGE_LOADER=new ImageLoader("/resources/images/");
-		Sprite.loadAllEntities(IMAGE_LOADER);
-		font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", IMAGE_LOADER.loadImage("/fonts/hgss.png"));
+		ImageLoader.IMAGE_DIR="/resources/images/";
+		
+		
+
+			//SpriteLoader.testOutput();
+		try{
+			Sprite.load();}
+		catch(IOException e){
+			e.printStackTrace();
+			System.out.println(e.toString());}
+
+		try{
+			font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", ImageLoader.loadImage("/fonts/hgss.png"));}
+		catch(SlickException e1){
+			e1.printStackTrace();}
 		
 		for(int i=0;i<(config.game.views<1?config.getPlayers():config.game.views);i++)
 			new View();
