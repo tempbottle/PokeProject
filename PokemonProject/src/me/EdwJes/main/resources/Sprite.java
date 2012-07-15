@@ -25,7 +25,7 @@ public class Sprite{
 	private static HashMap<String,Animation> animation=new HashMap<String,Animation>();
 	private static HashMap<String,ArrayList<Animation>> animationGroup=new HashMap<String,ArrayList<Animation>>();
 	
-	public static void testOutput() throws IOException{
+	private static void testOutput() throws IOException{
 		DumperOptions options = new DumperOptions();
 		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 		
@@ -237,7 +237,7 @@ public class Sprite{
 		}
 	}
 	
-	public static <K,V> boolean mapContainsKey(Map<K,Object> map,K key,Class<V> VType){
+	private static <K,V> boolean mapContainsKey(Map<K,Object> map,K key,Class<V> VType){
 		return map.containsKey(key)&&VType.isInstance(map.get(key));
 	} 
 	
@@ -287,5 +287,9 @@ public class Sprite{
 	public static HashMap<String,ArrayList<Animation>> listAnimationGroup(){
 			return new HashMap<String,ArrayList<Animation>>(animationGroup);
 	}
+	
+	public static HashMap<String,ArrayList<Image>> listImageGroup(){
+		return new HashMap<String,ArrayList<Image>>(imageGroup);
+}
 	
 }

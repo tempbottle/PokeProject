@@ -1,7 +1,6 @@
 package me.EdwJes.main.fileresourceloader;
 
 import java.io.File;
-import me.EdwJes.main.PokemonProject;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ImageBuffer;
@@ -13,7 +12,7 @@ import org.newdawn.slick.SlickException;
 //TODO: Import Battle GUI: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/hpbars.png
 //TODO: Pokemons: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/pokemonicons.png
 public abstract class ImageLoader {
-	public static String IMAGE_DIR="/resources/images/";
+	public static String IMAGE_DIR="resources/images/";
 	public static final int IMAGE_FILTER=Image.FILTER_NEAREST;
 	public static final Image nullImage=getNullImage();
 	public static final Animation nullAnimation=new Animation(new Image[]{nullImage},100);
@@ -32,9 +31,9 @@ public abstract class ImageLoader {
 	public static Image loadImage(String filePath){
 		Image img;
 		try{
-			img = new Image(PokemonProject.WORK_DIR+IMAGE_DIR + filePath,false,IMAGE_FILTER);}
+			img = new Image(IMAGE_DIR + filePath,false,IMAGE_FILTER);}
 		catch(SlickException e){
-			System.out.println("File: \""+PokemonProject.WORK_DIR+IMAGE_DIR + filePath+"\" don't exist");
+			System.out.println("File: \""+IMAGE_DIR + filePath+"\" don't exist");
 			img = nullImage;
 			e.printStackTrace();
 		}

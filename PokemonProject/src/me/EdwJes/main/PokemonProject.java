@@ -15,8 +15,8 @@ public class PokemonProject extends BasicGame{
 	public static AppGameContainer app;
 	public static final String TITLE = "Pokemon Project";
 	Keyboard keyboard = new Keyboard();
-	public static final String WORK_DIR = System.getProperty("user.dir");
-	public static final String RESOURCES_DIR = WORK_DIR+"/resources/";
+	//public static final String WORK_DIR = System.getProperty("user.dir");
+	public static final String RESOURCES_DIR = "resources/";
 	public static AngelCodeFont font;
 	protected static GameContainer container,container2;
 	public static Config config;
@@ -31,8 +31,9 @@ public class PokemonProject extends BasicGame{
 		super(TITLE);} 
 
 	public static void main(String[] args){
-		config = new FileConfig(WORK_DIR+"/config.yml");
-		if((new File(WORK_DIR+"/config.yml")).exists())
+		
+		config = new FileConfig("config.yml");
+		if((new File("config.yml")).exists())
 			config.loadValues();
 		else{
 			config.loadDefaultValues();
@@ -66,7 +67,7 @@ public class PokemonProject extends BasicGame{
 		container.setShowFPS(false);
 		
 		//TODO: Ful font init för test
-		ImageLoader.IMAGE_DIR="/resources/images/";
+		ImageLoader.IMAGE_DIR="resources/images/";
 		
 		
 
@@ -78,7 +79,7 @@ public class PokemonProject extends BasicGame{
 			System.out.println(e.toString());}
 
 		try{
-			font=new AngelCodeFont(WORK_DIR+"/resources/images/fonts/hgss.fnt", ImageLoader.loadImage("/fonts/hgss.png"));}
+			font=new AngelCodeFont("resources/images/fonts/hgss.fnt", ImageLoader.loadImage("/fonts/hgss.png"));}
 		catch(SlickException e1){
 			e1.printStackTrace();}
 		
