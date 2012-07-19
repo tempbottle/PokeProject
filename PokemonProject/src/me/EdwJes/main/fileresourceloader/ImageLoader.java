@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 //TODO: Import Battle GUI: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/hpbars.png
 //TODO: Pokemons: http://spriters-resource.com/ds/pokeheartgoldsoulsilver/pokemonicons.png
 public abstract class ImageLoader {
+	//TODO: Do not use IMAGE_DIR here
 	public static String IMAGE_DIR="resources/images/";
 	public static final int IMAGE_FILTER=Image.FILTER_NEAREST;
 	public static final Image nullImage=getNullImage();

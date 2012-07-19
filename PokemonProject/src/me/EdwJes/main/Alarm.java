@@ -13,9 +13,8 @@ public class Alarm extends Updater {
 	
 	static List<Alarm> list = new ArrayList<Alarm>();
 	
-	int ticks = 0;
-	int maxTicks;
-	GameObject host;
+	private int ticks = 0,maxTicks,loop=0;
+	private GameObject host;
 	
 	public Alarm(int maxTicks, GameObject host){
 		super();
@@ -24,12 +23,25 @@ public class Alarm extends Updater {
 		this.host = host;
 	}
 	
+	public Alarm(int maxTicks,int loop,GameObject host){
+		super();
+		list.add(this);
+		this.maxTicks = maxTicks;
+		this.host = host;
+		this.loop = loop;
+	}
+	
 	@Override public void update(){
 		if(ticks == maxTicks){
 			host.callAlarm(this);
-			destroy();
+			if(loop<=0)
+				destroy();
+			else{
+				loop--;
+				this.ticks=0;
+			}
 		}
-		if(ticks < maxTicks) ticks++;
+		else if(ticks < maxTicks) ticks++;
 		
 		
 	}
@@ -40,7 +52,6 @@ public class Alarm extends Updater {
 	}
 	
 	public Alarm loop(){
-		//TODO: Ny Alarm skapas, men den gamla är kvar och ingen destroy() har kallats?
 		return new Alarm(maxTicks, host);
 	}
 

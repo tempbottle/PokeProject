@@ -15,10 +15,11 @@ public class PokemonProject extends BasicGame{
 	public static AppGameContainer app;
 	public static final String TITLE = "Pokemon Project";
 	Keyboard keyboard = new Keyboard();
+	Mouse mouse;
 	//public static final String WORK_DIR = System.getProperty("user.dir");
 	public static final String RESOURCES_DIR = "resources/";
 	public static AngelCodeFont font;
-	protected static GameContainer container,container2;
+	protected static GameContainer container;
 	public static Config config;
 	protected static int WINDOW_WIDTH_INIT = 640;
 	protected static int WINDOW_HEIGHT_INIT = 480;
@@ -89,6 +90,10 @@ public class PokemonProject extends BasicGame{
 		
 		roomLoader = new RoomLoader();
 		roomLoader.enterRoom(roomLoader.getCurrentRoom());
+		
+		container.getInput().addKeyListener(keyboard);
+		mouse=new Mouse();
+		container.getInput().addMouseListener(mouse);
 	}
 
 	@Override
@@ -120,7 +125,7 @@ public class PokemonProject extends BasicGame{
 	}
 	
 	private void handleInput(GameContainer container) throws SlickException {
-		container.getInput().addKeyListener(keyboard);
+		//container.getInput().addKeyListener(keyboard);
 	}
 	
 	@Override

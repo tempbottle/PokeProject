@@ -16,10 +16,12 @@ public class GameObject extends Updater{
 	
 	@Override
 	public void update(){
-
+		super.update();
 	}
 	
+	@Override
 	public void destroy(){
+		super.destroy();
 		list.remove(this);
 	}
 	

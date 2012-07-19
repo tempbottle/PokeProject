@@ -1,6 +1,5 @@
 package me.EdwJes.main;
 
-
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 
@@ -17,7 +16,7 @@ public class Keyboard implements KeyListener {
 
 	@Override
 	public void inputStarted() {
-
+		
 	}
 
 	@Override

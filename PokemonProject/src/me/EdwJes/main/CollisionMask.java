@@ -96,16 +96,22 @@ public class CollisionMask {
 		return i+y;}
 	
 	public int getMaxX(){
+		return getWidth()+x;}
+	
+	public int getMaxY(){
+		return getHeight()+y;}
+	
+	public int getWidth(){
 		int i=tiles.get(0)[0];
 		for(int[] point:tiles)
 			i=Math.max(point[0],i);
-		return i+x;}
+		return i+1;}
 	
-	public int getMaxY(){
+	public int getHeight(){
 		int i=tiles.get(0)[1];
 		for(int[] point:tiles)
 			i=Math.max(point[1],i);
-		return i+y;}
+		return i+1;}
 	
 	public List<int[]> getNonTempTiles(){
 		List<int[]> realTiles=new ArrayList<int[]>(tiles);

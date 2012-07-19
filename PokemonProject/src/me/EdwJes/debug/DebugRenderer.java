@@ -11,6 +11,7 @@ import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.PlayerInput;
 import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.RenderableObject;
+import me.EdwJes.main.Updater;
 import me.EdwJes.main.View;
 
 public class DebugRenderer extends RenderableObject{
@@ -27,8 +28,9 @@ public class DebugRenderer extends RenderableObject{
 			PlayerInput player=PlayerInput.getPlayerInput(0);
 			List<String> l = new ArrayList<String>();
 			l.add("FPS: " + PokemonProject.getFPS());
-			l.add("GameObject: " + GameObject.list.size());
-			l.add("RenderableObject: " + RenderableObject.list.size());
+			l.add("Updaters: " + Updater.list.size());
+			l.add("GameObjects: " + GameObject.list.size());
+			l.add("RenderableObjects: " + RenderableObject.list.size());
 			l.add("Player coords: " + player.getObj().getXPos() + "," + player.getObj().getYPos() + " (" + player.getObj().getXTile() + "," + player.getObj().getYTile() + ")");
 			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+player.view.viewWidth+","+player.view.viewHeight+")");
 			l.add("View: " +view.getDrawX()+","+view.getDrawY());
