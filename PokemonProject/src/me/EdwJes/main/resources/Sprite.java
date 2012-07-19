@@ -1,17 +1,14 @@
 package me.EdwJes.main.resources;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
-import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import me.EdwJes.main.PokemonProject;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
@@ -24,41 +21,6 @@ public class Sprite{
 	private static HashMap<String,ArrayList<Image>> imageGroup=new HashMap<String,ArrayList<Image>>();
 	private static HashMap<String,Animation> animation=new HashMap<String,Animation>();
 	private static HashMap<String,ArrayList<Animation>> animationGroup=new HashMap<String,ArrayList<Animation>>();
-	
-	private static void testOutput() throws IOException{
-		DumperOptions options = new DumperOptions();
-		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-		
-		FileOutputStream file=new FileOutputStream(configFilename);
-		Yaml yaml=new Yaml(options);
-		
-		HashMap<String,HashMap<String,Object>> data = new HashMap<String,HashMap<String,Object>>();
-		
-		HashMap<String,Object> subData=new HashMap<String,Object>();
-		subData.put("filename","entity_oldman.png");
-		subData.put("path","/resources/images/");
-		HashMap<String,Object> spriteSheetData=new HashMap<String,Object>();
-		spriteSheetData.put("imageWidth",24);
-		spriteSheetData.put("imageHeight",32);
-		spriteSheetData.put("horizontalCount",3);
-		spriteSheetData.put("verticalCount",3);
-		spriteSheetData.put("spacing",0);
-		spriteSheetData.put("split",3);
-		spriteSheetData.put("imageCount",9);
-		HashMap<String,Object> animationData=new HashMap<String,Object>();
-		List<Integer> animationSpeedData=new ArrayList<Integer>();
-		animationSpeedData.add(0);
-		animationData.put("animationSpeed",animationSpeedData);
-		spriteSheetData.put("animation",animationData);
-		subData.put("spriteSheet",spriteSheetData);
-		subData.put("xOffset",0);
-		subData.put("yOffset",0);
-		
-		data.put("OldMan",subData);
-		
-		file.write(yaml.dump(data).getBytes());
-		file.close();
-	}
 	
 	@SuppressWarnings("unchecked")
 	public static void load() throws IOException{	

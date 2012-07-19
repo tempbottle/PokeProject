@@ -2,7 +2,7 @@ package me.EdwJes.main.Entities;
 
 import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.View;
-
+import me.EdwJes.main.EntityControl.EntityControl;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -16,6 +16,7 @@ import org.newdawn.slick.Graphics;
 * @author Lolirofle
 * @version 1.0
 */
+
 public class Entity extends OverworldObject{
 	private int moveXTile=0,moveYTile=0,movedTiles=0;
 	private DirectionX moveXDir=DirectionX.NONE;
@@ -25,6 +26,7 @@ public class Entity extends OverworldObject{
 	public float walkingSpeed=1,runningSpeed=2;
 	public boolean canMove=true,canInteract=false;
 	private Path path=null;
+	public EntityControl controller=null;
 
 	/**
 	  * Directions
@@ -124,7 +126,7 @@ public class Entity extends OverworldObject{
 		super(xTile,yTile);
 		setLayer(LAYER_NORMAL);
 	}
-
+	
 	/**
 	  * Sets the direction {@link #dir}
 	  * 
@@ -346,6 +348,9 @@ public class Entity extends OverworldObject{
 			dir=Direction.DOWN;
 		else if(target.getYTile()<getYTile())
 			dir=Direction.UP;
+		
+		if(controller!=null)
+			controller.onInteracted(target);	
 	}
 	/**
 	  * Called when being interacted by player
@@ -356,21 +361,29 @@ public class Entity extends OverworldObject{
 	public void onInteracted(Entity target,int playerId){
 		super.onInteracted(target,playerId);
 		onInteracted(target);
+		if(controller!=null)
+			controller.onInteracted(target,playerId);
 	}
 	/**
 	  * Called when this interacts another entity
 	  * 
 	  * @param target The OverworldObject object that this interacts with 
 	  */
-	public void onInteract(OverworldObject target){}
+	public void onInteract(OverworldObject target){
+		if(controller!=null)
+			controller.onInteract(target);
+	}
 	
 	/**
-	  * Called when this interacts another entity
+	  * Called when this interacts another player entity
 	  * 
 	  * @param target The OverworldObject object that this interacts with
 	  * @param playerId The playerId from this entity 
 	  */
-	public void onInteract(OverworldObject target,int playerId){}
+	public void onInteract(OverworldObject target,int playerId){
+		if(controller!=null)
+			controller.onInteract(target,playerId);
+	}
 	/**
 	  * Called when this begins to move
 	  * 
@@ -383,7 +396,11 @@ public class Entity extends OverworldObject{
 		else if(dir==Direction.RIGHT)x++;
 		else if(dir==Direction.UP)y--;
 		else if(dir==Direction.DOWN)y++;
-		collisionMask.addTempPoint(x,y);}
+		collisionMask.addTempPoint(x,y);
+		
+		if(controller!=null)
+			controller.onMoveTile(xTileTo,yTileTo);	
+	}
 	
 	/**
 	  * Called when this have completed it's movement
@@ -394,8 +411,23 @@ public class Entity extends OverworldObject{
 	  */
 	public void onMoveFinished(int xTile,int yTile,int movedTiles){
 		collisionMask.clearTempPoints();
-		collisionMask.setLocation(xTile,yTile);}
+		collisionMask.setLocation(xTile,yTile);
+		
+		if(controller!=null)
+			controller.onMoveFinished(xTile,yTile,movedTiles);	
+	}
 
+	/**
+	  * Called when this have moved a tile
+	  * 
+	  * @param xTile Destination X-Tile
+	  * @param yTile Destination Y-Tile 
+	  */
+	public void onMoveStep(int xTile,int yTile){
+		if(controller!=null)
+			controller.onMoveStep(xTile,yTile);	
+	}
+	
 	/**
 	  * Returns which Movement direction it will stop next time
 	  * 
@@ -441,6 +473,7 @@ public class Entity extends OverworldObject{
 					xTile+=moveXDir.get();
 					movedTiles++;
 					moveXOffset=0;
+					onMoveStep(xTile,yTile);
 					if(stopMove==Movement.ANY||stopMove==Movement.valueOf(dir.get())||!isDirectionFree(dir))
 						stopXMovement();}
 				
@@ -453,6 +486,7 @@ public class Entity extends OverworldObject{
 					yTile+=moveYDir.get();
 					movedTiles++;
 					moveYOffset=0;
+					onMoveStep(xTile,yTile);
 					if(stopMove==Movement.ANY||stopMove==Movement.valueOf(dir.get())||!isDirectionFree(dir))
 						stopYMovement();}
 				

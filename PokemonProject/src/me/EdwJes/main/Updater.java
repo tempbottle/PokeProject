@@ -15,6 +15,12 @@ public abstract class Updater {
 		list.remove(this);
 	}
 	
+	//TODO: Debugging to see which objects that the garbage collector didn't remove
+	@Override
+	public void finalize(){
+		System.out.println("Destroyed object of "+this.getClass().toString());
+	}
+	
 	public void update(){}
 	
 	public void activate(){

@@ -32,10 +32,6 @@ public abstract class RenderableObject extends GameObject{
 	public static List<RenderableObject> getList() {
 		return list;
 	}
-
-	public static void setList(List<RenderableObject> list) {
-		RenderableObject.list = list;
-	}
 	
 	/**
 	 * Performs word wrapping.  Returns the input string with long lines of

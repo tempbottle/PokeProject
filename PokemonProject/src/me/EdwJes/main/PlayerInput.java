@@ -11,17 +11,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
 public class PlayerInput extends Updater{
-	protected PlayerInputControlObject obj,objPrevious;
+	private List<PlayerInputControlObject> objs=new ArrayList<PlayerInputControlObject>();
 	public static List<PlayerInput> list = new ArrayList<PlayerInput>();
 	public int playerId=0;
 	public View view;
 	public static Config config;
-	public String playerName="Anon";
+	public String playerName="???";
 	
 	public PlayerInput(PlayerInputControlObject obj,View view,Config config){
-		this.obj=obj;
+		this.objs.add(obj);
 		this.view=view;
-		this.objPrevious=obj;
 		PlayerInput.config=config;
 		list.add(this);
 		playerId=list.indexOf(this);
@@ -50,7 +49,7 @@ public class PlayerInput extends Updater{
 	
 	public void handleInput(GameContainer container){
 		Input input = container.getInput();
-		obj.handleInput(input,playerId,config);}
+		getObj().handleInput(input,playerId,config);}
 	
 	public static void keyPress(int key,char chr){
 		if(key==PokemonProject.config.game.keyMap.get(GlobalKey.EXIT))
@@ -68,17 +67,21 @@ public class PlayerInput extends Updater{
 			player.onKeyReleased(key,chr);}
 	
 	public void onKeyPressed(int key,char chr){
-		obj.onKeyPressed(key,chr,playerId,config);}
+		getObj().onKeyPressed(key,chr,playerId,config);}
 	
 	public void onKeyReleased(int key,char chr){
-		obj.onKeyReleased(key,chr,playerId,config);}
+		getObj().onKeyReleased(key,chr,playerId,config);}
 		
 	public void setObj(PlayerInputControlObject obj){
-		this.obj=obj;
+		this.objs.add(0,obj);
+	}
+	
+	public void removeObj(PlayerInputControlObject obj){
+		this.objs.remove(obj);
 	}
 	
 	public PlayerInputControlObject getObj(){
-		return obj;
+		return objs.get(0);
 	}
 	
 	@Override

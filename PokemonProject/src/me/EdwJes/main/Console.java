@@ -391,7 +391,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				executeCommand(input);
 				closeConsole();
 				PlayerInput player=PlayerInput.getPlayerInput(playerId);
-				player.setObj(player.objPrevious);}
+				player.removeObj(this);}
 		}
 	//Debug.console.println(key+", "+chr+"="+((int)chr));
 	}

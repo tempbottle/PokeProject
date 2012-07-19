@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Path {
 	private List<int[]> path=new ArrayList<int[]>();
-	private boolean relativePos=false,reverse=false;
+	private boolean reverse=false;
 	private Mode mode=Mode.TURNREVERSE;
 	private int pathPosIndex=0;
 	

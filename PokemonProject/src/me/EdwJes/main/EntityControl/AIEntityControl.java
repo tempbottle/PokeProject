@@ -1,5 +1,9 @@
 package me.EdwJes.main.EntityControl;
 
-public class AIEntityControl  implements EntityControl {
+import me.EdwJes.main.Entities.Entity;
 
+public class AIEntityControl extends EntityControl{
+	public AIEntityControl(Entity entity){
+		super(entity);
+	}
 }

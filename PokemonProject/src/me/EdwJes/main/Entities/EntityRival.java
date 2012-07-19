@@ -12,7 +12,7 @@ public class EntityRival extends EntityHuman{
 		posMoveX(move);
 		canInteracted=true;
 	}
-
+	
 	@Override
 	public void onMoveFinished(int xTile,int yTile,int movedTiles){
 		super.onMoveFinished(xTile,yTile,movedTiles);

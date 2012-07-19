@@ -3,7 +3,9 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 import me.EdwJes.main.Entities.Entity;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
@@ -46,11 +48,14 @@ public class View extends Updater{
 	public float viewXScale=PokemonProject.config.game.scale;
 	public float viewYScale=PokemonProject.config.game.scale;
 	
+	//TODO: Should both the Entity and the View reference each other?
 	public Entity followsObject=null;
 	
 	public Console cmd;
 	public TextBox textbox=null;
 	public Image textboxImage=ImageLoader.loadImage("/textbox/1.png");
+	public BorderImage textboxBorderImage=new BorderImage(textboxImage,7,4,18,4);//TODO: Textbox style to be defined in configuration file, make new class named TextboxStyle and a new yml containing the style information in the textbox resource folder
+	public Color textboxInnerColor=new Color(248,248,248,176);
 	
 	public View(){
 		list.add(this);
@@ -63,6 +68,9 @@ public class View extends Updater{
 	public void destroy(){
 		super.destroy();
 		list.remove(this);
+		try{textboxImage.destroy();}
+		catch(SlickException e){e.printStackTrace();}
+		textboxBorderImage.destroy();
 		for(PlayerInput obj:PlayerInput.list){
 			if(obj.view==this)
 				obj.view=list.get(list.size()-1);
@@ -78,6 +86,23 @@ public class View extends Updater{
 		for(View view:list)
 			if(view.viewId==id)
 				return view;
+		return null;
+	}
+	
+	/**
+	  * Returns view by coordinates in the window
+	  * @param windowX Horizontal coordinate
+	  * @param windowY Vertical coordinate
+	  * @return View object if id exists, else null
+	  */
+	public static View getView(int windowX,int windowY){
+		for(View view:list){
+			if(windowX>=view.viewXOffset*view.viewXScale
+			&& windowX<(view.viewXOffset+view.viewWidth)*view.viewXScale
+			&& windowY>=view.viewYOffset*view.viewYScale
+			&& windowY<(view.viewYOffset+view.viewHeight)*view.viewYScale)
+				return view;
+		}
 		return null;
 	}
 	
@@ -247,7 +272,7 @@ public class View extends Updater{
 	public void createTextbox(String string) {
 		if(haveTextbox())
 			removeTextbox();
-		textbox=new TextBox(string,this);
+		textbox=new TextBox(string,textboxBorderImage,textboxInnerColor,this);
 	}
 	
 	public void removeTextbox() {
