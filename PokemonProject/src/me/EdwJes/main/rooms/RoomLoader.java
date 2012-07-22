@@ -49,10 +49,10 @@ public class RoomLoader {
 	}
 	
 	public void unloadRoom(Room rm){//TODO: Fix unload room
-		/*for(GameObject obj:GameObject.list)
+		for(GameObject obj:GameObject.list)
 			if(obj.getRoom()==rm&&!obj.isPersistent()){
 				obj.destroy();}
-		rm.initiated=false;*/
+		rm.initiated=false;
 	}
 
 }

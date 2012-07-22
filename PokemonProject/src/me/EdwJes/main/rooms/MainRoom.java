@@ -1,10 +1,10 @@
 package me.EdwJes.main.rooms;
 
-import me.EdwJes.main.Entities.EntityHuman;
-import me.EdwJes.main.Entities.EntityRival;
-import me.EdwJes.main.Entities.EntityTest;
+import me.EdwJes.main.overworld.entities.EntityHuman;
+import me.EdwJes.main.overworld.entities.EntityRival;
+import me.EdwJes.main.overworld.entities.EntityTest;
+import me.EdwJes.main.overworld.tiles.Tiles;
 import me.EdwJes.main.resources.Sprite;
-import me.EdwJes.main.tiles.Tiles;
 
 public class MainRoom extends Room{
 

@@ -11,7 +11,7 @@ public class GameObject extends Updater{
 	
 	public GameObject(){
 		list.add(this);
-		homeRoom = PokemonProject.roomLoader.getCurrentRoom();
+		homeRoom = PokemonGame.roomLoader.getCurrentRoom();
 	}
 	
 	@Override
@@ -41,8 +41,6 @@ public class GameObject extends Updater{
 	public void setPersistency(boolean persistent) {
 		this.persistent = persistent;
 	}
-	
-	public void callAlarm(Alarm alarm){}
 	
 	public static List<GameObject> getObjectInRoom(Room room){
 		List<GameObject> _list=new ArrayList<GameObject>();

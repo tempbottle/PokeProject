@@ -3,12 +3,14 @@ package me.EdwJes.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.EdwJes.Main;
 import me.EdwJes.debug.Debug;
 import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.Config.GlobalKey;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 public class PlayerInput extends Updater{
 	private List<PlayerInputControlObject> objs=new ArrayList<PlayerInputControlObject>();
@@ -16,7 +18,6 @@ public class PlayerInput extends Updater{
 	public int playerId=0;
 	public View view;
 	public static Config config;
-	public String playerName="???";
 	
 	public PlayerInput(PlayerInputControlObject obj,View view,Config config){
 		this.objs.add(obj);
@@ -33,12 +34,12 @@ public class PlayerInput extends Updater{
 		return null;
 	}
 	
-	public static PlayerInput getPlayerInput(String playerName){
+	/*public static PlayerInput getPlayerInput(String playerName){
 		for(PlayerInput obj:list)
 			if(obj.playerName==playerName)
 				return obj;
 		return null;
-	}
+	}*/
 	
 	public static PlayerInput getPlayerInput(View view){
 		for(PlayerInput obj:list)
@@ -52,11 +53,27 @@ public class PlayerInput extends Updater{
 		getObj().handleInput(input,playerId,config);}
 	
 	public static void keyPress(int key,char chr){
-		if(key==PokemonProject.config.game.keyMap.get(GlobalKey.EXIT))
-			PokemonProject.container.exit();
+		if(key==Main.getConfig().game.keyMap.get(GlobalKey.EXIT))
+			Main.getContainer().exit();
 		
-		else if(key==PokemonProject.config.game.keyMap.get(GlobalKey.DEBUGRENDERING)){
+		else if(key==Main.getConfig().game.keyMap.get(GlobalKey.DEBUGRENDERING)){
 			Debug.renderDebug=!Debug.renderDebug;
+		}
+		
+		else if(key==Main.getConfig().game.keyMap.get(GlobalKey.FULLSCREEN)){
+			try{
+				boolean fullscreen=Main.getContainer().isFullscreen();
+				int width,height;
+				if(fullscreen){
+					width=Main.getConfig().game.windowWidth;
+					height=Main.getConfig().game.windowHeight;}
+				else{
+					width=Main.getContainer().getScreenWidth();
+					height=Main.getContainer().getScreenHeight();}
+				
+				PokemonGame.setDisplayMode(width,height,!fullscreen);}
+			catch(SlickException e){
+				e.printStackTrace();}
 		}
 		
 		for(PlayerInput player:list)
@@ -74,10 +91,20 @@ public class PlayerInput extends Updater{
 		
 	public void setObj(PlayerInputControlObject obj){
 		this.objs.add(0,obj);
+		
+		if(this.objs.get(0).isKeyRepeat())
+			Main.getContainer().getInput().enableKeyRepeat();
+		else
+			Main.getContainer().getInput().disableKeyRepeat();
 	}
 	
 	public void removeObj(PlayerInputControlObject obj){
 		this.objs.remove(obj);
+		
+		if(this.objs.get(0).isKeyRepeat())
+			Main.getContainer().getInput().enableKeyRepeat();
+		else
+			Main.getContainer().getInput().disableKeyRepeat();
 	}
 	
 	public PlayerInputControlObject getObj(){
@@ -87,5 +114,5 @@ public class PlayerInput extends Updater{
 	@Override
 	public void update(){
 		super.update();
-		handleInput(PokemonProject.getContainer());}
+		handleInput(Main.getContainer());}
 }

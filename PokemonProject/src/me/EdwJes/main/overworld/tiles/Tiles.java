@@ -1,4 +1,4 @@
-package me.EdwJes.main.tiles;
+package me.EdwJes.main.overworld.tiles;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,10 +10,11 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-import me.EdwJes.main.OverworldObject;
+import me.EdwJes.main.PokemonGame;
 import me.EdwJes.main.RenderableObject;
 import me.EdwJes.main.View;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
+import me.EdwJes.main.overworld.OverworldObject;
 
 public class Tiles extends RenderableObject{
 	
@@ -48,13 +49,13 @@ public class Tiles extends RenderableObject{
 		for(Tile tile:getTiles()){
 			for(int ix=0;ix<tile.w;ix++)
 				for(int iy=0;iy<tile.h;iy++)
-					g.drawImage(tile.tileImage, (tile.x+ix)*OverworldObject.tileWidth-view.getDrawX(), (tile.y+iy)*OverworldObject.tileHeight-view.getDrawY());
+					g.drawImage(tile.tileImage, (tile.x+ix)*OverworldObject.tileWidth, (tile.y+iy)*OverworldObject.tileHeight);
 		}
 	}
 	
 	public void LOAD_TESTING(){
 		String name="NAMEOFTILESET";
-		rawImage.put(name,ImageLoader.loadImage("/tiles/FRLG/ground.png"));
+		rawImage.put(name,ImageLoader.loadImage(PokemonGame.IMAGES_DIR+"/tiles/FRLG/ground.png"));
 		sprSheet.put(name,new SpriteSheet(rawImage.get(name),rawImage.get(name).getWidth(),rawImage.get(name).getHeight()));
 		TESTTILE=sprSheet.get(name).getSubImage(16, 16, 16, 16);
 	}
@@ -72,21 +73,4 @@ public class Tiles extends RenderableObject{
 	public void tileRemove(Tile tile){
 		tile.tileImage=null;
 		list.remove(tile);}
-}
-
-class Tile {
-	int x,y,w=0,h=0,depth=0;
-	Image tileImage;
-	
-	public Tile(Image img,int x,int y){
-		this.tileImage=img;
-		this.x=x;
-		this.y=y;}
-	
-	public Tile(Image img,int x,int y,int w,int h){
-		this.tileImage=img;
-		this.x=x;
-		this.y=y;
-		this.w=w;
-		this.h=h;}
 }

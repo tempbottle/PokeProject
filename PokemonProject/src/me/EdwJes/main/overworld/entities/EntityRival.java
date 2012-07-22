@@ -1,7 +1,9 @@
-package me.EdwJes.main.Entities;
+package me.EdwJes.main.overworld.entities;
 
 import java.util.ArrayList;
 import me.EdwJes.main.PlayerInput;
+import me.EdwJes.main.Textbox;
+import me.EdwJes.main.View;
 import org.newdawn.slick.Animation;
 
 public class EntityRival extends EntityHuman{
@@ -34,6 +36,7 @@ public class EntityRival extends EntityHuman{
 	@Override
 	public void onInteracted(Entity interactor,int playerId){
 		super.onInteracted(interactor);
-		PlayerInput.getPlayerInput(playerId).view.createTextbox("I'm apparently your rival...");
+		View playerView=PlayerInput.getPlayerInput(playerId).view;
+		playerView.setTextbox(new Textbox("I'm apparently your rival...",playerView));
 	}
 }

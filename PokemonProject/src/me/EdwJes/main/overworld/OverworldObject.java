@@ -1,8 +1,10 @@
-package me.EdwJes.main;
+package me.EdwJes.main.overworld;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.EdwJes.main.Entities.Entity;
+import me.EdwJes.main.RenderableObject;
+import me.EdwJes.main.View;
+import me.EdwJes.main.overworld.entities.Entity;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -34,7 +36,7 @@ public class OverworldObject extends RenderableObject{
 	@Override
 	public void render(Graphics g,View view) {
 		if(imageSpr!=null)
-			g.drawImage(imageSpr, getXPos()-view.getDrawX(), getYPos()-view.getDrawY());
+			g.drawImage(imageSpr, getXPos(), getYPos());
 		/*g.setColor(Color.red);
 		g.drawRect((collisionMask.getMinX())*tileWidth,(collisionMask.getMinY())*tileHeight,(collisionMask.getMaxX()-collisionMask.getMinX()+1)*tileWidth,(collisionMask.getMaxY()-collisionMask.getMinY()+1)*tileHeight);
 		g.setColor(Color.white);*/

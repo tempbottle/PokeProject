@@ -14,16 +14,16 @@ public class Alarm extends Updater {
 	static List<Alarm> list = new ArrayList<Alarm>();
 	
 	private int ticks = 0,maxTicks,loop=0;
-	private GameObject host;
+	private Updater host;
 	
-	public Alarm(int maxTicks, GameObject host){
+	public Alarm(int maxTicks, Updater host){
 		super();
 		list.add(this);
 		this.maxTicks = maxTicks;
 		this.host = host;
 	}
 	
-	public Alarm(int maxTicks,int loop,GameObject host){
+	public Alarm(int maxTicks,int loop,Updater host){
 		super();
 		list.add(this);
 		this.maxTicks = maxTicks;

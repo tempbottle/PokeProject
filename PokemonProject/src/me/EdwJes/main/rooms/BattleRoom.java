@@ -1,6 +1,6 @@
 package me.EdwJes.main.rooms;
 
-import me.EdwJes.main.Entities.EntityHuman;
+import me.EdwJes.main.overworld.entities.EntityHuman;
 import me.EdwJes.main.resources.Sprite;
 
 public class BattleRoom extends Room {

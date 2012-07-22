@@ -1,7 +1,7 @@
-package me.EdwJes.main.EntityControl;
+package me.EdwJes.main.overworld.entitycontrol;
 
-import me.EdwJes.main.OverworldObject;
-import me.EdwJes.main.Entities.Entity;
+import me.EdwJes.main.overworld.OverworldObject;
+import me.EdwJes.main.overworld.entities.Entity;
 
 public abstract class EntityControl {
 	Entity entity=null;

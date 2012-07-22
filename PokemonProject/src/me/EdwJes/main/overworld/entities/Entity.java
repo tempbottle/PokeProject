@@ -1,8 +1,8 @@
-package me.EdwJes.main.Entities;
+package me.EdwJes.main.overworld.entities;
 
-import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.View;
-import me.EdwJes.main.EntityControl.EntityControl;
+import me.EdwJes.main.overworld.OverworldObject;
+import me.EdwJes.main.overworld.entitycontrol.EntityControl;
 import org.newdawn.slick.Graphics;
 
 /**

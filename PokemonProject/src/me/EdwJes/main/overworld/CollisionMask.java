@@ -1,4 +1,4 @@
-package me.EdwJes.main;
+package me.EdwJes.main.overworld;
 
 import java.util.ArrayList;
 import java.util.List;

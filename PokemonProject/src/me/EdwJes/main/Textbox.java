@@ -6,11 +6,9 @@ import me.EdwJes.main.config.Config.Key;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 
-public class TextBox extends RenderableObject implements PlayerInputControlObject{
+public class Textbox extends RenderableObject implements PlayerInputControlObject{
 	private String text,processedText="";
 	public BorderImage boxImg;
 	public Color boxInnerColor;
@@ -20,19 +18,19 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 	private PlayerInput player;
 	private int rows=3;
 	
-	public TextBox(String text,BorderImage boxImg,Color boxInnerCol,View view){
-		init(text,boxImg,boxInnerCol,view,PlayerInput.getPlayerInput(view));
+	public Textbox(String text,View view){
+		init(text,view,PlayerInput.getPlayerInput(view));
 	}
 	
-	public TextBox(String text,BorderImage boxImg,Color boxInnerCol,PlayerInput player){
-		init(text,boxImg,boxInnerCol,player.view,player);
+	public Textbox(String text,PlayerInput player){
+		init(text,player.view,player);
 	}
 	
-	private void init(String text,BorderImage boxImg,Color boxInnerCol,View view,PlayerInput player){
+	private void init(String text,View view,PlayerInput player){
 		this.text=text;
 		this.layer=LAYER_GUI;
-		this.boxImg=boxImg;
-		this.boxInnerColor=boxInnerCol;
+		this.boxImg=view.textboxBorderImage;
+		this.boxInnerColor=view.textboxInnerColor;
 		this.view=view;
 		this.player=player;
 		player.setObj(this);
@@ -45,25 +43,28 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 		
 		//BACKGROUND
 		for(int ix=boxImg.leftW;ix<drawRight;ix+=boxImg.innerW){
-			g.drawImage(boxImg.topSide,view.getDrawScreenX(ix),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.borderH));
-			g.drawImage(boxImg.bottomSide,view.getDrawScreenX(ix),view.getDrawScreenY(view.viewHeight-boxImg.bottomH));}
+			g.drawImage(boxImg.topSide,ix,view.viewHeight-drawTop-boxImg.borderH);
+			g.drawImage(boxImg.bottomSide,ix,view.viewHeight-boxImg.bottomH);}
 		for(int iy=(int)(view.viewHeight-drawTop-boxImg.bottomH);iy<view.viewHeight-boxImg.bottomH;iy+=boxImg.innerH){
-			g.drawImage(boxImg.sideLeft,view.getDrawScreenX(0),view.getDrawScreenY(iy));
-			g.drawImage(boxImg.sideRight,view.getDrawScreenX(drawRight),view.getDrawScreenY(iy));}
+			g.drawImage(boxImg.sideLeft,0,iy);
+			g.drawImage(boxImg.sideRight,drawRight,iy);}
 		g.setColor(boxInnerColor);
-		g.fillRect(view.getDrawScreenX(boxImg.leftW),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.bottomH),drawRight-boxImg.leftW,drawTop);
-		g.setColor(Color.white);
+		g.fillRect(boxImg.leftW,view.viewHeight-drawTop-boxImg.bottomH,drawRight-boxImg.leftW,drawTop);
 		
 		//Text
-		g.drawString(processedText, view.getDrawScreenX(boxImg.leftW),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.bottomH));
+		g.setColor(new Color(80,80,88,128));
+		g.drawString(processedText, boxImg.leftW+1,view.viewHeight-drawTop-boxImg.bottomH+1);
+		g.setColor(new Color(80,80,88,255));
+		g.drawString(processedText, boxImg.leftW,view.viewHeight-drawTop-boxImg.bottomH);
+		g.setColor(Color.white);
 		//TOP LEFT BORDER
-		g.drawImage(boxImg.topLeft,view.getDrawScreenX(0),view.getDrawScreenY(view.viewHeight-drawTop-boxImg.borderH));
+		g.drawImage(boxImg.topLeft,0,view.viewHeight-drawTop-boxImg.borderH);
 		//BOTTOM LEFT BORDER
-		g.drawImage(boxImg.bottomLeft, view.getDrawScreenX(0), view.getDrawScreenY(view.viewHeight-boxImg.bottomH));
+		g.drawImage(boxImg.bottomLeft, 0, view.viewHeight-boxImg.bottomH);
 		//TOP RIGHT BORDER
-		g.drawImage(boxImg.topRight, view.getDrawScreenX(drawRight), view.getDrawScreenY(view.viewHeight-drawTop-boxImg.borderH));
+		g.drawImage(boxImg.topRight, drawRight, view.viewHeight-drawTop-boxImg.borderH);
 		//BOTTOM RIGHT BORDER
-		g.drawImage(boxImg.bottomRight, view.getDrawScreenX(drawRight), view.getDrawScreenY(view.viewHeight-boxImg.bottomH));
+		g.drawImage(boxImg.bottomRight, drawRight, view.viewHeight-boxImg.bottomH);
 	}
 
 /*	@Override
@@ -133,8 +134,9 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 		/*PlayerInput player=PlayerInput.getPlayerInput(playerId);
 		player.setObj(player.objPrevious);*/
 		if(key==config.player.get(playerId).keyMap.get(Key.ACTION)){
-			if(finished)
-				destroy();
+			if(finished){
+				onFinished();
+				destroy();}
 			else
 				currentTextSpd=textSpdFastDivider;
 		}
@@ -146,4 +148,11 @@ public class TextBox extends RenderableObject implements PlayerInputControlObjec
 			if(currentTextSpd==textSpdFastDivider)
 				currentTextSpd=textSpdNormalDivider;}
 	}
+
+	@Override
+	public boolean isKeyRepeat(){
+		return false;
+	}
+	
+	public void onFinished(){}
 }

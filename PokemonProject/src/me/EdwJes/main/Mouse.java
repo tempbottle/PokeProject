@@ -1,17 +1,18 @@
 package me.EdwJes.main;
 
+import me.EdwJes.main.overworld.OverworldObject;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 
-public class Mouse extends RenderableObject implements MouseListener {
+public class Mouse extends RenderableWindowObject implements MouseListener {
 	OverworldObject objSelected=null;
 	int objSelectMouseX=-1,objSelectMouseY=-1,mousePosX=0,mousePosY=0;
 	final static int BUTTON_LEFT=0,BUTTON_RIGHT=1,BUTTON_MIDDLE=2;
 	
 	public Mouse(){
-		setLayer(LAYER_GUI);
+		
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class Mouse extends RenderableObject implements MouseListener {
 				else
 				{
 					View mouseInView=View.getView(x,y);
-					OverworldObject obj=OverworldObject.getObjInPos((int)Math.floor((x/mouseInView.viewXScale+mouseInView.getDrawX())/16),(int)Math.floor((y/mouseInView.viewYScale+mouseInView.getDrawY())/16));
+					OverworldObject obj=OverworldObject.getObjInPos((int)(Math.floor((x/mouseInView.viewXScale+mouseInView.getDrawX()-mouseInView.viewXOffset)/OverworldObject.tileWidth)),(int)(Math.floor((y/mouseInView.viewYScale+mouseInView.getDrawY()-mouseInView.viewYOffset)/OverworldObject.tileHeight)));
 					if(obj!=null){
 						objSelected=obj;
 						objSelectMouseX=x;
@@ -65,7 +66,7 @@ public class Mouse extends RenderableObject implements MouseListener {
 				
 			case BUTTON_RIGHT:
 				View mouseInView=View.getView(x,y);
-				OverworldObject obj=OverworldObject.getObjInPos((int)Math.floor((x/mouseInView.viewXScale+mouseInView.getDrawX())/16),(int)Math.floor((y/mouseInView.viewYScale+mouseInView.getDrawY())/16));
+				OverworldObject obj=OverworldObject.getObjInPos((int)(Math.floor((x/mouseInView.viewXScale+mouseInView.getDrawX()-mouseInView.viewXOffset)/OverworldObject.tileWidth)),(int)(Math.floor((y/mouseInView.viewYScale+mouseInView.getDrawY()-mouseInView.viewYOffset)/OverworldObject.tileHeight)));
 				if(obj!=null){
 					obj.destroy();
 				}
@@ -86,8 +87,8 @@ public class Mouse extends RenderableObject implements MouseListener {
 
 	public void objMove(int x,int y){
 		View mouseInView=View.getView(x,y);
-		objSelected.posSetX((int)Math.floor((x/mouseInView.viewXScale+mouseInView.getDrawX())/16));
-		objSelected.posSetY((int)Math.floor((y/mouseInView.viewYScale+mouseInView.getDrawY())/16));
+		objSelected.posSetX((int)(Math.floor((x/mouseInView.viewXScale+mouseInView.getDrawX()-mouseInView.viewXOffset)/OverworldObject.tileWidth)));
+		objSelected.posSetY((int)(Math.floor((y/mouseInView.viewYScale+mouseInView.getDrawY()-mouseInView.viewYOffset)/OverworldObject.tileHeight)));
 		objSelected=null;
 		objSelectMouseX=-1;
 		objSelectMouseY=-1;
@@ -95,26 +96,30 @@ public class Mouse extends RenderableObject implements MouseListener {
 	
 	@Override
 	public void mouseMoved(int oldx,int oldy,int newx,int newy){
-		mousePosX=newx;
-		mousePosY=newy;
+		if(objSelected!=null){
+			mousePosX=newx;
+			mousePosY=newy;}
 	}
 
 	@Override
 	public void mouseDragged(int oldx,int oldy,int newx,int newy){
-		mousePosX=newx;
-		mousePosY=newy;
+		if(objSelected!=null){
+			mousePosX=newx;
+			mousePosY=newy;}
 	}
 
 	@Override
-	public void render(Graphics g,View view){
+	public void render(Graphics g){
 		if(objSelected!=null){
+			View mouseInView=View.getView(mousePosX,mousePosY);
+			float tileW=OverworldObject.tileWidth*mouseInView.viewXScale,tileH=OverworldObject.tileHeight*mouseInView.viewYScale;
 			g.setColor(Color.yellow);
-			g.drawRect(objSelected.getXPos()-view.getDrawX(),objSelected.getYPos()-view.getDrawY(),objSelected.collisionMask.getWidth()*OverworldObject.tileWidth,objSelected.collisionMask.getHeight()*OverworldObject.tileHeight);
+			g.drawRect((objSelected.getXPos()-mouseInView.getDrawX())*mouseInView.viewXScale,(objSelected.getYPos()-mouseInView.getDrawY())*mouseInView.viewYScale,objSelected.collisionMask.getWidth()*OverworldObject.tileWidth*mouseInView.viewXScale,objSelected.collisionMask.getHeight()*OverworldObject.tileHeight*mouseInView.viewYScale);
 			g.setColor(new Color(255,128,0,160));
-			g.drawRect((int)Math.floor(mousePosX/(OverworldObject.tileWidth*view.viewXScale))*OverworldObject.tileWidth
-					  ,(int)(Math.floor(mousePosY/(OverworldObject.tileHeight*view.viewYScale))*OverworldObject.tileHeight)
-					  ,OverworldObject.tileWidth
-					  ,OverworldObject.tileHeight);
+			g.drawRect((int)(Math.floor((mousePosX+((mouseInView.getDrawX()*mouseInView.viewXScale)%tileW))/tileW)*tileW)-((mouseInView.getDrawX()*mouseInView.viewXScale)%tileW)
+					  ,(int)(Math.floor((mousePosY+((mouseInView.getDrawY()*mouseInView.viewYScale)%tileH))/tileH)*tileH)-((mouseInView.getDrawY()*mouseInView.viewYScale)%tileH)
+					  ,tileW
+					  ,tileH);
 			g.setColor(Color.white);
 		}
 	}

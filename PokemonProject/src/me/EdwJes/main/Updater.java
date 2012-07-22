@@ -38,4 +38,6 @@ public abstract class Updater {
 	public void switchActivate(){
 		activated = !activated;
 	}
+	
+	public void callAlarm(Alarm alarm){}
 }

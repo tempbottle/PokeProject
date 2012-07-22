@@ -1,6 +1,6 @@
-package me.EdwJes.main.EntityControl;
+package me.EdwJes.main.overworld.entitycontrol;
 
-import me.EdwJes.main.Entities.Entity;
+import me.EdwJes.main.overworld.entities.Entity;
 
 public class AIEntityControl extends EntityControl{
 	public AIEntityControl(Entity entity){

@@ -1,6 +1,9 @@
-package me.EdwJes.main;
+package me.EdwJes.main.pokemon;
 
-public class Pokemon{
+import java.util.ArrayList;
+import java.util.List;
+
+public class PokemonEntity{
 /*TODO: Calculation of stats and damage
 /*	http://www.smogon.com/dp/articles/stats
  *  http://bulbapedia.bulbagarden.net/wiki/Stats
@@ -14,5 +17,25 @@ public class Pokemon{
  *  
  *  http://bulbapedia.bulbagarden.net/wiki/List_of_moves_that_cause_flinching
  *  http://bulbapedia.bulbagarden.net/wiki/List_of_moves
+ *  
+ *  http://www.dragonflycave.com/deoxyseffort.aspx
  */
+	
+//TODO: Load everything (Pokemons, types, attacks...) from data files e.g. YML configs into a HashMap or something similiar
+	public static enum Gender{
+		MALE,
+		FEMALE,
+		GENDERLESS;
+	}
+	
+	private static final int MAX_MOVES=4;
+	private List<Move> moves=new ArrayList<Move>(MAX_MOVES);
+	private Pokemon pokemon;
+	private Gender gender;
+	private Ability ability,hiddenAbility;
+	private int HP,attack,defense,speed,spAttack,spDefense;
+	
+	public PokemonEntity(Pokemon pokemon){
+		
+	}
 }

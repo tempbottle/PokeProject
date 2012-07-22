@@ -40,4 +40,9 @@ public class PlayerInputBattleControl implements PlayerInputControlObject{
 	public void onKeyReleased(int key, char chr, int playerId,Config config) {
 
 	}
+
+	@Override
+	public boolean isKeyRepeat(){
+		return false;
+	}
 }

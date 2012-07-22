@@ -49,6 +49,8 @@ public class Config{
 		public boolean debugMode;
 		public boolean sound;
 		public boolean music;
+		public boolean vsync;
+		public boolean renderUnfocused;
 		public int windowWidth;
 		public int windowHeight;
 		public boolean fullscreen;
@@ -77,6 +79,8 @@ public class Config{
 		game.debugMode=false;
 		game.sound=true;
 		game.music=true;
+		game.vsync=false;
+		game.renderUnfocused=false;
 		game.players=1;
 		game.views=-1;
 		game.resourceFolder="/resources/";

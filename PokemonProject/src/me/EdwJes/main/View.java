@@ -7,8 +7,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import me.EdwJes.main.Entities.Entity;
+import me.EdwJes.Main;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
+import me.EdwJes.main.overworld.entities.Entity;
 /**
 * View Class
 * 
@@ -43,17 +44,17 @@ public class View extends Updater{
 	public float viewXOffset=0;
 	public float viewYOffset=0;
 	
-	public float viewWidth=320;
-	public float viewHeight=240;
-	public float viewXScale=PokemonProject.config.game.scale;
-	public float viewYScale=PokemonProject.config.game.scale;
+	public float viewWidth=Main.getContainer().getWidth();
+	public float viewHeight=Main.getContainer().getHeight();
+	public float viewXScale=Main.getConfig().game.scale;
+	public float viewYScale=Main.getConfig().game.scale;
 	
 	//TODO: Should both the Entity and the View reference each other?
 	public Entity followsObject=null;
 	
 	public Console cmd;
-	public TextBox textbox=null;
-	public Image textboxImage=ImageLoader.loadImage("/textbox/1.png");
+	public Textbox textbox=null;
+	public Image textboxImage=ImageLoader.loadImage(PokemonGame.IMAGES_DIR+"/textbox/1.png");
 	public BorderImage textboxBorderImage=new BorderImage(textboxImage,7,4,18,4);//TODO: Textbox style to be defined in configuration file, make new class named TextboxStyle and a new yml containing the style information in the textbox resource folder
 	public Color textboxInnerColor=new Color(248,248,248,176);
 	
@@ -150,7 +151,7 @@ public class View extends Updater{
 	  * <p>An automatic version of:</p><p>{@link #alignViews(viewCount,windowWidth,windowHeight)}</p>It uses parameters from the static variables  
 	  */
 	public static void alignViews(){
-		int[] values=alignViews(countViews(),PokemonProject.app.getWidth(),PokemonProject.app.getHeight());
+		int[] values=alignViews(countViews(),Main.getContainer().getWidth(),Main.getContainer().getHeight());
 		
 		/*for(int i=1;i<20;i++){
 			int[] str=alignViews(i,PokemonProject.app.getWidth(),PokemonProject.app.getHeight());
@@ -179,16 +180,16 @@ public class View extends Updater{
 		viewYOffset*=viewYScale/yscale;
 		/*viewWidth*=viewXScale/xscale;
 		viewHeight*=viewYScale/yscale;*/
-		viewXScale=xscale*((float)PokemonProject.WINDOW_WIDTH_INIT/(float)PokemonProject.app.getWidth());
-		viewYScale=yscale*((float)PokemonProject.WINDOW_HEIGHT_INIT/(float)PokemonProject.app.getHeight());
-		viewWidth=Math.round(PokemonProject.app.getWidth()/xscale);
-		viewHeight=Math.round(PokemonProject.app.getHeight()/yscale);
+		viewXScale=xscale;//xscale*((float)PokemonProject.WINDOW_WIDTH_INIT/(float)PokemonProject.app.getWidth());
+		viewYScale=yscale;//yscale*((float)PokemonProject.WINDOW_HEIGHT_INIT/(float)PokemonProject.app.getHeight());
+		viewWidth=Math.round(Main.getContainer().getWidth()/xscale);
+		viewHeight=Math.round(Main.getContainer().getHeight()/yscale);
 	}
 	
 	public void moveX(float x){
 		if(Math.signum(x)==1){
 			if(drawX_maxEnabled)
-				drawX=Math.min(drawX+x,drawX_max-PokemonProject.container.getWidth());
+				drawX=Math.min(drawX+x,drawX_max-Main.getContainer().getWidth());
 			else
 				drawX+=x;
 		}
@@ -203,7 +204,7 @@ public class View extends Updater{
 	public void moveY(float y){
 		if(Math.signum(y)==1){
 			if(drawY_maxEnabled)
-				drawY=Math.min(drawY+y,drawY_max-PokemonProject.container.getHeight());
+				drawY=Math.min(drawY+y,drawY_max-Main.getContainer().getHeight());
 			else
 				drawY+=y;
 		}
@@ -216,13 +217,13 @@ public class View extends Updater{
 	}
 	
 	public void setX(float x){
-		if(Math.signum(x)==1){
+		if(x>0){
 			if(drawX_maxEnabled)
-				drawX=Math.min(x,drawX_max-PokemonProject.container.getWidth());
+				drawX=Math.min(x,drawX_max-viewWidth);
 			else
 				drawX=x;
 		}
-		else if(Math.signum(x)==-1){
+		else if(x<0){
 			if(drawX_minEnabled)
 				drawX=Math.max(x,drawX_min);
 			else
@@ -231,13 +232,13 @@ public class View extends Updater{
 	}
 	
 	public void setY(float y){
-		if(Math.signum(y)==1){
+		if(y>0){
 			if(drawY_maxEnabled)
 				drawY=Math.min(y,drawY_max-viewHeight);
 			else
 				drawY=y;
 		}
-		else if(Math.signum(y)==-1){
+		else if(y<0){
 			if(drawY_minEnabled)
 				drawY=Math.max(y,drawY_min);
 			else
@@ -246,19 +247,11 @@ public class View extends Updater{
 	}
 	
 	public float getDrawX(){
-		return drawX-viewXOffset;
+		return drawX;
 	}
 
 	public float getDrawY(){
-		return drawY-viewYOffset;
-	}
-	
-	public float getDrawScreenX(float x){
-		return x+viewXOffset;
-	}
-
-	public float getDrawScreenY(float y){
-		return y+viewYOffset;
+		return drawY;
 	}
 	
 	@Override
@@ -269,10 +262,10 @@ public class View extends Updater{
 		}
 	}
 
-	public void createTextbox(String string) {
+	public void setTextbox(Textbox textbox) {
 		if(haveTextbox())
 			removeTextbox();
-		textbox=new TextBox(string,textboxBorderImage,textboxInnerColor,this);
+		this.textbox=textbox;
 	}
 	
 	public void removeTextbox() {
@@ -282,5 +275,19 @@ public class View extends Updater{
 	
 	public boolean haveTextbox() {
 		return textbox!=null;
+	}
+	
+	public static int getViewsWidth(){
+		int w=0;
+		for(View view:list)
+			w+=view.viewWidth;
+		return w;
+	}
+	
+	public static int getViewsHeight(){
+		int h=0;
+		for(View view:list)
+			h+=view.viewHeight;
+		return h;
 	}
 }

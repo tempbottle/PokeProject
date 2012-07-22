@@ -1,9 +1,9 @@
-package me.EdwJes.main.Entities;
+package me.EdwJes.main.overworld.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Path {
+public class Path {//TODO: Some kind of A* search path system too
 	private List<int[]> path=new ArrayList<int[]>();
 	private boolean reverse=false;
 	private Mode mode=Mode.TURNREVERSE;

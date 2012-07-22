@@ -10,13 +10,13 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 import org.yaml.snakeyaml.Yaml;
-import me.EdwJes.main.PokemonProject;
+import me.EdwJes.main.PokemonGame;
 import me.EdwJes.main.fileresourceloader.ImageLoader;
 
 public class Sprite{
 	private Sprite(){}
 	
-	public static String configFilename=PokemonProject.RESOURCES_DIR+"sprites.yml";
+	public static String configFilename=PokemonGame.RESOURCES_DIR+"sprites.yml";
 	public static HashMap<String,Image> image=new HashMap<String,Image>();
 	private static HashMap<String,ArrayList<Image>> imageGroup=new HashMap<String,ArrayList<Image>>();
 	private static HashMap<String,Animation> animation=new HashMap<String,Animation>();
@@ -57,7 +57,7 @@ public class Sprite{
 			if(sprData.containsKey("yOffset")&&Integer.class.isInstance(sprData.get("yOffset")))
 				yOffset=(Integer)sprData.get("yOffset");
 			
-			Image rawImage=null,rawImageOriginal=ImageLoader.loadImage(filename);
+			Image rawImage=null,rawImageOriginal=ImageLoader.loadImage(PokemonGame.IMAGES_DIR+filename);
 			if(xOffset!=0||yOffset!=0){
 				if(width==0)width=rawImageOriginal.getWidth()-xOffset;
 				if(height==0)height=rawImageOriginal.getHeight()-yOffset;

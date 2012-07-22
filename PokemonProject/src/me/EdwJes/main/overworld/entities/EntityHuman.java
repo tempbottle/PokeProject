@@ -1,4 +1,4 @@
-package me.EdwJes.main.Entities;
+package me.EdwJes.main.overworld.entities;
 
 import java.util.ArrayList;
 import me.EdwJes.main.View;
@@ -33,8 +33,8 @@ public class EntityHuman extends Entity{
 			drawSpr=sprite.get(Direction.DOWN.get());
 			
 		if(isMoving())
-			g.drawAnimation(drawSpr, getXPos()+spriteOffsetX-view.getDrawX(), getYPos()+spriteOffsetY-view.getDrawY());
+			g.drawAnimation(drawSpr, getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
 		else
-			g.drawImage(drawSpr.getImage(0), getXPos()+spriteOffsetX-view.getDrawX(), getYPos()+spriteOffsetY-view.getDrawY());
+			g.drawImage(drawSpr.getImage(0), getXPos()+spriteOffsetX, getYPos()+spriteOffsetY);
 	}
 }

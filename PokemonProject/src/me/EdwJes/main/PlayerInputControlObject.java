@@ -14,4 +14,6 @@ public interface PlayerInputControlObject{
 	public int getXTile();
 	public int getYTile();
 	
+	public boolean isKeyRepeat();
+	
 }

@@ -6,13 +6,14 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import me.EdwJes.Main;
 import me.EdwJes.main.GameObject;
-import me.EdwJes.main.OverworldObject;
 import me.EdwJes.main.PlayerInput;
-import me.EdwJes.main.PokemonProject;
+import me.EdwJes.main.PokemonGame;
 import me.EdwJes.main.RenderableObject;
 import me.EdwJes.main.Updater;
 import me.EdwJes.main.View;
+import me.EdwJes.main.overworld.OverworldObject;
 
 public class DebugRenderer extends RenderableObject{
 	
@@ -27,20 +28,20 @@ public class DebugRenderer extends RenderableObject{
 		if(Debug.renderDebug){
 			PlayerInput player=PlayerInput.getPlayerInput(0);
 			List<String> l = new ArrayList<String>();
-			l.add("FPS: " + PokemonProject.getFPS());
+			l.add("FPS: " + PokemonGame.getFPS());
 			l.add("Updaters: " + Updater.list.size());
 			l.add("GameObjects: " + GameObject.list.size());
 			l.add("RenderableObjects: " + RenderableObject.list.size());
 			l.add("Player coords: " + player.getObj().getXPos() + "," + player.getObj().getYPos() + " (" + player.getObj().getXTile() + "," + player.getObj().getYTile() + ")");
-			l.add("Resolution: " +PokemonProject.app.getWidth()+","+PokemonProject.app.getHeight()+" ("+player.view.viewWidth+","+player.view.viewHeight+")");
+			l.add("Resolution: " +Main.getContainer().getWidth()+","+Main.getContainer().getHeight()+" ("+player.view.viewWidth+","+player.view.viewHeight+")");
 			l.add("View: " +view.getDrawX()+","+view.getDrawY());
-			drawList(g,l,view);}
+			drawList(g,l);}
 		g.setColor(new Color(255, 255, 255, 10));
 		
 		for(int xi=0;xi<640;xi+=OverworldObject.getTileWidth())
-			g.drawLine(xi-view.getDrawX(), 0-view.getDrawY(), xi-view.getDrawX(), 480-view.getDrawY());
+			g.drawLine(xi, 0, xi, 480);
 		for(int yi=0;yi<480;yi+=OverworldObject.getTileHeight())
-			g.drawLine(0-view.getDrawX(), yi-view.getDrawY(), 640-view.getDrawX(), yi-view.getDrawY());
+			g.drawLine(0, yi, 640, yi);
 		g.setColor(Color.white);
 		
 		/* FOR OVERWORLDOBJECT COLLISION MASK DRAW
@@ -51,9 +52,9 @@ public class DebugRenderer extends RenderableObject{
 		g.setColor(Color.white);*/
 	}
 
-	public void drawList(Graphics g, List<String> list,View view){
+	public void drawList(Graphics g, List<String> list){
 		for(int i = 0; i < list.size(); i++){
-			g.drawString(list.get(i), view.getDrawScreenX(2), view.getDrawScreenY((2+i*18)));
+			g.drawString(list.get(i), 2, 2+i*18);
 		}
 	}
 }

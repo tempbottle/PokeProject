@@ -10,9 +10,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import me.EdwJes.main.Entities.EntityHuman;
+import me.EdwJes.Main;
 import me.EdwJes.main.config.Config;
+import me.EdwJes.main.config.Config.GlobalKey;
 import me.EdwJes.main.config.Config.Key;
+import me.EdwJes.main.overworld.entities.EntityHuman;
 import me.EdwJes.main.resources.Sprite;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -24,8 +26,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private boolean isOn = false,keyCTRL=false;
 	private String input = "",inputFieldPrefix="> ";
 	public char commandPrefix='/';
+	private final int MAX_ARGUMENTS=32;
 	private int inputPosition=0;
-	private int MAX_ARGUMENTS=32;
 	private List<ConsoleOutputText> outputList=new ArrayList<ConsoleOutputText>(); 
 	/*TODO:Output lines in console and limit text to boundaries of the window + black transparent box under console 
 	 * private int outputLines = 0;
@@ -42,7 +44,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		human(new Arg[]{new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)}),
 		fullscreen(new Arg[]{new Arg("fullscreen",Arg.Type.BOOLEAN,Arg.Flag.OPTIONAL)}),
 		room(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)}),
-		view(new Arg[]{new Arg("subCommand and arg",Arg.Type.STRING,Arg.Flag.INFINITE)});
+		view(new Arg[]{new Arg("subCommand and arg",Arg.Type.STRING,Arg.Flag.INFINITE)}),
+		exit;
 		private Arg[] args;
 		Command(Arg[] args){
 			this.args=args;}
@@ -69,17 +72,17 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				if(!isOn)
 					alpha=255-((int)(((float)text.fadeOutTick/ConsoleOutputText.fadeOutTimer)*255));
 				g.setColor(new Color(255,255,255,alpha));
-				g.drawString(text.getText(), view.getDrawScreenX(6), view.getDrawScreenY(y));
+				g.drawString(text.getText(), 6, y);
 				g.setColor(Color.white);}
 		}
 		if(isOn){
 			g.setColor(new Color(64,64,64,128));
-			g.fillRect(view.getDrawScreenX(0),view.getDrawScreenY(view.viewHeight-lineHeight-4),view.getDrawScreenX(view.viewWidth),view.getDrawScreenY(view.viewHeight));
+			g.fillRect(0,view.viewHeight-lineHeight-4,view.viewWidth,view.viewHeight);
 			g.setColor(Color.white);
-			g.drawString(inputFieldPrefix + input, view.getDrawScreenX(6), view.getDrawScreenY(view.viewHeight-lineHeight-2));
+			g.drawString(inputFieldPrefix + input, 6, view.viewHeight-lineHeight-2);
 			int inputPositionWidth=g.getFont().getWidth(inputFieldPrefix + input.substring(0,inputPosition))+2;
 			g.setColor(Color.red);
-			g.drawLine(view.getDrawScreenX(inputPositionWidth+2), view.getDrawScreenY(view.viewHeight-lineHeight),view.getDrawScreenX(inputPositionWidth+2), view.getDrawScreenY(view.viewHeight-4));
+			g.drawLine(inputPositionWidth+2, view.viewHeight-lineHeight,inputPositionWidth+2, view.viewHeight-4);
 			g.setColor(Color.white);
 		}
 	}
@@ -215,7 +218,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				break;
 			case display:
 				try{
-					PokemonProject.setDisplayMode(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),PokemonProject.app.isFullscreen());}
+					PokemonGame.setDisplayMode(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Main.getContainer().isFullscreen());}
 				catch(NumberFormatException e){
 					e.printStackTrace();}
 				catch(SlickException e){
@@ -223,28 +226,13 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				outputConsole("Resolution set to "+arg[1]+"x"+arg[2]);
 				break;
 			case fullscreen:
-				try{
-					boolean fullscreen=PokemonProject.app.isFullscreen();
-					int width,height;
-					if(fullscreen){
-						width=PokemonProject.WINDOW_WIDTH_INIT;
-						height=PokemonProject.WINDOW_HEIGHT_INIT;}
-					else{
-						width=PokemonProject.getContainer().getScreenWidth();
-						height=PokemonProject.getContainer().getScreenHeight();}
-					
-					PokemonProject.setDisplayMode(width,height,!fullscreen);}
-				catch(NumberFormatException e){
-					e.printStackTrace();}
-				catch(SlickException e){
-					e.printStackTrace();}
-				outputConsole("Resolution set to "+arg[1]+"x"+arg[2]);
+				PlayerInput.keyPress(Main.getConfig().game.keyMap.get(GlobalKey.FULLSCREEN),' ');
 				break;
 			case human:
 				new EntityHuman(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Sprite.getAnimationGroup("Lyra"));
 				break;
 			case room:
-				PokemonProject.roomLoader.enterRoom(PokemonProject.roomLoader.rooms.get(Integer.valueOf(arg[1])));
+				PokemonGame.roomLoader.enterRoom(PokemonGame.roomLoader.rooms.get(Integer.valueOf(arg[1])));
 				break;
 			case view:
 				if(arg[1].equals("align")){
@@ -260,6 +248,9 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				}
 				else
 					outputConsole("Syntax: view(align|add|remove|set)");
+				break;
+			case exit:
+				Main.getContainer().exit();
 				break;
 			default:
 				outputConsole("Undefined Command: "+arg[0]);
@@ -358,8 +349,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 
 	@Override
-	public void onKeyPressed(int key, char chr,int playerId,Config config) {
-		if(isOn){
+	public void onKeyPressed(int key, char chr,int playerId,Config config){
+		if(isOn){		
 			if(keyCTRL==true){
 				if(key==47)//V
 					inputInsert(getClipboard().replaceAll("^[\\x20-\\xFF]"," "));
@@ -406,6 +397,10 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	@Override
 	public void handleInput(Input input, int playerId,Config config) {
 
+	}
+	@Override
+	public boolean isKeyRepeat(){
+		return true;
 	}
 }
 

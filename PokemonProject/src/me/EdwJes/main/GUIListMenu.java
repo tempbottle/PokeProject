@@ -1,12 +1,15 @@
 package me.EdwJes.main;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.gui.MouseOverArea;
+import org.newdawn.slick.Graphics;
 
-public class GUIListMenu extends MouseOverArea{
+public class GUIListMenu extends RenderableWindowObject{
 
-	public GUIListMenu(Image image,int x,int y){
-		super(PokemonProject.container,image,x,y);
+	public GUIListMenu(int x,int y,int width,int height){
+		
+	}
+
+	@Override
+	public void render(Graphics g){
 		
 	}
 

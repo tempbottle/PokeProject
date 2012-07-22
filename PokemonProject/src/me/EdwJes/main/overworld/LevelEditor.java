@@ -1,4 +1,6 @@
-package me.EdwJes.main;
+package me.EdwJes.main.overworld;
+
+import me.EdwJes.main.GameObject;
 
 public class LevelEditor extends GameObject{
 	public LevelEditor(){

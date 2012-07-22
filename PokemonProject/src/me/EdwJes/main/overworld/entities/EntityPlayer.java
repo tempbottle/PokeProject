@@ -1,8 +1,9 @@
-package me.EdwJes.main.Entities;
+package me.EdwJes.main.overworld.entities;
 
 import java.util.ArrayList;
 import me.EdwJes.main.View;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 public class EntityPlayer extends EntityHuman{
@@ -15,8 +16,10 @@ public class EntityPlayer extends EntityHuman{
 	
 	@Override
 	public void render(Graphics g,View view){
+		/*g.setColor(new Color(255,255,255,128));
+		for(int[] pos:collisionMask.getPoints())
+			g.fillRect((getXTile()+pos[0])*tileWidth,(getYTile()+pos[1])*tileHeight, tileWidth, tileHeight);
+		g.setColor(Color.white);*/
 		super.render(g,view);
-		/*for(int[] pos:collisionMask.getPoints())
-			g.drawRect((getXTile()+pos[0])*tileWidth-view.getDrawX(),(getYTile()+pos[1])*tileHeight-view.getDrawY(), tileWidth, tileHeight);*/
 	}
 }
