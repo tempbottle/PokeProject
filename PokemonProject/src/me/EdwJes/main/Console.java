@@ -1,16 +1,11 @@
 package me.EdwJes.main;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import me.EdwJes.Main;
+import me.EdwJes.Misc;
 import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.Config.GlobalKey;
 import me.EdwJes.main.config.Config.Key;
@@ -28,6 +23,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	public char commandPrefix='/';
 	private final int MAX_ARGUMENTS=32;
 	private int inputPosition=0;
+	private List<String> inputHistory=new ArrayList<String>();
+	private int inputHistoryIndex=0;
 	private List<ConsoleOutputText> outputList=new ArrayList<ConsoleOutputText>(); 
 	/*TODO:Output lines in console and limit text to boundaries of the window + black transparent box under console 
 	 * private int outputLines = 0;
@@ -36,18 +33,18 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	public static enum Command{
 		helpold,
 		help,
-		test(new Arg[]{new Arg("arg",Arg.Type.STRING,Arg.Flag.INFINITE)}),
-		shit(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)}),
-		scale(new Arg[]{new Arg("scale",Arg.Type.DOUBLE)}),
+		test(new Arg("arg",Arg.Type.STRING,Arg.Flag.INFINITE)),
+		shit(new Arg("roomId",Arg.Type.INTEGER)),
+		scale(new Arg("scale",Arg.Type.DOUBLE)),
 		skit,
-		display(new Arg[]{new Arg("width",Arg.Type.INTEGER),new Arg("height",Arg.Type.INTEGER)}),
-		human(new Arg[]{new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)}),
-		fullscreen(new Arg[]{new Arg("fullscreen",Arg.Type.BOOLEAN,Arg.Flag.OPTIONAL)}),
-		room(new Arg[]{new Arg("roomId",Arg.Type.INTEGER)}),
-		view(new Arg[]{new Arg("subCommand and arg",Arg.Type.STRING,Arg.Flag.INFINITE)}),
+		display(new Arg("width",Arg.Type.INTEGER),new Arg("height",Arg.Type.INTEGER)),
+		human(new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)),
+		fullscreen(new Arg("fullscreen",Arg.Type.BOOLEAN,Arg.Flag.OPTIONAL)),
+		room(new Arg("roomId",Arg.Type.INTEGER)),
+		view(new Arg("subCommand and arg",Arg.Type.STRING,Arg.Flag.INFINITE)),
 		exit;
 		private Arg[] args;
-		Command(Arg[] args){
+		Command(Arg... args){
 			this.args=args;}
 		Command(){
 			this.args=new Arg[]{};}
@@ -152,7 +149,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 					else if((argumentCount<=countedArg&&argumentCount>=countedRequiredArg)||(isInfinite&&argumentCount>=countedRequiredArg)){
 						executeRawCommand(command,input,argumentCount);
 					}
-					else if(argumentCount>countedArg){outputConsole("Too many arguments, expecting"+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
+					else if(argumentCount>countedArg){outputConsole("Too many arguments, expecting "+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
 					else{outputConsole("Too few arguments, expecting "+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
 				}
 				else outputConsole("Unknown Command: "+input[0]);
@@ -270,6 +267,11 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		return str.substring(0,Math.max(0,indexFrom))+str.substring(Math.min(str.length(),indexTo));
 	}
 	
+	public void inputSet(String str){
+		input=str;
+		inputPositionMove(str.length());
+	}
+	
 	public void inputInsert(String str){
 		input=strInsert(input,str,inputPosition);
 		inputPositionMove(str.length());
@@ -300,29 +302,6 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 	public void onInput(String text){}
 	public void onCommand(String[] command){}
-	
-	// If a string is on the system clipboard, this method returns it;
-	// otherwise it returns null.
-	public static String getClipboard() {
-	    Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-
-	    try{
-	    	if(t!=null&&t.isDataFlavorSupported(DataFlavor.stringFlavor)){
-	        	String text = (String)t.getTransferData(DataFlavor.stringFlavor);
-	            return text;
-	        }
-	    }
-	    catch(UnsupportedFlavorException e){}
-	    catch(IOException e){}
-	    return null;
-	}
-
-	// This method writes a string to the system clipboard.
-	// otherwise it returns null.
-	public static void setClipboard(String str) {
-	    StringSelection ss = new StringSelection(str);
-	    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-	}
 
 	@Override
 	public float getXPos() {
@@ -353,12 +332,12 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		if(isOn){		
 			if(keyCTRL==true){
 				if(key==47)//V
-					inputInsert(getClipboard().replaceAll("^[\\x20-\\xFF]"," "));
+					inputInsert(Misc.getClipboard().replaceAll("^[\\x20-\\xFF]"," "));
 				else if(key==46){//C
-					setClipboard(input);
+					Misc.setClipboard(input);
 					outputConsole("Copied to clipboard");}
 				else if(key==45){//X
-					setClipboard(input);
+					Misc.setClipboard(input);
 					inputReset();}
 			}
 			if(chr>=32&&chr<256){
@@ -379,10 +358,20 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			else if(key==config.player.get(playerId).keyMap.get(Key.RIGHT)){
 				inputPositionMove(1);}
 			else if(key==config.player.get(playerId).keyMap.get(Key.ENTER)){
+				inputHistory.add(input);
+				inputHistoryIndex=inputHistory.size()-1;
 				executeCommand(input);
 				closeConsole();
 				PlayerInput player=PlayerInput.getPlayerInput(playerId);
 				player.removeObj(this);}
+			else if(key==config.player.get(playerId).keyMap.get(Key.UP)){
+				if(inputHistoryIndex>0){
+					inputSet(inputHistory.get(inputHistoryIndex));
+					inputHistoryIndex--;}}
+			else if(key==config.player.get(playerId).keyMap.get(Key.DOWN)){
+				if(inputHistoryIndex<inputHistory.size()-1){
+					inputSet(inputHistory.get(inputHistoryIndex));
+					inputHistoryIndex++;}}
 		}
 	//Debug.console.println(key+", "+chr+"="+((int)chr));
 	}

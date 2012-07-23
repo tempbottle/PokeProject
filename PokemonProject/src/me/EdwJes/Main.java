@@ -15,7 +15,6 @@ public class Main{
 	private static final String TITLE="Pokemon Project";
 	
 	public static void main(String[] args){
-		
 		config = new FileConfig("config.yml");
 		if((new File("config.yml")).exists())
 			config.loadValues();
