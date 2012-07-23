@@ -1,7 +1,13 @@
 package me.EdwJes.main.rooms;
 
+
+
+import me.EdwJes.main.battle.SingleBattle;
+import me.EdwJes.main.battle.Trainer;
+=======
 import me.EdwJes.main.overworld.entities.EntityHuman;
 import me.EdwJes.main.resources.Sprite;
+
 
 public class BattleRoom extends Room {
 
@@ -11,12 +17,12 @@ public class BattleRoom extends Room {
 	
 	@Override public void init(){
 		super.init();
-		System.out.println("Entered Room");
-		new EntityHuman(15,13,Sprite.getAnimationGroup("Lyra"));
+		new SingleBattle(new Trainer(Trainer.trainerType.bugCatcher, Trainer.trainerControl.player), 
+				new Trainer(Trainer.trainerType.aceTrainer, Trainer.trainerControl.AI));
+		
 	}
 	
 	@Override public void revisit(){
 		super.revisit();
-		System.out.println("Revisited");
 	}
 }
