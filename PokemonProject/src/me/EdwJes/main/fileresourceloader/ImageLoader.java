@@ -34,7 +34,7 @@ public abstract class ImageLoader {
 		catch(SlickException e){
 			System.out.println("File: \"" + filePath+"\" don't exist");
 			img = nullImage;
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 		return img;
 	}

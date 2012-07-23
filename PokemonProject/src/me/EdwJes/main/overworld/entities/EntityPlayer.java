@@ -3,7 +3,6 @@ package me.EdwJes.main.overworld.entities;
 import java.util.ArrayList;
 import me.EdwJes.main.View;
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 public class EntityPlayer extends EntityHuman{

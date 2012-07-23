@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import me.EdwJes.Main;
 import me.EdwJes.Misc;
-import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.Config.GlobalKey;
 import me.EdwJes.main.config.Config.Key;
 import me.EdwJes.main.overworld.entities.EntityHuman;
@@ -328,7 +327,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	
 
 	@Override
-	public void onKeyPressed(int key, char chr,int playerId,Config config){
+	public void onKeyPressed(int key, char chr,PlayerInput player){
 		if(isOn){		
 			if(keyCTRL==true){
 				if(key==47)//V
@@ -353,22 +352,21 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				inputPositionSet(input.length());
 			else if(key==29)//CTRL
 				keyCTRL=true;
-			else if(key==config.player.get(playerId).keyMap.get(Key.LEFT)){
+			else if(key==player.getKeymap(Key.LEFT)){
 				inputPositionMove(-1);}
-			else if(key==config.player.get(playerId).keyMap.get(Key.RIGHT)){
+			else if(key==player.getKeymap(Key.RIGHT)){
 				inputPositionMove(1);}
-			else if(key==config.player.get(playerId).keyMap.get(Key.ENTER)){
+			else if(key==player.getKeymap(Key.ENTER)){
 				inputHistory.add(input);
 				inputHistoryIndex=inputHistory.size()-1;
 				executeCommand(input);
 				closeConsole();
-				PlayerInput player=PlayerInput.getPlayerInput(playerId);
 				player.removeObj(this);}
-			else if(key==config.player.get(playerId).keyMap.get(Key.UP)){
+			else if(key==player.getKeymap(Key.UP)){
 				if(inputHistoryIndex>0){
 					inputSet(inputHistory.get(inputHistoryIndex));
 					inputHistoryIndex--;}}
-			else if(key==config.player.get(playerId).keyMap.get(Key.DOWN)){
+			else if(key==player.getKeymap(Key.DOWN)){
 				if(inputHistoryIndex<inputHistory.size()-1){
 					inputSet(inputHistory.get(inputHistoryIndex));
 					inputHistoryIndex++;}}
@@ -377,14 +375,14 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	}
 
 	@Override
-	public void onKeyReleased(int key, char chr,int playerId,Config config) {
+	public void onKeyReleased(int key, char chr,PlayerInput playerInput) {
 		if(key==29){//CTRL
 			keyCTRL=false;
 		}
 	}
 
 	@Override
-	public void handleInput(Input input, int playerId,Config config) {
+	public void handleInput(Input input, PlayerInput playerInput) {
 
 	}
 	@Override

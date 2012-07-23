@@ -4,7 +4,6 @@ import org.newdawn.slick.Input;
 import me.EdwJes.main.GameObject;
 import me.EdwJes.main.PlayerInput;
 import me.EdwJes.main.PlayerInputControlObject;
-import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.Config.Key;
 import me.EdwJes.main.overworld.OverworldObject;
 import me.EdwJes.main.overworld.entities.Entity;
@@ -24,32 +23,31 @@ public class PlayerInputEntityControl extends EntityControl implements PlayerInp
 	//TODO: Lätt-tryck för att vända sig istället för att röra sig direkt när man har vänt sig, dir variabeln. Får göra en timer eller något
 	
 	@Override
-	public void handleInput(Input input,int playerId,Config config){
+	public void handleInput(Input input,PlayerInput player){
 		this.input=input;
 		
-		if(input.isKeyDown(configGetKeymap(config,playerId,Key.LEFT))){
+		if(input.isKeyDown(player.getKeymap(Key.LEFT))){
 			if(beginMovementTimer>=beginMovementTime||beginDir==Direction.LEFT){
 				entity.posMoveX(DirectionX.LEFT);}
 			else
 				beginMovementTimer++;}
-		else if(input.isKeyDown(configGetKeymap(config,playerId,Key.RIGHT))){
+		else if(input.isKeyDown(player.getKeymap(Key.RIGHT))){
 			if(beginMovementTimer>=beginMovementTime||beginDir==Direction.RIGHT){
 				entity.posMoveX(DirectionX.RIGHT);}
 			else
 				beginMovementTimer++;}
-		else if(input.isKeyDown(configGetKeymap(config,playerId,Key.UP))){
+		else if(input.isKeyDown(player.getKeymap(Key.UP))){
 			if(beginMovementTimer>=beginMovementTime||beginDir==Direction.UP){
 				entity.posMoveY(DirectionY.UP);}
 			else
 				beginMovementTimer++;}
-		else if(input.isKeyDown(configGetKeymap(config,playerId,Key.DOWN))){
+		else if(input.isKeyDown(player.getKeymap(Key.DOWN))){
 			if(beginMovementTimer>=beginMovementTime||beginDir==Direction.DOWN){
 				entity.posMoveY(DirectionY.DOWN);}
 			else
 				beginMovementTimer++;}
 		
 		if(input.isKeyPressed(Input.KEY_F5)){
-			PlayerInput player=PlayerInput.getPlayerInput(playerId);
 			if(player.view.followsObject==null)
 				player.view.followsObject=entity;
 			else
@@ -59,10 +57,6 @@ public class PlayerInputEntityControl extends EntityControl implements PlayerInp
 
 	public GameObject getControlledObject() {
 		return entity;
-	}
-
-	private int configGetKeymap(Config config,int playerId,Key key){
-		return config.player.get(playerId).keyMap.get(key);
 	}
 	
 	@Override
@@ -83,29 +77,29 @@ public class PlayerInputEntityControl extends EntityControl implements PlayerInp
 	}
 
 	@Override
-	public void onKeyPressed(int key, char chr,int playerId,Config config) {
-		if(key==configGetKeymap(config,playerId,Key.LEFT)){
+	public void onKeyPressed(int key, char chr,PlayerInput player) {
+		if(key==player.getKeymap(Key.LEFT)){
 			if(!entity.isMoving()){
 				beginMovementTimer=0;
 				beginDir=entity.dir;
 				entity.dir=Direction.LEFT;
 			}
 		}
-		else if(key==configGetKeymap(config,playerId,Key.RIGHT)){
+		else if(key==player.getKeymap(Key.RIGHT)){
 			if(!entity.isMoving()){
 				beginMovementTimer=0;
 				beginDir=entity.dir;
 				entity.dir=Direction.RIGHT;
 			}
 		}
-		else if(key==configGetKeymap(config,playerId,Key.UP)){
+		else if(key==player.getKeymap(Key.UP)){
 			if(!entity.isMoving()){
 				beginMovementTimer=0;
 				beginDir=entity.dir;
 				entity.dir=Direction.UP;
 			}
 		}
-		else if(key==configGetKeymap(config,playerId,Key.DOWN)){
+		else if(key==player.getKeymap(Key.DOWN)){
 			if(!entity.isMoving()){
 				beginMovementTimer=0;
 				beginDir=entity.dir;
@@ -113,46 +107,45 @@ public class PlayerInputEntityControl extends EntityControl implements PlayerInp
 			}
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.ACTION)){
+		else if(key==player.getKeymap(Key.ACTION)){
 			if(!entity.isDirectionFree(entity.dir)){
 				OverworldObject target=entity.getObjCollidedDir(entity.dir);
-				entity.interact(target,playerId);}
+				entity.interact(target,player.getId());}
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.SKIP)){
+		else if(key==player.getKeymap(Key.SKIP)){
 			entity.setPosMoveSpeed(entity.runningSpeed);
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.CHAT)){
-			PlayerInput playerInput=PlayerInput.getPlayerInput(playerId);
-			if(!playerInput.view.cmd.isOn()){
-				playerInput.setObj(playerInput.view.cmd);
-				playerInput.view.cmd.enterConsole();}
+		else if(key==player.getKeymap(Key.CHAT)){
+			if(!player.view.cmd.isOn()){
+				player.setObj(player.view.cmd);
+				player.view.cmd.enterConsole();}
 		}
 	}
 	@Override
-	public void onKeyReleased(int key, char chr,int playerId,Config config) {
-		if(key==configGetKeymap(config,playerId,Key.LEFT)){
+	public void onKeyReleased(int key, char chr,PlayerInput player) {
+		if(key==player.getKeymap(Key.LEFT)){
 			if(entity.getStopMove()==Movement.NONE){
 				entity.stopMove(Direction.LEFT);}
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.RIGHT)){
+		else if(key==player.getKeymap(Key.RIGHT)){
 			if(entity.getStopMove()==Movement.NONE){
 				entity.stopMove(Direction.RIGHT);}
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.UP)){
+		else if(key==player.getKeymap(Key.UP)){
 			if(entity.getStopMove()==Movement.NONE){
 				entity.stopMove(Direction.UP);}
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.DOWN)){
+		else if(key==player.getKeymap(Key.DOWN)){
 			if(entity.getStopMove()==Movement.NONE){
 				entity.stopMove(Direction.DOWN);}
 		}
 		
-		else if(key==configGetKeymap(config,playerId,Key.SKIP)){
+		else if(key==player.getKeymap(Key.SKIP)){
 			entity.setPosMoveSpeed(entity.walkingSpeed);
 		}
 	}

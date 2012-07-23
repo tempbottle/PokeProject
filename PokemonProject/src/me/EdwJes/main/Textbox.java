@@ -1,8 +1,6 @@
 package me.EdwJes.main;
 
-import me.EdwJes.main.config.Config;
 import me.EdwJes.main.config.Config.Key;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
@@ -125,15 +123,15 @@ public class Textbox extends RenderableObject implements PlayerInputControlObjec
 	}
 
 	@Override
-	public void handleInput(Input input, int playerId,Config config) {
+	public void handleInput(Input input,PlayerInput player) {
 
 	}
 
 	@Override
-	public void onKeyPressed(int key, char chr, int playerId,Config config) {
+	public void onKeyPressed(int key, char chr, PlayerInput player) {
 		/*PlayerInput player=PlayerInput.getPlayerInput(playerId);
 		player.setObj(player.objPrevious);*/
-		if(key==config.player.get(playerId).keyMap.get(Key.ACTION)){
+		if(key==player.getKeymap(Key.ACTION)){
 			if(finished){
 				onFinished();
 				destroy();}
@@ -143,8 +141,8 @@ public class Textbox extends RenderableObject implements PlayerInputControlObjec
 	}
 
 	@Override
-	public void onKeyReleased(int key, char chr, int playerId,Config config) {
-		if(key==config.player.get(playerId).keyMap.get(Key.ACTION)){
+	public void onKeyReleased(int key, char chr, PlayerInput player) {
+		if(key==player.getKeymap(Key.ACTION)){
 			if(currentTextSpd==textSpdFastDivider)
 				currentTextSpd=textSpdNormalDivider;}
 	}

@@ -1,13 +1,12 @@
 package me.EdwJes.main;
 
-import me.EdwJes.main.config.Config;
 import org.newdawn.slick.Input;
 
 public interface PlayerInputControlObject{
-	public void handleInput(Input input,int playerId,Config config);
+	public void handleInput(Input input,PlayerInput playerInput);
 	
-	public void onKeyPressed(int key,char chr,int playerId,Config config);
-	public void onKeyReleased(int key,char chr,int playerId,Config config);
+	public void onKeyPressed(int key,char chr,PlayerInput playerInput);
+	public void onKeyReleased(int key,char chr,PlayerInput playerInput);
 	
 	public float getXPos();
 	public float getYPos();
