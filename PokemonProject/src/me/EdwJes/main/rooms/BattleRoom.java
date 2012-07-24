@@ -4,9 +4,6 @@ package me.EdwJes.main.rooms;
 
 import me.EdwJes.main.battle.SingleBattle;
 import me.EdwJes.main.battle.Trainer;
-=======
-import me.EdwJes.main.overworld.entities.EntityHuman;
-import me.EdwJes.main.resources.Sprite;
 
 
 public class BattleRoom extends Room {

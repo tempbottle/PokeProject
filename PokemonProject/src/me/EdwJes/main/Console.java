@@ -15,8 +15,18 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+/**
+* Console Class
+*  
+* <P>A command prompt within the game. It also stands for the in-game chat.  
+* <P>The view is responsible for the console.
+*  
+* @author Lolirofle
+* @version 1.0
+*/
 public class Console extends RenderableObject implements PlayerInputControlObject{
 	
+	private static boolean initiated=false;
 	private boolean isOn = false,keyCTRL=false;
 	private String input = "",inputFieldPrefix="> ";
 	public char commandPrefix='/';
@@ -24,39 +34,157 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 	private int inputPosition=0;
 	private List<String> inputHistory=new ArrayList<String>();
 	private int inputHistoryIndex=0;
-	private List<ConsoleOutputText> outputList=new ArrayList<ConsoleOutputText>(); 
+	private List<ConsoleOutputText> outputList=new ArrayList<ConsoleOutputText>();
+	private static List<Command> commandsGlobal=new ArrayList<Command>();
+	private List<Command> commandsLocal=new ArrayList<Command>();
 	/*TODO:Output lines in console and limit text to boundaries of the window + black transparent box under console 
 	 * private int outputLines = 0;
 	 * private int outputMaxLines = 6;*/
 	
-	public static enum Command{
-		helpold,
-		help,
-		test(new Arg("arg",Arg.Type.STRING,Arg.Flag.INFINITE)),
-		shit(new Arg("roomId",Arg.Type.INTEGER)),
-		scale(new Arg("scale",Arg.Type.DOUBLE)),
-		skit,
-		display(new Arg("width",Arg.Type.INTEGER),new Arg("height",Arg.Type.INTEGER)),
-		human(new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)),
-		fullscreen(new Arg("fullscreen",Arg.Type.BOOLEAN,Arg.Flag.OPTIONAL)),
-		room(new Arg("roomId",Arg.Type.INTEGER)),
-		view(new Arg("subCommand and arg",Arg.Type.STRING,Arg.Flag.INFINITE)),
-		exit;
-		private Arg[] args;
-		Command(Arg... args){
-			this.args=args;}
-		Command(){
-			this.args=new Arg[]{};}
-		public Arg[] getArgs(){
-			return args;}
-		public Arg getArg(int index){
-			return args[index];}
-	}
-	
 	public Console(){
+		Console.initCommands();
 		setLayer(LAYER_GUI);
 		setPersistency(true);
 	}
+	
+	/**
+	 * Checks if the command exists, both in the static Console scope and in this console. 
+	 * @param commandName The name of the command
+	 * @return true if exists
+	 */
+	public boolean commandExists(String commandName){
+		return getCommand(commandName)!=null;
+	}
+	
+	/**
+	 * Adds a command to this console only, see {@link Command} for more information on the command parameter
+	 * @param command
+	 */
+	public void commandAdd(Command command){
+		commandsLocal.add(command);
+	}
+	
+	/**
+	 * Adds a global command for the use of all console objects, see {@link Command} for more information on the command parameter
+	 * @param command
+	 */
+	public static void commandGlobalAdd(Command command){
+		commandsGlobal.add(command);
+	}
+	
+	/**
+	 * Initiates the basic commands to the global scope of Console
+	 */
+	private static void initCommands(){
+		if(!initiated){
+			initiated=true;
+			
+			commandGlobalAdd(new Command("shit"){
+				@Override public void execute(Console console,String... args){
+					console.outputConsole("Well yes my shit");
+				}
+			});
+			
+			commandGlobalAdd(new Command("helplist"){
+				@Override public void execute(Console console,String... args){
+					String __str="";
+					for(Command cmd:commandsGlobal){
+						__str+=cmd.getName()+", ";
+					}
+					
+					for(Command cmd:console.commandsLocal){
+						__str+=cmd.getName()+", ";
+					}
+					console.outputConsole(__str);
+				}
+			});
+		
+				
+			commandGlobalAdd(new Command("help"){
+				@Override public void execute(Console console,String... args){
+					for(Command cmd:commandsGlobal){
+						console.outputConsole(console.commandGetSyntax(cmd));
+					}
+					for(Command cmd:console.commandsLocal){
+						console.outputConsole(console.commandGetSyntax(cmd));
+					}
+				}
+			});
+			
+			
+			commandGlobalAdd(new Command("test",new Arg("arg",Arg.Type.STRING,Arg.Flag.INFINITE)){
+				@Override public void execute(Console console,String... args){
+					String _str="";
+					for(int i=0;i<args.length;i++)
+						_str+="["+i+"]="+args[i]+"; ";
+					console.outputConsole(_str);
+				}
+			});
+				
+			commandGlobalAdd(new Command("scale",new Arg("scale",Arg.Type.DOUBLE)){
+				@Override public void execute(Console console,String... args){
+				console.view.setScale(Float.valueOf(args[1].trim()).floatValue(),Float.valueOf(args[1].trim()).floatValue());
+				console.outputConsole("Scaled the screen to "+args[1]+"x");
+				}
+			});
+				
+			commandGlobalAdd(new Command("display",new Arg("width",Arg.Type.INTEGER),new Arg("height",Arg.Type.INTEGER)){
+				@Override public void execute(Console console,String... args){
+				try{
+					PokemonGame.setDisplayMode(Integer.valueOf(args[1].trim()).intValue(),Integer.valueOf(args[2].trim()).intValue(),Main.getContainer().isFullscreen());}
+				catch(NumberFormatException e){
+					e.printStackTrace();}
+				catch(SlickException e){
+					e.printStackTrace();}
+				console.outputConsole("Resolution set to "+args[1]+"x"+args[2]);
+				}
+			});
+				
+			commandGlobalAdd(new Command("fullscreen"){
+				@Override public void execute(Console console,String... args){
+				PlayerInput.keyPress(Main.getConfig().game.keyMap.get(GlobalKey.FULLSCREEN),' ');
+				}
+			});
+				
+			commandGlobalAdd(new Command("human",new Arg("x",Arg.Type.INTEGER),new Arg("y",Arg.Type.INTEGER)){
+				@Override public void execute(Console console,String... args){
+				new EntityHuman(Integer.valueOf(args[1].trim()).intValue(),Integer.valueOf(args[2].trim()).intValue(),Sprite.getAnimationGroup("Lyra"));
+				}
+			});
+				
+			commandGlobalAdd(new Command("room",new Arg("roomId",Arg.Type.INTEGER)){
+				@Override public void execute(Console console,String... args){
+				PokemonGame.roomLoader.enterRoom(PokemonGame.roomLoader.rooms.get(Integer.valueOf(args[1])));
+				}
+			});
+				
+			commandGlobalAdd(new Command("view",new Arg("subCommand",Arg.Type.STRING),new Arg("args",Arg.Type.STRING,Arg.Flag.INFINITE)){
+				@Override public void execute(Console console,String... args){
+				if(args[1].equals("align")){
+					View.alignViews();}
+				else if(args[1].equals("add")){
+					new View();
+					View.alignViews();}
+				else if(args[1].equals("remove")){
+					View.getView(View.countViews()-1).destroy();
+					View.alignViews();}
+				else if(args[1].equals("set")){
+					//TODO Antar att det ska vara något här.
+				}
+				else
+					console.outputConsole("Syntax: view(align|add|remove|set)");
+				}
+			});
+				
+			commandGlobalAdd(new Command("exit"){
+				@Override public void execute(Console console,String... args){
+				Main.getContainer().exit();
+				}
+			});
+			
+		}
+	}
+	
 	//TODO: Custom input and output stream classes for server communication in the future
 	@Override public void render(Graphics g,View view){
 		int i=0,lineHeight=g.getFont().getLineHeight();
@@ -83,15 +211,27 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		}
 	}
 	
-	public void enterConsole(){
+	/**
+	 * Enable input to the console
+	 */
+	public void enterConsole(PlayerInput player){
 		isOn = true;
+		player.setObj(this);
 	}
 	
-	public void closeConsole(){
+	/**
+	 * Disable input to the console
+	 */
+	public void closeConsole(PlayerInput player){
 		inputReset();
 		isOn=false;
+		player.removeObj(this);
 	}
 	
+	/**
+	 * Outputs a string to the console
+	 * @param str The string to be outputted
+	 */
 	public void outputConsole(String str){
 		outputList.add(new ConsoleOutputText(str));
 	}
@@ -100,9 +240,9 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		return isOn;
 	}
 	
-	public void executeCommand(String str){
+	public void processInput(String str){
 		str=str.trim();
-		if(str!=""){
+		if(!str.isEmpty()){
 			onInput(str);
 			if(str.charAt(0)==commandPrefix){
 				str=str.substring(1);
@@ -110,33 +250,58 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 				int argumentCount=input.length-1;
 				input[0]=input[0].toLowerCase();
 				onCommand(input);
-				if(commandExists(input[0])){
-					Command command=Command.valueOf(Command.class,input[0]);
-					
+				Command command=getCommand(input[0]);
+				if(command!=null){
 					boolean isInfinite=false;
 					int countedArg=0,countedRequiredArg=0,isWrongType=0;
 					ARGLOOP: for(Arg arg:command.getArgs()){
 						countedArg++;
 						if(argumentCount>=countedArg){
+							/*
+							 * INTEGER
+							 */
 							if(arg.getType()==Arg.Type.INTEGER){
-								try{Integer.parseInt(input[countedArg]);}
-								catch(NumberFormatException e){isWrongType=countedArg;break;}}
+								try{
+									Integer.parseInt(input[countedArg]);}
+								catch(NumberFormatException e){
+									isWrongType=countedArg;
+									break ARGLOOP;
+								}
+							}
+							/*
+							 * DOUBLE 
+							 */
 							else if(arg.getType()==Arg.Type.DOUBLE){
-								try{Double.parseDouble(input[countedArg]);}
-								catch(NumberFormatException e){isWrongType=countedArg;break;}}
+								try{
+									Double.parseDouble(input[countedArg]);}
+								catch(NumberFormatException e){
+									isWrongType=countedArg;
+									break ARGLOOP;
+								}
+							}
+							/*
+							 * BOOLEAN
+							 */
 							else if(arg.getType()==Arg.Type.BOOLEAN){
-								
 								if (input[countedArg] == "on" || input[countedArg] == "true" || input[countedArg] == "1"){
 									input[countedArg]="true";
 								}
 								else if (input[countedArg] == "off" || input[countedArg] == "false" || input[countedArg] == "0"){
-									input[countedArg]="true";
+									input[countedArg]="false";
 								}
-								else	
+								else{
 									isWrongType=countedArg;
-									break ARGLOOP;}
-							
+									break ARGLOOP;
+								}
+							}
+							/*
+							 * STRING
+							 */
+							else if(arg.getType()==Arg.Type.STRING){
+								
+							}
 						}
+						
 						if (arg.getFlag()==Arg.Flag.NONE){
 							countedRequiredArg++;}
 						else if(arg.getFlag()==Arg.Flag.INFINITE){
@@ -146,7 +311,7 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 					if(isWrongType!=0){
 						outputConsole("Wrong type on argument "+isWrongType);outputConsole("Syntax: "+commandGetSyntax(command));}
 					else if((argumentCount<=countedArg&&argumentCount>=countedRequiredArg)||(isInfinite&&argumentCount>=countedRequiredArg)){
-						executeRawCommand(command,input,argumentCount);
+						command.execute(this,input);
 					}
 					else if(argumentCount>countedArg){outputConsole("Too many arguments, expecting "+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
 					else{outputConsole("Too few arguments, expecting "+countedRequiredArg);outputConsole("Syntax: "+commandGetSyntax(command));}
@@ -157,17 +322,20 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 		}
 	}
 	
-	
-	public boolean commandExists(String str){
-		for (Command me : Command.values()) {
-			if (me.name().equalsIgnoreCase(str))
-				return true;
+	public Command getCommand(String commandName){
+		for(Command c:commandsGlobal){
+			if(c.getName().equalsIgnoreCase(commandName))
+				return c;
 		}
-		return false;
-    }
+		for(Command c:commandsLocal){
+			if(c.getName().equalsIgnoreCase(commandName))
+				return c;
+		}
+		return null;
+	}
 	
 	public String commandGetSyntax(Command command){
-		String str=command.name()+"(",delimiter="";
+		String str=command.getName()+"(",delimiter="";
 		int i=0;
 		for(Arg arg:command.getArgs()){
 			if(i==0)
@@ -175,84 +343,14 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			else
 				delimiter=", ";
 			if(arg.getFlag()==Arg.Flag.OPTIONAL)
-				str+="["+delimiter+arg.getType().toStringShort()+" "+arg.getName()+"]";
+				str+=" ["+delimiter+arg.getType().toStringShort()+" "+arg.getName()+"]";
 			else if(arg.getFlag()==Arg.Flag.INFINITE)
-				str+="["+delimiter+arg.getType().toStringShort()+" "+arg.getName()+" ... ";
+				str+=" ["+delimiter+arg.getType().toStringShort()+"... "+arg.getName();
 			else 
 				str+=delimiter+arg.getType().toStringShort()+" "+arg.getName();
 		}
 		return str+")";
     }
-
-	public void executeRawCommand(Command command,String[] arg,int argumentCount){
-
-		switch(command){
-			case helpold:
-				String __str="";
-				for(Command cmd:Command.values()){
-					__str+=cmd.toString()+", ";
-				}
-				outputConsole(__str);
-				break;
-			case help:
-				for(Command cmd:Command.values()){
-					outputConsole(commandGetSyntax(cmd));
-				}
-				break;
-			case test:
-				String _str="";
-				for(int i=0;i<arg.length;i++)
-					_str+="["+i+"]="+arg[i]+"; ";
-				outputConsole(_str);
-				break;
-			case shit:
-				outputConsole("Yes shit");
-				break;
-			case scale:
-				view.setScale(Float.valueOf(arg[1].trim()).floatValue(),Float.valueOf(arg[1].trim()).floatValue());
-				outputConsole("Scaled the screen to "+arg[1]+"x");
-				break;
-			case display:
-				try{
-					PokemonGame.setDisplayMode(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Main.getContainer().isFullscreen());}
-				catch(NumberFormatException e){
-					e.printStackTrace();}
-				catch(SlickException e){
-					e.printStackTrace();}
-				outputConsole("Resolution set to "+arg[1]+"x"+arg[2]);
-				break;
-			case fullscreen:
-				PlayerInput.keyPress(Main.getConfig().game.keyMap.get(GlobalKey.FULLSCREEN),' ');
-				break;
-			case human:
-				new EntityHuman(Integer.valueOf(arg[1].trim()).intValue(),Integer.valueOf(arg[2].trim()).intValue(),Sprite.getAnimationGroup("Lyra"));
-				break;
-			case room:
-				PokemonGame.roomLoader.enterRoom(PokemonGame.roomLoader.rooms.get(Integer.valueOf(arg[1])));
-				break;
-			case view:
-				if(arg[1].equals("align")){
-					View.alignViews();}
-				else if(arg[1].equals("add")){
-					new View();
-					View.alignViews();}
-				else if(arg[1].equals("remove")){
-					View.getView(View.countViews()-1).destroy();
-					View.alignViews();}
-				else if(arg[1].equals("set")){
-					//TODO Antar att det ska vara något här.
-				}
-				else
-					outputConsole("Syntax: view(align|add|remove|set)");
-				break;
-			case exit:
-				Main.getContainer().exit();
-				break;
-			default:
-				outputConsole("Undefined Command: "+arg[0]);
-				break;
-		}
-	}
 	
 	public String strInsert(String str,String insertStr,int index){
 		return str.substring(0,index)+insertStr+str.substring(index);
@@ -359,9 +457,8 @@ public class Console extends RenderableObject implements PlayerInputControlObjec
 			else if(key==player.getKeymap(Key.ENTER)){
 				inputHistory.add(input);
 				inputHistoryIndex=inputHistory.size()-1;
-				executeCommand(input);
-				closeConsole();
-				player.removeObj(this);}
+				processInput(input);
+				closeConsole(player);}
 			else if(key==player.getKeymap(Key.UP)){
 				if(inputHistoryIndex>0){
 					inputSet(inputHistory.get(inputHistoryIndex));
@@ -427,6 +524,31 @@ class ConsoleOutputText extends Updater{
 	
 }
 
+abstract class Command{
+	private final String name;
+	private final Arg[] args;
+	
+	public Command(String name,Arg... args){
+		this.name=name;
+		this.args=args;}
+
+	public Command(String name){
+		this.name=name;
+		this.args=new Arg[]{};}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public Arg[] getArgs(){
+		return args;}
+	
+	public Arg getArg(int index){
+		return args[index];}
+	
+	public abstract void execute(Console console,String... args);
+}
+
 class Arg{
 	static enum Type{
 		INTEGER("int"),
@@ -446,6 +568,7 @@ class Arg{
 	private String name;
 	private Type type;
 	private Flag flag;
+	
 	Arg(String name,Type type,Flag flag){
 		this.name=name;
 		this.type=type;
@@ -454,10 +577,13 @@ class Arg{
 		this.name=name;
 		this.type=type;
 		this.flag=Flag.NONE;}
+	
 	public Type getType(){
 		return type;}
+	
 	public Flag getFlag(){
 		return flag;}
+	
 	public String getName(){
 		return name;}
 }

@@ -13,7 +13,6 @@ public class PokemonGame implements Game{//TODO: Use Locale for all in-game stri
 	private static final String TITLE = "Pokemon Project";
 	Keyboard keyboard = new Keyboard();
 	Mouse mouse;
-	//public static final String WORK_DIR = System.getProperty("user.dir");
 	public static final String RESOURCES_DIR = "resources/";
 	public static final String IMAGES_DIR = RESOURCES_DIR+"images/";
 	public static AngelCodeFont font;
@@ -114,11 +113,6 @@ public class PokemonGame implements Game{//TODO: Use Locale for all in-game stri
 	}
 	
 	public static void setDisplayMode(int width,int height,boolean fullscreen) throws SlickException{
-		//for(View view:View.list){
-			//view.setScale(((float)app.getWidth()/(float)width),(float)app.getHeight()/(float)height);
-			//view.viewXScale=(float)app.getWidth()/(float)width;
-			//view.viewYScale=(float)app.getHeight()/(float)height;
-		//}
 		((AppGameContainer)Main.getContainer()).setDisplayMode(width,height,fullscreen);
 		View.alignViews();
 	}

@@ -18,7 +18,7 @@ public abstract class Updater {
 	//TODO: Debugging to see which objects that the garbage collector didn't remove
 	@Override
 	public void finalize(){
-		System.out.println("Destroyed object of "+this.getClass().toString());
+		System.out.println("Destroyed object of "+this.getClass().getName()+" ("+this.hashCode()+")");
 	}
 	
 	public void update(){}

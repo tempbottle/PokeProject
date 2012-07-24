@@ -1,6 +1,6 @@
 package me.EdwJes.main.pokemongroups;
 
-import me.EdwJes.main.pokemon.Pokemon;
+import me.EdwJes.main.pokemon.data.Pokemon;
 
 public class Trainer implements PokemonGroup{
 	private static int MAX_POKEMONS=6;

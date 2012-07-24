@@ -1,4 +1,4 @@
-package me.EdwJes.main.pokemon;
+package me.EdwJes.main.pokemon.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;

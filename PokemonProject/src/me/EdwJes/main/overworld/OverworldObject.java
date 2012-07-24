@@ -11,7 +11,7 @@ import org.newdawn.slick.Image;
 public class OverworldObject extends RenderableObject{
 	public static List<OverworldObject> list = new ArrayList<OverworldObject>();
 	protected int xTile,yTile,depth = 0;
-	public boolean solid=true;
+	public boolean solid=true;//TODO: Non-solid objects
 	public CollisionMask collisionMask = new CollisionMask(0,0);
 	public final static int tileWidth=16,tileHeight=16;
 	public boolean canInteracted=false;

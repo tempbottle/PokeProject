@@ -119,8 +119,7 @@ public class PlayerInputEntityControl extends EntityControl implements PlayerInp
 		
 		else if(key==player.getKeymap(Key.CHAT)){
 			if(!player.view.cmd.isOn()){
-				player.setObj(player.view.cmd);
-				player.view.cmd.enterConsole();}
+				player.view.cmd.enterConsole(player);}
 		}
 	}
 	@Override

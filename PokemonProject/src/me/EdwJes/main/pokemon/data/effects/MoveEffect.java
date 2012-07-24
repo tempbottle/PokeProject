@@ -1,8 +1,8 @@
-package me.EdwJes.main.pokemon;
+package me.EdwJes.main.pokemon.data.effects;
 
 import java.util.HashMap;
 
-public class MoveEffect{
+public abstract class MoveEffect{
 	private String name;
 	public static HashMap<String,MoveEffect> effects=new HashMap<String,MoveEffect>();
 

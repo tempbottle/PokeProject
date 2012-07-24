@@ -1,5 +1,6 @@
 package me.EdwJes.main;
 
+import me.EdwJes.ActionListener;
 import me.EdwJes.main.config.Config.Key;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -15,6 +16,7 @@ public class Textbox extends RenderableObject implements PlayerInputControlObjec
 	private boolean finished=false;
 	private PlayerInput player;
 	private int rows=3;
+	public ActionListener actionListener=null;
 	
 	public Textbox(String text,View view){
 		init(text,view,PlayerInput.getPlayerInput(view));

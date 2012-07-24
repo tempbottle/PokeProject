@@ -16,6 +16,12 @@ public class EntityTest extends EntityHuman{
 	public void onInteracted(Entity interactor,int playerId){
 		super.onInteracted(interactor,playerId);
 		View playerView=PlayerInput.getPlayerInput(playerId).view;
-		playerView.setTextbox(new Textbox("YES YES YES",playerView));
+		Textbox textbox=new Textbox("YES YES YES",playerView){
+			@Override
+			public void onFinished(){
+				posMoveY(5);
+			}
+		};
+		playerView.setTextbox(textbox);
 	}
 }
