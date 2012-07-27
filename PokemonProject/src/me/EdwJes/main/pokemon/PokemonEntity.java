@@ -8,7 +8,7 @@ import me.EdwJes.main.pokemon.data.Item;
 import me.EdwJes.main.pokemon.data.Move;
 import me.EdwJes.main.pokemon.data.Nature;
 import me.EdwJes.main.pokemon.data.Pokemon;
-import me.EdwJes.main.pokemon.data.Stat;
+import me.EdwJes.main.pokemon.data.stats.Stats;
 
 public class PokemonEntity{
 /*TODO: Calculation of stats and damage
@@ -34,22 +34,22 @@ public class PokemonEntity{
 	public final long uniqueId;
 	public final Pokemon pokemon;
 	public final Nature nature;
+	public final Gender gender;
 	private List<Move> moves=new ArrayList<Move>(MAX_MOVES);
-	private Gender gender;
-	private Ability ability,hiddenAbility;
-	private int ivHP=0,ivATK=0,ivDEF=0,ivSPD=0,ivSPATK=0,ivSPDEF=0,
-			    evHP=0,evATK=0,evDEF=0,evSPD=0,evSPATK=0,evSPDEF=0,
-			    level=1,experience=0;
-	private Item heldItem;
+	private Ability ability=null,hiddenAbility=null;
+	private int level=1,experience=0;
+	private Stats iv,ev;
+	private Item heldItem=null;
 	
-	public PokemonEntity(long uniqueId,Pokemon pokemon,Nature nature){
+	public PokemonEntity(long uniqueId,Pokemon pokemon,Nature nature,Gender gender){
 		this.uniqueId=uniqueId;
 		this.pokemon=pokemon;
 		this.nature=nature;
+		this.gender=gender;
 	}
 	
 	public double getHP(){
-		return ((ivHP+(2*pokemon.getBaseHP()+(evHP/4)+100)*level)/100)+10;
+		return ((iv.HP+(2*pokemon.base.HP+(ev.HP/4)+100)*level)/100)+10;
 	}
 	
 	private double getStat(int iv,int ev,int base,double natureMultiplier){
@@ -57,30 +57,50 @@ public class PokemonEntity{
 	}
 	
 	public double getATK(){
-		return getStat(ivATK,evATK,pokemon.getBaseATK(),nature.multiplier.get(Stat.ATK));
+		return getStat(iv.ATK,ev.ATK,pokemon.base.ATK,nature.multiplier.get(Stats.Stat.ATK));
 	}
 	
 	public double getDEF(){
-		return getStat(ivDEF,evDEF,pokemon.getBaseDEF(),nature.multiplier.get(Stat.DEF));
+		return getStat(iv.DEF,ev.DEF,pokemon.base.DEF,nature.multiplier.get(Stats.Stat.DEF));
 	}
 	
 	public double getSPD(){
-		return getStat(ivSPD,evSPD,pokemon.getBaseSPD(),nature.multiplier.get(Stat.SPD));
+		return getStat(iv.SPD,ev.SPD,pokemon.base.SPD,nature.multiplier.get(Stats.Stat.SPD));
 	}
 	
 	public double getSPATK(){
-		return getStat(ivSPATK,evSPATK,pokemon.getBaseSPATK(),nature.multiplier.get(Stat.SPATK));
+		return getStat(iv.SPATK,ev.SPATK,pokemon.base.SPATK,nature.multiplier.get(Stats.Stat.SPATK));
 	}
 	
 	public double getSPDEF(){
-		return getStat(ivSPDEF,evSPDEF,pokemon.getBaseSPDEF(),nature.multiplier.get(Stat.SPDEF));
+		return getStat(iv.SPDEF,ev.SPDEF,pokemon.base.SPDEF,nature.multiplier.get(Stats.Stat.SPDEF));
 	}
 	
 	public int getExperience(){
 		return experience;
 	}
 	
+	public Move getMove(int index){
+		return moves.get(index);
+	}
+	
 	public int getExperienceToLevel(){
 		return pokemon.getExpGroup().getLevelExperience(level);
+	}
+
+	public Item getHeldItem(){
+		return heldItem;
+	}
+
+	public void setHeldItem(Item heldItem){
+		this.heldItem = heldItem;
+	}
+	
+	public void ivAdd(Stats.Stat stat,int amount){
+		iv.add(stat,amount);
+	}
+	
+	public void evAdd(Stats.Stat stat,int amount){
+		ev.add(stat,amount);
 	}
 }
