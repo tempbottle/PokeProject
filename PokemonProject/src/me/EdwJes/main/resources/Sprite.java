@@ -23,7 +23,7 @@ public class Sprite{
 	private static HashMap<String,ArrayList<Animation>> animationGroup=new HashMap<String,ArrayList<Animation>>();
 	
 	@SuppressWarnings("unchecked")
-	public static void load() throws IOException{	
+	public static void loadYAMLData() throws IOException{	
 		FileInputStream file=new FileInputStream(configFilename);
 		Yaml yaml=new Yaml();
 		//TODO: Cast to HashMap with the sprite data Object, if it isn't a map: load default values

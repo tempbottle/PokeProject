@@ -1,6 +1,7 @@
 package me.EdwJes.main.pokemon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import me.EdwJes.main.pokemon.data.Ability;
 import me.EdwJes.main.pokemon.data.Gender;
@@ -11,6 +12,8 @@ import me.EdwJes.main.pokemon.data.Pokemon;
 import me.EdwJes.main.pokemon.data.stats.Stats;
 
 public class PokemonEntity{
+//TODO: PokemonEntity Data Structure hint: http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV
+	
 /*TODO: Calculation of stats and damage
 /*	http://www.smogon.com/dp/articles/stats
  *  http://bulbapedia.bulbagarden.net/wiki/Stats
@@ -30,16 +33,19 @@ public class PokemonEntity{
 	
 //TODO: Load everything (Pokemons, types, attacks...) from data files e.g. YML configs into a HashMap or something similiar
 	
-	public static final int MAX_MOVES=4;
+	public static final int MAX_MOVES=4,MAX_HELD_ITEMS=2;
 	public final long uniqueId;
 	public final Pokemon pokemon;
 	public final Nature nature;
 	public final Gender gender;
 	private List<Move> moves=new ArrayList<Move>(MAX_MOVES);
-	private Ability ability=null,hiddenAbility=null;
-	private int level=1,experience=0;
+	private HashMap<Move,Integer> movesAddedPP=new HashMap<Move,Integer>();//E.g. from PP-Up
+	private List<Ability> ability=new ArrayList<Ability>();
+	private Ability hiddenAbility=null;
+	private int level=1,experience=0,happyness=0;
 	private Stats iv,ev;
-	private Item heldItem=null;
+	private List<Item> heldItems=new ArrayList<Item>(MAX_HELD_ITEMS);
+	private String nickname=null;
 	
 	public PokemonEntity(long uniqueId,Pokemon pokemon,Nature nature,Gender gender){
 		this.uniqueId=uniqueId;
@@ -87,14 +93,6 @@ public class PokemonEntity{
 	public int getExperienceToLevel(){
 		return pokemon.getExpGroup().getLevelExperience(level);
 	}
-
-	public Item getHeldItem(){
-		return heldItem;
-	}
-
-	public void setHeldItem(Item heldItem){
-		this.heldItem = heldItem;
-	}
 	
 	public void ivAdd(Stats.Stat stat,int amount){
 		iv.add(stat,amount);
@@ -102,5 +100,12 @@ public class PokemonEntity{
 	
 	public void evAdd(Stats.Stat stat,int amount){
 		ev.add(stat,amount);
+	}
+	
+	public String getName(){
+		if(nickname==null)
+			return pokemon.name;
+		else
+			return nickname;
 	}
 }

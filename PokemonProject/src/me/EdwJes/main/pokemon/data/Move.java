@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import me.EdwJes.main.pokemon.data.effects.MoveEffect;
 
+//TODO: http://bulbapedia.bulbagarden.net/wiki/Move_data_structure_in_Generation_III
 public class Move{
 	private static List<Move> moves=new ArrayList<Move>();
 	
@@ -35,6 +36,8 @@ public class Move{
 		this.basePP=basePP;
 		this.effect=null;
 		this.types=Arrays.asList(Arrays.copyOf(types,MAX_TYPES));
+		this.priority=0;
+		this.effectAccuracy=100;
 		moves.add(this);
 	}
 	
@@ -46,6 +49,8 @@ public class Move{
 		this.basePP=basePP;
 		this.effect=effect;
 		this.types=Arrays.asList(Arrays.copyOf(types,MAX_TYPES));
+		this.priority=0;
+		this.effectAccuracy=100;
 		moves.add(this);
 	}
 	
@@ -53,7 +58,7 @@ public class Move{
 	public final String name;
 	public final MoveEffect effect;
 	public final DamageCategory category;
-	public final int basePP,damagePower,accuracy;
+	public final int basePP,damagePower,accuracy,priority,effectAccuracy;
 	private String description;
 	private final List<Type> types;
 	

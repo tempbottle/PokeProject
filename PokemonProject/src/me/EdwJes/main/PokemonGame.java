@@ -28,7 +28,7 @@ public class PokemonGame implements Game{//TODO: Use Locale for all in-game stri
 		//TODO: Ful font init för test
 
 		try{
-			Sprite.load();}
+			Sprite.loadYAMLData();}
 		catch(IOException e){
 			e.printStackTrace();
 			System.out.println(e.toString());}
