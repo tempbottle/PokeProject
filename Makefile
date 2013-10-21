@@ -20,13 +20,13 @@ ifeq ($(OS),Windows_NT)
 	LDFLAGS=-lmingw32 -lSDL2main -mwindows -lopengl32 -lglu32
 else
 	UNAME_S := $(shell uname -s)
-	LDFLAGS=-lGL
 	ifneq "$(or ($(UNAME_S),Linux),($(UNAME_S),Darwin))" ""
 		OBJPOSTFIX=.o
+		LDFLAGS=-lGL
 	endif
 endif
 
-LDFLAGS+=-lSDL2
+LDFLAGS+= -lSDL2
 
 vpath %.cpp $(SRCDIR)
 

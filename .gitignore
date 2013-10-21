@@ -1,11 +1,12 @@
-#C
+# Object files
 *.o
+*.obj
 
-# Libraries
+# Static libraries
 *.lib
 *.a
 
-# Shared objects (inc. Windows DLLs)
+# Shared libraries
 *.dll
 *.so
 *.so.*
