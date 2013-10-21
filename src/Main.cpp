@@ -1,7 +1,7 @@
 #include <iostream>
 #include "SDL2/SDL.h"
 
-int main(int argc,char const *argv[]){
+int main(int argc, char *argv[]){
 	SDL_Init(SDL_INIT_VIDEO); // Initialize SDL2
 	
 	SDL_Window* window = SDL_CreateWindow(
