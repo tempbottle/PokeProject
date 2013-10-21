@@ -1,7 +1,7 @@
 CC=g++
 LINKER=g++
 CFLAGS=-g
-LDFLAGS=-lSDL2 -lGL
+LDFLAGS=
 
 BINDIR=bin
 OBJDIR=obj
@@ -17,13 +17,16 @@ OBJPOSTFIX=
 ifeq ($(OS),Windows_NT)
 	OUTPOSTFIX=.exe
 	OBJPOSTFIX=.obj
-	LDFLAGS+= -lSDL2main -lminGW32
+	LDFLAGS=-lmingw32 -lSDL2main -mwindows -lopengl32 -lglu32
 else
 	UNAME_S := $(shell uname -s)
+	LDFLAGS=-lGL
 	ifneq "$(or ($(UNAME_S),Linux),($(UNAME_S),Darwin))" ""
 		OBJPOSTFIX=.o
 	endif
 endif
+
+LDFLAGS+=-lSDL2
 
 vpath %.cpp $(SRCDIR)
 

@@ -1,7 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-
+#include "windows.h"
+ 
 #include "RendererOpenGL2.h"
 
 int main(int argc, char *argv[]){
