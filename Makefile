@@ -1,7 +1,7 @@
 CC=g++
 LINKER=g++
 CFLAGS=-g
-LDFLAGS=-lSDL2
+LDFLAGS=-lSDL2 -lGL
 
 BINDIR=bin
 OBJDIR=obj
