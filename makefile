@@ -17,6 +17,7 @@ OBJPOSTFIX=
 ifeq ($(OS),Windows_NT)
 	OUTPOSTFIX=.exe
 	OBJPOSTFIX=.obj
+	LDFLAGS+= -lSDL2main -lminGW32
 else
 	UNAME_S := $(shell uname -s)
 	ifneq "$(or ($(UNAME_S),Linux),($(UNAME_S),Darwin))" ""
