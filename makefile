@@ -27,7 +27,9 @@ endif
 
 vpath %.cpp $(SRCDIR)
 
-SOURCES=$(shell find . -name *.cpp ! -path '*/test/*')
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+
+SOURCES=$(call rwildcard,./$(SRCDIR),*.cpp)
 OBJECTS=$(SOURCES:./$(SRCDIR)/%.cpp=$(OBJDIR)/%$(OBJPOSTFIX))
 
 all: $(OUT)
