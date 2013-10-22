@@ -1,20 +1,30 @@
 #include "Player.h"
 #include <SDL2/SDL.h>
 
+#include "geom2d/Rectangle.h"
+
+Player::Player(int x,int y) : GameObject(x,y,(Rectangle){16,16}){
+	this->keyDown.left=false;
+	this->keyDown.right=false;
+	this->keyDown.up=false;
+	this->keyDown.down=false;
+}
+
 void Player::render(SDL_Renderer* renderer){
 	SDL_SetRenderDrawColor(renderer,128,192,255,255);
-	SDL_RenderFillRect(renderer,&this->dim);
+	SDL_Rect rect = {this->x,this->y,(int)this->collisionBox.width,(int)this->collisionBox.height};
+	SDL_RenderFillRect(renderer,&rect);
 }
 
 void Player::update(int deltaTime){
 	if(this->keyDown.left)
-		this->dim.x-=2;
+		this->x-=2;
 	if(this->keyDown.right)
-		this->dim.x+=2;
+		this->x+=2;
 	if(this->keyDown.up)
-		this->dim.y-=2;
+		this->y-=2;
 	if(this->keyDown.down)
-		this->dim.y+=2;
+		this->y+=2;
 }
 
 void Player::event(SDL_Event* event){

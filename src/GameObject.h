@@ -3,13 +3,14 @@
 
 #include "Renderable.h"
 #include "Updatable.h"
-#include <SDL2/SDL.h>
+#include "geom2d/Rectangle.h"
 
 class GameObject : public Renderable, public Updatable{
 public:
-	SDL_Rect dim;
+	int x,y;
+	Rectangle collisionBox;
 
-	GameObject(int x,int y,int w,int h);
+	GameObject(int x,int y,Rectangle collisionBox);
 };
 
 #endif

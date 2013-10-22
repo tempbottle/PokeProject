@@ -14,12 +14,7 @@ private:
 	} keyDown;
 
 public:
-	Player(int x,int y) : GameObject(x,y,16,16){
-		this->keyDown.left=false;
-		this->keyDown.right=false;
-		this->keyDown.up=false;
-		this->keyDown.down=false;
-	}
+	Player(int x,int y);
 
 	void render(SDL_Renderer* r);
 	void update(int deltaTime);
