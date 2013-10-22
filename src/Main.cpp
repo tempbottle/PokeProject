@@ -4,17 +4,41 @@
  
 #include "RendererOpenGL2.h"
 
+#define INITIAL_GAMEWINDOW_WIDTH 640
+#define INITIAL_GAMEWINDOW_HEIGHT 480
+
+void initGL_2D(){
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+
+	glShadeModel(GL_FLAT);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(0,0,0,1);
+}
+
+void initGL_viewport(unsigned int width,unsigned int height){
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0,width,height,0,1,-1);
+	glMatrixMode(GL_MODELVIEW);
+
+	glViewport(0,0,width,height);
+}
+
 int main(int argc, char *argv[]){
 	// Initialize SDL video
 	SDL_Init(SDL_INIT_VIDEO);
 	
 	SDL_Window* window = SDL_CreateWindow(
-		"Title",
+		"Pokemon Project++",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		640,
-		480,
-		SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE
+		INITIAL_GAMEWINDOW_WIDTH,
+		INITIAL_GAMEWINDOW_HEIGHT,
+		SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE
 	);
 
 	if(window==NULL){
@@ -27,29 +51,14 @@ int main(int argc, char *argv[]){
 	SDL_GLContext glContext = SDL_GL_CreateContext(window);
 	
 	//Prepare for rendering
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-
-	glShadeModel(GL_FLAT);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA); 
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0,480,480,0,1,-1);
-	glMatrixMode(GL_MODELVIEW);
-
-	glViewport(0,0,480,480);
- 
-	glClearColor(0,0,0,1);
+	initGL_2D();
+	initGL_viewport(INITIAL_GAMEWINDOW_WIDTH,INITIAL_GAMEWINDOW_HEIGHT);
+ 	Renderer* renderer = new RendererOpenGL2();
 
 	SDL_Event events;
 
-	Renderer* renderer = new RendererOpenGL2();
-
 	//Main loop
-	while(events.type!=SDL_QUIT){
+	do{
 		//Events and input
 		SDL_PollEvent(&events);
 
@@ -61,10 +70,10 @@ int main(int argc, char *argv[]){
 		renderer->drawRectangle(32,48,48,60);
 		renderer->render(&glContext);
 		
-		//Preparing for next step
-		SDL_GL_SwapWindow(window); //Swap the window/buffer to display the result.
+		//Prepare for next step
+		SDL_GL_SwapWindow(window); //Swap the window/buffer to display result.
 		SDL_Delay(10);//TODO: FPS syncing
-	}
+	}while(events.type!=SDL_QUIT);
 
 	//Clean up
 	SDL_GL_DeleteContext(glContext); 	
