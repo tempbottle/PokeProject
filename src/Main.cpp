@@ -85,7 +85,7 @@ int main(int argc, char *argv[]){
 
 		//Update
 		for(std::list<Updatable*>::iterator i=updatables.begin();i!=updatables.end();i++)
-			(*i)->update(0);//TODO: For now, 0 is the temporary delta time per step
+			(*i)->update(1);//TODO: For now, 1 is the temporary delta time per step
 
 		//Render
 		SDL_SetRenderDrawColor(renderer,0,0,0,255);//Clear color

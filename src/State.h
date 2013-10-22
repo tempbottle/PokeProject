@@ -9,10 +9,10 @@
 * State.h | Jesper Fridefors | jesper.fridefors@gmail.com
 * States are handled via a stack. A state transition can happen in two ways: either a new state
 * is pushed on the stack or a stack is popped off and you fall back on a previous state.
+* Author: Jesper Fridefors
 *
 */
-class State : public Renderable, public Updatable
-{
+class State : public Renderable, public Updatable {
 public:
 	SDL_Window* window;
 	bool requestsToBePushed;
@@ -20,7 +20,7 @@ public:
 	State* stateToBePushed;
 
 	State(SDL_Window* wndw){
-		window = wndw;
+		window=wndw;
 		requestsToBePushed = requestsToBePeeled = false;
 		stateToBePushed = NULL;
 	};
@@ -41,7 +41,7 @@ public:
 	virtual void render()       = 0;
 	virtual void fade_in()      = 0;
 	virtual void fade_out()     = 0;
-	virtual void handle_keys(SDL_Event* event) = 0;
+	virtual void handle_events(SDL_Event* event) = 0;
 	int fade_in_time;
 	int fade_out_time;
 
@@ -64,10 +64,9 @@ public:
 	int animation_time;
 	int elapsed_time;
 
-	TransitionState(void(*anim)(State*), State* old_st, State* new_st, SDL_Window* wndw) : State(wndw){
+	TransitionState(State* old_st, State* new_st, SDL_Window* wndw) : State(wndw){
 		st_1 = old_st;
 		st_2 = new_st;
-		
 	}
 	
 	void init() {
