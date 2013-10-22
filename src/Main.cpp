@@ -1,8 +1,11 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <list>
  
 #include "ExitCodes.h"
+#include "GameObject.h"
+#include "Player.h"
 
 #define INITIAL_GAMEWINDOW_WIDTH 480
 #define INITIAL_GAMEWINDOW_HEIGHT 360
@@ -37,16 +40,19 @@ int main(int argc, char *argv[]){
 	}
 
 	SDL_Texture* texture = IMG_LoadTexture(renderer,"test.png");
-	SDL_Rect textureDimensions;
+	SDL_Rect textureDimensions={0,0,0,0};
 	SDL_QueryTexture(texture,NULL,NULL,&textureDimensions.w,&textureDimensions.h); 
 
-	SDL_Rect rectangle = {.x=32,.y=48,.w=16,.h=32};
-	struct{
-		char left:1;
-		char right:1;
-		char up:1;
-		char down:1;
-	} keyDown={false,false,false,false};
+	std::list<Updatable*> updatables;
+	std::list<Renderable*> renderables;
+	std::list<EventHandleable*> eventHandleables;
+
+	{//Player creation	
+		Player* player = new Player(32,64);
+		updatables.push_front(player);
+		renderables.push_front(player);
+		eventHandleables.push_front(player);
+	}
 
 	SDL_Event events;
 
@@ -64,65 +70,34 @@ int main(int argc, char *argv[]){
 					break;
 				case SDL_KEYDOWN:
 					switch(events.key.keysym.sym){
-						case SDLK_LEFT:
-							keyDown.left=true;
-							break;
-						case SDLK_RIGHT:
-							keyDown.right=true;
-							break;
-						case SDLK_UP:
-							keyDown.up=true;
-							break;
-						case SDLK_DOWN:
-							keyDown.down=true;
-							break;
 						case SDLK_ESCAPE:
 							goto GameLoop_End;
-							break;
 					}
 					break;
-				case SDL_KEYUP:
-					switch(events.key.keysym.sym){
-						case SDLK_LEFT:
-							keyDown.left=false;
-							break;
-						case SDLK_RIGHT:
-							keyDown.right=false;
-							break;
-						case SDLK_UP:
-							keyDown.up=false;
-							break;
-						case SDLK_DOWN:
-							keyDown.down=false;
-							break;
-					}
-					break;
+				case SDL_QUIT:
+					goto GameLoop_End;
 			}
+
+    		for(std::list<EventHandleable*>::iterator i=eventHandleables.begin();i!=eventHandleables.end();i++)
+    			(*i)->event(&events);
 		}
-		if(keyDown.left)
-			rectangle.x-=2;
-		if(keyDown.right)
-			rectangle.x+=2;
-		if(keyDown.up)
-			rectangle.y-=2;
-		if(keyDown.down)
-			rectangle.y+=2;
 
 		//Update
+		for(std::list<Updatable*>::iterator i=updatables.begin();i!=updatables.end();i++)
+    		(*i)->update(0);//TODO: For now, 0 is the temporary delta time per step
 
 		//Render
-		SDL_SetRenderDrawColor(renderer,0,0,0,255);
-		SDL_RenderClear(renderer);//Clear screen
-		
-		SDL_RenderCopy(renderer,texture,NULL,&textureDimensions);
-		SDL_SetRenderDrawColor(renderer,128,192,255,255);
-		SDL_RenderFillRect(renderer,&rectangle);
+		SDL_SetRenderDrawColor(renderer,0,0,0,255);//Clear color
+		SDL_RenderClear(renderer);//Clear screen	
+			SDL_RenderCopy(renderer,texture,NULL,&textureDimensions);
 
+			for(std::list<Renderable*>::iterator i=renderables.begin();i!=renderables.end();i++)
+				(*i)->render(renderer);
 		SDL_RenderPresent(renderer);//Swap screen
 		
 		//Prepare for next step
 		SDL_Delay(10);//TODO: FPS syncing
-	}while(events.type!=SDL_QUIT);
+	}while(true);
 
 	GameLoop_End:
 

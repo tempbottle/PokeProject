@@ -1,6 +1,6 @@
 CC=g++
 LINKER=g++
-CFLAGS=-g $(shell sdl2-config --cflags)
+CFLAGS=-g $(shell sdl2-config --cflags) -Wall
 LDFLAGS=$(shell sdl2-config --libs) -lSDL2_image
 
 BINDIR=bin
