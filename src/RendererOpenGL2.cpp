@@ -10,6 +10,10 @@ void RendererOpenGL2::drawRectangle(int x1,int y1,int x2,int y2){
 	glRecti(x1,y1,x2,y2);
 }
 
+void RendererOpenGL2::drawRectangle(int x,int y,unsigned int w,unsigned int h){
+	glRecti(x,y,x+w,y+h);
+}
+
 void RendererOpenGL2::setColor(float red,float blue,float green){
 	glColor3f(red,green,blue);
 }

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_image.h>
  
 #include "RendererOpenGL2.h"
+#include "ExitCodes.h"
 
 #define INITIAL_GAMEWINDOW_WIDTH 480
 #define INITIAL_GAMEWINDOW_HEIGHT 360
@@ -30,7 +32,10 @@ void initGL_viewport(unsigned int width,unsigned int height){
 
 int main(int argc, char *argv[]){
 	// Initialize SDL video
-	SDL_Init(SDL_INIT_VIDEO);
+	if(SDL_Init(SDL_INIT_VIDEO)<0){
+		std::cout<<"SDL: Could not initiate: "<<SDL_GetError()<<std::endl;
+		return EXIT_ERROR_SDL_INIT;
+	}
 	
 	SDL_Window* window = SDL_CreateWindow(
 		"Pokemon Project++",
@@ -38,13 +43,13 @@ int main(int argc, char *argv[]){
 		SDL_WINDOWPOS_UNDEFINED,
 		INITIAL_GAMEWINDOW_WIDTH,
 		INITIAL_GAMEWINDOW_HEIGHT,
-		SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE
+		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
 	);
 
 	if(window==NULL){
-		std::cout<<"Could not create window: "<<SDL_GetError()<<std::endl;
+		std::cout << "Could not create window: " << SDL_GetError() << std::endl;
 		SDL_Quit();
-		return 1;
+		return EXIT_ERROR_SDL_WINDOW_CREATE;
 	}
 	
 	//Create context for rendering in window
@@ -54,6 +59,14 @@ int main(int argc, char *argv[]){
 	initGL_2D();
 	initGL_viewport(INITIAL_GAMEWINDOW_WIDTH,INITIAL_GAMEWINDOW_HEIGHT);
  	Renderer* renderer = new RendererOpenGL2();
+
+ 	#define IMAGE_FILENAME "test.png"
+ 	SDL_Surface* image = IMG_Load(IMAGE_FILENAME);
+	if(image==NULL){
+		std::cout << "SDL Image: Could not load image \"" << IMAGE_FILENAME << "\": " << IMG_GetError() << std::endl;
+		SDL_Quit();
+		return EXIT_ERROR_SDL_IMAGE_LOAD;
+	}
 
 	SDL_Event events;
 
@@ -75,9 +88,10 @@ int main(int argc, char *argv[]){
 
 		//Render
 		glClear(GL_COLOR_BUFFER_BIT);
-	
+
 		renderer->setColor(0.5f,1.0f,0.75f);
 		renderer->drawRectangle(32,48,48,60);
+		SDL_BlitSurface(image,0,SDL_GetWindowSurface(window),0);
 		renderer->render(&glContext);
 		
 		//Prepare for next step
@@ -90,5 +104,5 @@ int main(int argc, char *argv[]){
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 
-	return 0; 
+	return EXIT_SUCCESS; 
 }
