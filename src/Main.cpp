@@ -4,8 +4,8 @@
  
 #include "RendererOpenGL2.h"
 
-#define INITIAL_GAMEWINDOW_WIDTH 640
-#define INITIAL_GAMEWINDOW_HEIGHT 480
+#define INITIAL_GAMEWINDOW_WIDTH 480
+#define INITIAL_GAMEWINDOW_HEIGHT 360
 
 void initGL_2D(){
 	glDisable(GL_DEPTH_TEST);
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
 		SDL_WINDOWPOS_UNDEFINED,
 		INITIAL_GAMEWINDOW_WIDTH,
 		INITIAL_GAMEWINDOW_HEIGHT,
-		SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE
+		SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE
 	);
 
 	if(window==NULL){
@@ -61,12 +61,22 @@ int main(int argc, char *argv[]){
 	do{
 		//Events and input
 		SDL_PollEvent(&events);
+		switch(events.type){//http://wiki.libsdl.org/SDL_Event
+			case SDL_WINDOWEVENT:
+				switch(events.window.event){
+					case SDL_WINDOWEVENT_RESIZED:
+						initGL_viewport(events.window.data1,events.window.data2);
+						break;
+				}
+				break;
+		}
 
 		//Update
 
 		//Render
 		glClear(GL_COLOR_BUFFER_BIT);
 	
+		renderer->setColor(0.5f,1.0f,0.75f);
 		renderer->drawRectangle(32,48,48,60);
 		renderer->render(&glContext);
 		

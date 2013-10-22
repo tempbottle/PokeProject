@@ -9,6 +9,10 @@ public:
 	~RendererOpenGL2();
 
 	void drawRectangle(int x1,int y1,int x2,int y2);
+	void setColor(float red,float blue,float green);
+	void setColor(float red,float blue,float green,float alpha);
+	void setColor(unsigned char red,unsigned char blue,unsigned char green);
+	void setColor(unsigned char red,unsigned char blue,unsigned char green,unsigned char alpha);
 
 	void render(SDL_GLContext* glContext);
 };
