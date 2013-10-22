@@ -42,7 +42,12 @@ int main(int argc, char *argv[]){
 	SDL_QueryTexture(texture,NULL,NULL,&textureDimensions.w,&textureDimensions.h); 
 
 	SDL_Rect rectangle = {32,48,16,32};
-	//rectangle.x=32; rectangle.y=48; rectangle.w=16; rectangle.h=32;
+	struct{
+		char left:1;
+		char right:1;
+		char up:1;
+		char down:1;
+	} keyDown={false,false,false,false};
 
 	SDL_Event events;
 
