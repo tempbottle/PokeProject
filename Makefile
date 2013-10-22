@@ -1,7 +1,7 @@
 CC=g++
 LINKER=g++
-CFLAGS=-g
-LDFLAGS=
+CFLAGS=-g $(shell sdl2-config --cflags)
+LDFLAGS=$(shell sdl2-config --libs)
 
 BINDIR=bin
 OBJDIR=obj
@@ -17,16 +17,14 @@ OBJPOSTFIX=
 ifeq ($(OS),Windows_NT)
 	OUTPOSTFIX=.exe
 	OBJPOSTFIX=.obj
-	LDFLAGS=-lmingw32 -lSDL2main -mwindows -lopengl32 -lglu32
+	LDFLAGS+= -lopengl32 -lglu32
 else
 	UNAME_S := $(shell uname -s)
 	ifneq "$(or ($(UNAME_S),Linux),($(UNAME_S),Darwin))" ""
 		OBJPOSTFIX=.o
-		LDFLAGS=-lGL
+		LDFLAGS+= -lGL
 	endif
 endif
-
-LDFLAGS+= -lSDL2
 
 vpath %.cpp $(SRCDIR)
 
