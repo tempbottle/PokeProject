@@ -41,22 +41,72 @@ int main(int argc, char *argv[]){
 	SDL_QueryTexture(texture,NULL,NULL,&textureDimensions.w,&textureDimensions.h); 
 
 	SDL_Rect rectangle = {.x=32,.y=48,.w=16,.h=32};
+	struct{
+		char left:1;
+		char right:1;
+		char up:1;
+		char down:1;
+	} keyDown={false,false,false,false};
 
 	SDL_Event events;
 
 	//Main loop
 	do{
 		//Events and input
-		SDL_PollEvent(&events);
-		switch(events.type){//http://wiki.libsdl.org/SDL_Event
-			case SDL_WINDOWEVENT:
-				switch(events.window.event){
-					case SDL_WINDOWEVENT_RESIZED:
-						//initGL_viewport(events.window.data1,events.window.data2);
-						break;
-				}
-				break;
+		while(SDL_PollEvent(&events)){
+			switch(events.type){//http://wiki.libsdl.org/SDL_Event
+				case SDL_WINDOWEVENT:
+					switch(events.window.event){
+						case SDL_WINDOWEVENT_RESIZED:
+							//initGL_viewport(events.window.data1,events.window.data2);
+							break;
+					}
+					break;
+				case SDL_KEYDOWN:
+					switch(events.key.keysym.sym){
+						case SDLK_LEFT:
+							keyDown.left=true;
+							break;
+						case SDLK_RIGHT:
+							keyDown.right=true;
+							break;
+						case SDLK_UP:
+							keyDown.up=true;
+							break;
+						case SDLK_DOWN:
+							keyDown.down=true;
+							break;
+						case SDLK_ESCAPE:
+							goto GameLoop_End;
+							break;
+					}
+					break;
+				case SDL_KEYUP:
+					switch(events.key.keysym.sym){
+						case SDLK_LEFT:
+							keyDown.left=false;
+							break;
+						case SDLK_RIGHT:
+							keyDown.right=false;
+							break;
+						case SDLK_UP:
+							keyDown.up=false;
+							break;
+						case SDLK_DOWN:
+							keyDown.down=false;
+							break;
+					}
+					break;
+			}
 		}
+		if(keyDown.left)
+			rectangle.x-=2;
+		if(keyDown.right)
+			rectangle.x+=2;
+		if(keyDown.up)
+			rectangle.y-=2;
+		if(keyDown.down)
+			rectangle.y+=2;
 
 		//Update
 
@@ -74,11 +124,13 @@ int main(int argc, char *argv[]){
 		SDL_Delay(10);//TODO: FPS syncing
 	}while(events.type!=SDL_QUIT);
 
+	GameLoop_End:
+
 	//Clean up
 	SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 
-	return EXIT_SUCCESS; 
+	return EXIT_SUCCESS;
 }
