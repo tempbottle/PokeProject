@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
  
 #include "ExitCodes.h"
+#include "State.h"
 
 #define INITIAL_GAMEWINDOW_WIDTH 480
 #define INITIAL_GAMEWINDOW_HEIGHT 360
@@ -40,11 +41,13 @@ int main(int argc, char *argv[]){
 	SDL_Rect textureDimensions;
 	SDL_QueryTexture(texture,NULL,NULL,&textureDimensions.w,&textureDimensions.h); 
 
-	SDL_Rect rectangle = {.x=32,.y=48,.w=16,.h=32};
+	SDL_Rect rectangle = {32,48,16,32};
+	//rectangle.x=32; rectangle.y=48; rectangle.w=16; rectangle.h=32;
 
 	SDL_Event events;
 
 	//Main loop
+
 	do{
 		//Events and input
 		SDL_PollEvent(&events);
