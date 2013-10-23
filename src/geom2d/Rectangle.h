@@ -1,13 +1,14 @@
 #ifndef POKEMONPROJECT_GEOM2D_RECTANGLE_H
 #define POKEMONPROJECT_GEOM2D_RECTANGLE_H
 
+template <typename T>
 struct Rectangle{
-	float width;
-	float height;
+	T width;
+	T height;
 
-	float hypotenuse() const;
-	float area() const;
-	float perimeter() const;
+	T hypotenuse() const;
+	T area() const;
+	T perimeter() const;
 };
 
 #endif

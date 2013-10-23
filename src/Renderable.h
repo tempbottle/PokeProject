@@ -2,9 +2,9 @@
 #define POKEMONPROJECT_RENDERABLE_H
 
 #include "ListHandleable.h"
-#include "ListHandler.h"
 
 struct SDL_Renderer;
+class ListHandler;
 
 class Renderable : public ListHandleable{
 public:
@@ -12,13 +12,8 @@ public:
 
 	static const int tileSize=16;
 
-	virtual void addToList(ListHandler* handler){
-		handler->renderables.push_front(this);
-	}
-
-	virtual void removeFromList(ListHandler* handler){
-		handler->renderables.remove(this);
-	}
+	virtual void addToList(ListHandler* handler);
+	virtual void removeFromList(ListHandler* handler);
 };
 
 #endif

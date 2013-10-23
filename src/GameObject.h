@@ -8,9 +8,9 @@
 class GameObject : public Renderable, public Updatable{
 public:
 	int x,y;
-	Rectangle collisionBox;
+	Rectangle<unsigned int> collisionBox;
 
-	GameObject(int x,int y,Rectangle collisionBox);
+	GameObject(int x,int y,Rectangle<unsigned int> collisionBox);
 };
 
 #endif

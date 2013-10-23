@@ -2,19 +2,15 @@
 #define POKEMONPROJECT_UPDATABLE_H
 
 #include "ListHandleable.h"
-#include "ListHandler.h"
+
+class ListHandler;
 
 class Updatable : public ListHandleable{
 public:
 	virtual void update(int deltaTime) = 0;
 
-	virtual void addToList(ListHandler* handler){
-		handler->updatables.push_front(this);
-	}
-
-	virtual void removeFromList(ListHandler* handler){
-		handler->updatables.remove(this);
-	}
+	virtual void addToList(ListHandler* handler);
+	virtual void removeFromList(ListHandler* handler);
 };
 
 #endif

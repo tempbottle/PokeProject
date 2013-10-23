@@ -5,8 +5,10 @@
  
 #include "ExitCodes.h"
 #include "GameObject.h"
-#include "Player.h"
+#include "overworld/Player.h"
 #include "State.h"
+#include "ListHandler.h"
+#include "Texture.h"
 
 #define INITIAL_GAMEWINDOW_WIDTH 480
 #define INITIAL_GAMEWINDOW_HEIGHT 360
@@ -40,9 +42,7 @@ int main(int argc, char *argv[]){
 		return EXIT_ERROR_SDL_RENDERER_CREATE;
 	}
 
-	SDL_Texture* texture = IMG_LoadTexture(renderer,"test.png");
-	SDL_Rect textureDimensions={0,0,0,0};
-	SDL_QueryTexture(texture,NULL,NULL,&textureDimensions.w,&textureDimensions.h); 
+	Texture* texture = new Texture(IMG_LoadTexture(renderer,"test.png"));//TODO: All textures belongs to one specific renderer and our model is incorrect because you can pass any renderer to a texture when rendering
 
 	ListHandler* listHandler = new ListHandler();
 
@@ -56,13 +56,6 @@ int main(int argc, char *argv[]){
 		//Events and input
 		while(SDL_PollEvent(&events)){
 			switch(events.type){//http://wiki.libsdl.org/SDL_Event
-				case SDL_WINDOWEVENT:
-					switch(events.window.event){
-						case SDL_WINDOWEVENT_RESIZED:
-							//initGL_viewport(events.window.data1,events.window.data2);
-							break;
-					}
-					break;
 				case SDL_KEYDOWN:
 					switch(events.key.keysym.sym){
 						case SDLK_ESCAPE:
@@ -84,7 +77,7 @@ int main(int argc, char *argv[]){
 		//Render
 		SDL_SetRenderDrawColor(renderer,0,0,0,255);//Clear color
 		SDL_RenderClear(renderer);//Clear screen	
-			SDL_RenderCopy(renderer,texture,NULL,&textureDimensions);
+			texture->render(renderer);
 
 			for(std::list<Renderable*>::iterator i=listHandler->renderables.begin();i!=listHandler->renderables.end();i++)
 				(*i)->render(renderer);
@@ -97,7 +90,7 @@ int main(int argc, char *argv[]){
 	GameLoop_End:
 
 	//Clean up
-	SDL_DestroyTexture(texture);
+	SDL_DestroyTexture(texture->texture);
     SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();

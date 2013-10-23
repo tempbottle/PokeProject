@@ -2,14 +2,18 @@
 
 #include <cmath>
 
-float Rectangle::hypotenuse() const{
+template <typename T>
+T Rectangle<T>::hypotenuse() const{
 	return hypot(this->width,this->height);
 }
 
-float Rectangle::area() const{
+template <typename T>
+T Rectangle<T>::area() const{
 	return this->width*this->height;
 }
 
-float Rectangle::perimeter() const{
+template <typename T>
+T Rectangle<T>::perimeter() const{
 	return this->width*2 + this->height*2;
 }
+
