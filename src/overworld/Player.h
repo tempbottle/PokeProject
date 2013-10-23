@@ -4,6 +4,11 @@
 #include "Entity.h"
 #include "EventHandleable.h"
 
+/**
+ * Players have some kind of input handler on top of their Entity ancestor
+ *
+ * Author: Lolirofle
+ */
 class Player : public Entity, public EventHandleable{
 public:
 	Player(int x,int y);

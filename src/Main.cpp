@@ -4,7 +4,7 @@
 #include <list>
  
 #include "ExitCodes.h"
-#include "GameObject.h"
+#include "overworld/OverworldObject.h"
 #include "overworld/Player.h"
 #include "State.h"
 #include "ListHandler.h"

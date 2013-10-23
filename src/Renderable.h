@@ -10,8 +10,6 @@ class Renderable : public ListHandleable{
 public:
 	virtual void render(SDL_Renderer* r) = 0;
 
-	static const int tileSize=16;
-
 	virtual void addToList(ListHandler* handler);
 	virtual void removeFromList(ListHandler* handler);
 };

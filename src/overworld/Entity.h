@@ -1,8 +1,11 @@
 #ifndef POKEMONPROJECT_ENTITY_H
 #define POKEMONPROJECT_ENTITY_H
 
-#include "GameObject.h"
+#include "OverworldObject.h"
 
+/**
+ * Constants defining directions in radians
+ */
 namespace EntityDirection{
 	extern const float LEFT;
 	extern const float RIGHT;
@@ -10,17 +13,35 @@ namespace EntityDirection{
 	extern const float DOWN;
 }
 
-class Entity : public GameObject{
+/**
+ * Entities are overworld objects that are "living".
+ * Organic lives, which can move around.
+ *
+ * Author: Lolirofle
+ */
+class Entity : public OverworldObject{
 public:
 	/**
 	 * In radians
 	 */
 	float direction;
 
+	/**
+	 * Movement speed 
+	 */
 	float moveSpeed;
+
 	unsigned int moveTileSpeed;
+
+	/**
+	 * Indicates if the entity is currently moving
+	 */
 	bool isMoving;
 
+	/**
+	 * Offset position for rendering.
+	 * Used in movement
+	 */
 	float renderXOffset;
 	float renderYOffset;
 
@@ -37,8 +58,19 @@ public:
 	bool moveUp(unsigned short steps);
 	bool moveDown(unsigned short steps);
 
+	/**
+	 * Called when the entity has succeded moving one tile
+	 */
 	virtual bool onMovement(int x,int y)=0;
+
+	/**
+	 * Called when the entity has began to move
+	 */
 	virtual bool onMove(int xTo,int yTo)=0;
+
+	/**
+	 * Called when the entity has reached its destination when moving
+	 */
 	virtual void onMoveFinished()=0;
 };
 

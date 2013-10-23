@@ -1,6 +1,11 @@
 #ifndef POKEMONPROJECT_GEOM2D_POSITION_H
 #define POKEMONPROJECT_GEOM2D_POSITION_H
 
+/**
+ * Position defines a position in a two dimensional plane
+ *
+ * Author: Lolirofle
+ */
 template <typename T>
 struct Position{
 	T x;
