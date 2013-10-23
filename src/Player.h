@@ -14,6 +14,22 @@ private:
 	} keyDown;
 
 public:
+	/**
+	 * Directions:
+	 * 0   = Down
+	 * 0.5 = Left
+	 * 1   = Up
+	 * 1.5 = Right
+	 */
+	float faceDirection,moveDirection;
+
+	float moveSpeed;
+	unsigned int moveTileSpeed;
+	bool isMoving;
+
+	float renderXOffset;
+	float renderYOffset;
+
 	Player(int x,int y);
 
 	void render(SDL_Renderer* r);

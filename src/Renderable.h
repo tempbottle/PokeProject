@@ -6,6 +6,8 @@ struct SDL_Renderer;
 class Renderable{
 public:
 	virtual void render(SDL_Renderer* r) = 0;
+
+	static const int tileSize=16;
 };
 
 #endif

@@ -12,19 +12,18 @@
 * Author: Jesper Fridefors
 *
 */
-class State : public Renderable, public Updatable {
+class State : public Renderable{
 public:
 	SDL_Window* window;
 	bool requestsToBePushed;
 	bool requestsToBePeeled;
 	State* stateToBePushed;
+	int fade_in_time;
+	int fade_out_time;
 
-	State(SDL_Window* wndw){
-		window=wndw;
+	State(SDL_Window* window) : window(window), stateToBePushed(NULL){
 		requestsToBePushed = requestsToBePeeled = false;
-		stateToBePushed = NULL;
 	};
-	~State(){};
 	
 	void requestPush(State* st){
 		requestsToBePushed = true;
@@ -35,21 +34,13 @@ public:
 		requestsToBePeeled = true;
 	}
 	
-	virtual void init()         = 0; //whenever this state is created and pushed on the stack.
-	virtual void fall_back()    = 0; //whenever this state is falled back upon.
-	virtual void update(int dt) = 0;
-	virtual void render()       = 0;
-	virtual void fade_in()      = 0;
-	virtual void fade_out()     = 0;
-	virtual void handle_events(SDL_Event* event) = 0;
-	int fade_in_time;
-	int fade_out_time;
-
-	/* data */
+	virtual void init()      = 0; //whenever this state is created and pushed on the stack.
+	virtual void fall_back() = 0; //whenever this state is falled back upon.
+	virtual void fade_in()   = 0;
+	virtual void fade_out()  = 0;
 };
 
-class TransitionState : State
-{
+class TransitionState : public State, public Updatable{
 public:
 	State* st_1;
 	State* st_2;
@@ -64,10 +55,7 @@ public:
 	int animation_time;
 	int elapsed_time;
 
-	TransitionState(State* old_st, State* new_st, SDL_Window* wndw) : State(wndw){
-		st_1 = old_st;
-		st_2 = new_st;
-	}
+	TransitionState(State* old_st, State* new_st, SDL_Window* wndw) : State(wndw), st_1(old_st), st_2(new_st){}
 	
 	void init() {
 		animation_time = st_1->fade_out_time;
@@ -102,7 +90,7 @@ public:
 	}
 	
 
-	void render() {
+	void render(SDL_Renderer* r) {
 		if(upward_or_down && fade) //fades out from lower state
 			st_1->fade_out();
 		if(upward_or_down && !fade)//fades in higher state

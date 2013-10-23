@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
 	std::list<EventHandleable*> eventHandleables;
 
 	{//Player creation	
-		Player* player = new Player(32,64);
+		Player* player = new Player(2,4);
 		updatables.push_front(player);
 		renderables.push_front(player);
 		eventHandleables.push_front(player);
