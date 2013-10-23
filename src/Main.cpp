@@ -8,7 +8,7 @@
 #include "overworld/Player.h"
 #include "State.h"
 #include "ListHandler.h"
-#include "Texture.h"
+#include "graphics/Texture.h"
 
 #define INITIAL_GAMEWINDOW_WIDTH 480
 #define INITIAL_GAMEWINDOW_HEIGHT 360
@@ -32,6 +32,11 @@ int main(int argc, char *argv[]){
 		std::cout << "Could not create window: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return EXIT_ERROR_SDL_WINDOW_CREATE;
+	}
+
+	if((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG){
+		std::cout << "Could not initiate PNG loader: " << std::endl;
+		return 1;
 	}
 
 	//Prepare for rendering
