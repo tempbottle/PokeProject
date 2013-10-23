@@ -46,6 +46,7 @@ bool Entity::moveLeft(unsigned short steps){
 		return false;
 	this->x-=moveTileSpeed;
 	this->isMoving=true;
+	this->direction=EntityDirection::LEFT;
 	renderXOffset=Renderable::tileSize;
 	return true;
 }
@@ -55,6 +56,7 @@ bool Entity::moveRight(unsigned short steps){
 		return false;
 	this->x+=moveTileSpeed;
 	this->isMoving=true;
+	this->direction=EntityDirection::RIGHT;
 	renderXOffset=-Renderable::tileSize;
 	return true;
 }
@@ -64,6 +66,7 @@ bool Entity::moveUp(unsigned short steps){
 		return false;
 	this->y-=moveTileSpeed;
 	this->isMoving=true;
+	this->direction=EntityDirection::UP;
 	renderYOffset=Renderable::tileSize;
 	return true;
 }
@@ -73,6 +76,7 @@ bool Entity::moveDown(unsigned short steps){
 		return false;
 	this->y+=moveTileSpeed;
 	this->isMoving=true;
+	this->direction=EntityDirection::DOWN;
 	renderYOffset=-Renderable::tileSize;
 	return true;
 }
@@ -85,4 +89,13 @@ void Entity::addToList(ListHandler* handler){
 void Entity::removeFromList(ListHandler* handler){
 	Updatable::removeFromList(handler);
 	Renderable::removeFromList(handler);
+}
+
+#include <cmath>
+
+namespace EntityDirection{
+	const float LEFT  = atan2( 0.0f,-1.0f);
+	const float RIGHT = atan2( 0.0f, 1.0f);
+	const float UP    = atan2(-1.0f, 0.0f);
+	const float DOWN  = atan2( 1.0f, 0.0f);
 }

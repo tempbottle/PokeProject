@@ -3,6 +3,13 @@
 
 #include "GameObject.h"
 
+namespace EntityDirection{
+	extern const float LEFT;
+	extern const float RIGHT;
+	extern const float UP;
+	extern const float DOWN;
+}
+
 class Entity : public GameObject{
 public:
 	/**
