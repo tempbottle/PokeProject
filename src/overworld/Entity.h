@@ -47,7 +47,7 @@ public:
 
 	Entity(int x,int y);
 
-	virtual void render(SDL_Renderer* r);
+	virtual void render(Renderer* r);
 	virtual void update(int deltaTime);
 
 	virtual void addToList(ListHandler* handler);

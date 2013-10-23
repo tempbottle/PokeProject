@@ -1,10 +1,13 @@
 #include "Texture.h"
 
+#include <cstddef>
+#include <SDL2/SDL.h>
+#include "graphics/Renderer.h"
+
 Texture::Texture(SDL_Texture* texture) : texture(texture){
 	SDL_QueryTexture(texture,NULL,NULL,&this->dimensions.width,&this->dimensions.height);
 }
 
-void Texture::render(SDL_Renderer* renderer){
-	SDL_Rect r = {0,0,this->dimensions.width,this->dimensions.height};
-	SDL_RenderCopy(renderer,this->texture,NULL,&r);
+void Texture::render(Renderer* renderer){
+	renderer->drawTexture(this);
 }

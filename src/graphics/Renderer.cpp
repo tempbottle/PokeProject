@@ -1,9 +1,9 @@
 #include "Renderer.h"
 
-#include "geom2d/Position.h"
+#include "geom2d/Vector.h"
 
-void Renderer::positionTranslate(Position<float> pos,void(*renderFunc)(Renderer*)){
-	positionTranslate(pos);
+void Renderer::positionTranslate(Vector<float> v,void(*renderFunc)(Renderer*)){
+	positionTranslate(v);
 		renderFunc(this);
-	positionTranslate(-pos);
+	positionTranslate(-v);
 }

@@ -4,17 +4,25 @@
 
 #include "geom2d/Rectangle.h"
 #include "Renderable.h"
+#include "graphics/Renderer.h"
 
 Entity::Entity(int x,int y) : OverworldObject(x,y,(Rectangle<unsigned int>){1,1}),direction(0.0f),moveSpeed(1.0f),moveTileSpeed(1),isMoving(false),renderXOffset(0.0f),renderYOffset(0.0f){}
 
-void Entity::render(SDL_Renderer* renderer){
-	SDL_SetRenderDrawColor(renderer,128,192,255,255);
-	SDL_Rect rect = {
-		this->x*(signed)OverworldObject::tileSize + (int)this->renderXOffset,
-		this->y*(signed)OverworldObject::tileSize + (int)this->renderYOffset,
-		(signed)this->collisionBox.width * (signed)OverworldObject::tileSize,
-		(signed)this->collisionBox.height * (signed)OverworldObject::tileSize};
-	SDL_RenderFillRect(renderer,&rect);
+void Entity::render(Renderer* renderer){
+	renderer->setColor((unsigned char)128,(unsigned char)192,(unsigned char)255,(unsigned char)255);
+	Vector<float> v = (Vector<float>){
+		this->x*(signed)OverworldObject::tileSize + this->renderXOffset,
+		this->y*(signed)OverworldObject::tileSize + this->renderYOffset
+	};
+
+	renderer->positionTranslate(v);
+	renderer->drawRectangle(
+		(Rectangle<unsigned int>){
+			(unsigned)this->collisionBox.width * (unsigned)OverworldObject::tileSize,
+			(unsigned)this->collisionBox.height * (unsigned)OverworldObject::tileSize
+		}
+	);
+	renderer->positionTranslate(-v);
 }
 
 void Entity::update(int deltaTime){

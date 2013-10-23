@@ -3,19 +3,18 @@
 
 #include "geom2d/Rectangle.h"
 #include "Renderable.h"
-#include <SDL2/SDL.h>
 
 struct SDL_Texture;
 
 class Texture : public Renderable{
 public:
-	Rectangle<int> dimensions;
 	SDL_Texture* texture;
+	Rectangle<int> dimensions;
 
 	Texture(SDL_Texture* texture);
-	~Texture();
+	virtual ~Texture(){}
 
-	void render(SDL_Renderer* renderer);
+	void render(Renderer* renderer);
 };
 
 #endif

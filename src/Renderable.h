@@ -3,12 +3,12 @@
 
 #include "ListHandleable.h"
 
-struct SDL_Renderer;
+class Renderer;
 class ListHandler;
 
 class Renderable : public ListHandleable{
 public:
-	virtual void render(SDL_Renderer* r) = 0;
+	virtual void render(Renderer* r) = 0;
 
 	virtual void addToList(ListHandler* handler);
 	virtual void removeFromList(ListHandler* handler);
