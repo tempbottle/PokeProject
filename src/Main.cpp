@@ -6,8 +6,8 @@
 #include "ExitCodes.h"
 #include "overworld/OverworldObject.h"
 #include "overworld/Player.h"
-#include "State.h"
-#include "ListHandler.h"
+#include "control/State.h"
+#include "control/ListHandler.h"
 #include "graphics/Texture.h"
 
 #define INITIAL_GAMEWINDOW_WIDTH 480

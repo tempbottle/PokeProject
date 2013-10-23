@@ -2,7 +2,7 @@
 #define POKEMONPROJECT_PLAYER_H
 
 #include "Entity.h"
-#include "EventHandleable.h"
+#include "control/EventHandleable.h"
 
 /**
  * Players have some kind of input handler on top of their Entity ancestor
