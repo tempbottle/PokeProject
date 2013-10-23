@@ -2,7 +2,7 @@
 #define POKEMONPROJECT_TEXTURE_H
 
 #include "geom2d/Rectangle.h"
-#include "Renderable.h"
+#include "traits/Renderable.h"
 #include <SDL2/SDL.h>
 
 struct SDL_Texture;

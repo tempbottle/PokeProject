@@ -1,8 +1,8 @@
 #ifndef POKEMONPROJECT_OVERWORLDOBJECT_H
 #define POKEMONPROJECT_OVERWORLDOBJECT_H
 
-#include "Renderable.h"
-#include "Updatable.h"
+#include "traits/Renderable.h"
+#include "traits/Updatable.h"
 #include "geom2d/Rectangle.h"
 
 /**
