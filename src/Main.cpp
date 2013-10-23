@@ -56,7 +56,7 @@ int main(int argc, char *argv[]){
 	(new Player(2,4))->addToList(listHandler);
 	
 	SDL_Event events;
-
+Vector<float> v={0,0};
 	//Main loop
 	do{
 		//Events and input
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]){
 			(*i)->update(1);//TODO: For now, 1 is the temporary delta time per step
 
 		//Render
-		renderer->begin();	
+		renderer->begin();
 			texture->render(renderer);
 
 			for(std::list<Renderable*>::iterator i=listHandler->renderables.begin();i!=listHandler->renderables.end();i++)
