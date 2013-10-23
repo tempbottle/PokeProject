@@ -44,17 +44,11 @@ int main(int argc, char *argv[]){
 	SDL_Rect textureDimensions={0,0,0,0};
 	SDL_QueryTexture(texture,NULL,NULL,&textureDimensions.w,&textureDimensions.h); 
 
-	std::list<Updatable*> updatables;
-	std::list<Renderable*> renderables;
-	std::list<EventHandleable*> eventHandleables;
+	ListHandler* listHandler = new ListHandler();
 
-	{//Player creation	
-		Player* player = new Player(2,4);
-		updatables.push_front(player);
-		renderables.push_front(player);
-		eventHandleables.push_front(player);
-	}
-
+	//Player creation	
+	(new Player(2,4))->addToList(listHandler);
+	
 	SDL_Event events;
 
 	//Main loop
@@ -79,12 +73,12 @@ int main(int argc, char *argv[]){
 					goto GameLoop_End;
 			}
 
-    		for(std::list<EventHandleable*>::iterator i=eventHandleables.begin();i!=eventHandleables.end();i++)
+    		for(std::list<EventHandleable*>::iterator i=listHandler->eventHandleables.begin();i!=listHandler->eventHandleables.end();i++)
     			(*i)->event(&events);
 		}
 
 		//Update
-		for(std::list<Updatable*>::iterator i=updatables.begin();i!=updatables.end();i++)
+		for(std::list<Updatable*>::iterator i=listHandler->updatables.begin();i!=listHandler->updatables.end();i++)
 			(*i)->update(1);//TODO: For now, 1 is the temporary delta time per step
 
 		//Render
@@ -92,7 +86,7 @@ int main(int argc, char *argv[]){
 		SDL_RenderClear(renderer);//Clear screen	
 			SDL_RenderCopy(renderer,texture,NULL,&textureDimensions);
 
-			for(std::list<Renderable*>::iterator i=renderables.begin();i!=renderables.end();i++)
+			for(std::list<Renderable*>::iterator i=listHandler->renderables.begin();i!=listHandler->renderables.end();i++)
 				(*i)->render(renderer);
 		SDL_RenderPresent(renderer);//Swap screen
 		

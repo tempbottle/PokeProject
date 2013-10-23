@@ -100,3 +100,15 @@ void Player::event(SDL_Event* event){
 			break;
 	}
 }
+
+void Player::addToList(ListHandler* handler){
+	Updatable::addToList(handler);
+	Renderable::addToList(handler);
+	EventHandleable::addToList(handler);
+}
+
+void Player::removeFromList(ListHandler* handler){
+	Updatable::removeFromList(handler);
+	Renderable::removeFromList(handler);
+	EventHandleable::removeFromList(handler);
+}

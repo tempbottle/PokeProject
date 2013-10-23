@@ -35,6 +35,9 @@ public:
 	void render(SDL_Renderer* r);
 	void update(int deltaTime);
 	void event(SDL_Event* event);
+
+	void addToList(ListHandler* handler);
+	void removeFromList(ListHandler* handler);
 };
 
 #endif
