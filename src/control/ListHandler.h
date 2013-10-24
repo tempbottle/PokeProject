@@ -2,9 +2,10 @@
 #define POKEMONPROJECT_LISTHANDLER_H
 
 #include <list>
+#include "traits/Renderable.h"
+#include "traits/Updatable.h"
+#include "traits/EventHandleable.h"
 
-class Updatable;
-class Renderable;
 class EventHandleable;
 
 /**
@@ -12,14 +13,18 @@ class EventHandleable;
  *
  * Author: Lolirofle
  */
-class ListHandler{
+class ListHandler : public Renderable,public Updatable,public EventHandleable{
 public:
 	std::list<Updatable*> updatables;
 	std::list<Renderable*> renderables;
 	std::list<EventHandleable*> eventHandleables;
 
+	void render(Renderer* r);
+	void event(SDL_Event* event);
+	void update(int deltaTime);
+
 	ListHandler(){};
-	~ListHandler(){};
+	virtual ~ListHandler(){};
 };
 
 #endif

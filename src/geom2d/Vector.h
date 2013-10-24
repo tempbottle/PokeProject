@@ -1,6 +1,9 @@
 #ifndef POKEMONPROJECT_GEOM2D_VECTOR_H
 #define POKEMONPROJECT_GEOM2D_VECTOR_H
 
+template <typename T>
+struct Position;
+
 /**
  * Vector defines a change in position in a two dimensional plane
  *
@@ -10,6 +13,10 @@ template <typename T>
 struct Vector{
 	T x;
 	T y;
+
+	Vector(T x,T y) : x(x),y(y){}
+	Vector(Position<T> pos);
+	virtual ~Vector(){}
 
 	double length();
 	double direction();

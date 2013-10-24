@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
 	}
 
 	Texture* texture = new Texture(IMG_LoadTexture(renderer->renderer,"test.png"));//TODO: All textures belongs to one specific renderer and our model is incorrect because you can pass any renderer to a texture when rendering
-	Vector<float> view={0,0};
+	Vector<float> view(0,0);
 
 	ListHandler* listHandler = new ListHandler();
 
@@ -85,21 +85,18 @@ int main(int argc, char *argv[]){
 					goto GameLoop_End;
 			}
 
-    		for(std::list<EventHandleable*>::iterator i=listHandler->eventHandleables.begin();i!=listHandler->eventHandleables.end();i++)
-    			(*i)->event(&events);
+			listHandler->event(&events);
 		}
 
 		//Update
-		for(std::list<Updatable*>::iterator i=listHandler->updatables.begin();i!=listHandler->updatables.end();i++)
-			(*i)->update(1);//TODO: For now, 1 is the temporary delta time per step
+		listHandler->update(1);//TODO: For now, 1 is the temporary delta time per step
 
 		//Render
 		renderer->begin();
 			texture->render(renderer);
 
 			renderer->positionTranslate(view);
-			for(std::list<Renderable*>::iterator i=listHandler->renderables.begin();i!=listHandler->renderables.end();i++)
-				(*i)->render(renderer);
+			listHandler->render(renderer);
 			renderer->positionTranslate(-view);
 		renderer->end();
 		
