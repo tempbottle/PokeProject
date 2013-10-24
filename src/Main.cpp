@@ -6,8 +6,8 @@
 #include "ExitCodes.h"
 #include "overworld/OverworldObject.h"
 #include "overworld/Player.h"
-#include "State.h"
-#include "ListHandler.h"
+#include "control/State.h"
+#include "control/ListHandler.h"
 #include "graphics/Texture.h"
 #include "graphics/RendererSDL.h"
 
@@ -49,6 +49,7 @@ int main(int argc, char *argv[]){
 	}
 
 	Texture* texture = new Texture(IMG_LoadTexture(renderer->renderer,"test.png"));//TODO: All textures belongs to one specific renderer and our model is incorrect because you can pass any renderer to a texture when rendering
+	Vector<float> view={0,0};
 
 	ListHandler* listHandler = new ListHandler();
 
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]){
 	(new Player(2,4))->addToList(listHandler);
 	
 	SDL_Event events;
-Vector<float> v={0,0};
+
 	//Main loop
 	do{
 		//Events and input
@@ -66,6 +67,18 @@ Vector<float> v={0,0};
 					switch(events.key.keysym.sym){
 						case SDLK_ESCAPE:
 							goto GameLoop_End;
+						case SDLK_w:
+							view.y+=8;
+							break;
+						case SDLK_a:
+							view.x+=8;
+							break;
+						case SDLK_s:
+							view.y-=8;
+							break;
+						case SDLK_d:
+							view.x-=8;
+							break;
 					}
 					break;
 				case SDL_QUIT:
@@ -84,8 +97,10 @@ Vector<float> v={0,0};
 		renderer->begin();
 			texture->render(renderer);
 
+			renderer->positionTranslate(view);
 			for(std::list<Renderable*>::iterator i=listHandler->renderables.begin();i!=listHandler->renderables.end();i++)
 				(*i)->render(renderer);
+			renderer->positionTranslate(-view);
 		renderer->end();
 		
 		//Prepare for next step

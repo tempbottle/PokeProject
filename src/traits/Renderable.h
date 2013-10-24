@@ -1,7 +1,7 @@
 #ifndef POKEMONPROJECT_RENDERABLE_H
 #define POKEMONPROJECT_RENDERABLE_H
 
-#include "ListHandleable.h"
+#include "control/ListHandleable.h"
 
 class Renderer;
 class ListHandler;

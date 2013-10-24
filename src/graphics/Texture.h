@@ -2,14 +2,15 @@
 #define POKEMONPROJECT_TEXTURE_H
 
 #include "geom2d/Rectangle.h"
-#include "Renderable.h"
+#include "traits/Renderable.h"
+#include <SDL2/SDL.h>
 
 struct SDL_Texture;
 
 class Texture : public Renderable{
 public:
-	SDL_Texture* texture;
 	Rectangle<int> dimensions;
+	SDL_Texture* texture;
 
 	Texture(SDL_Texture* texture);
 	virtual ~Texture(){}

@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "geom2d/Rectangle.h"
-#include "Renderable.h"
+#include "traits/Renderable.h"
 #include "graphics/Renderer.h"
 
 Entity::Entity(int x,int y) : OverworldObject(x,y,(Rectangle<unsigned int>){1,1}),direction(0.0f),moveSpeed(1.0f),moveTileSpeed(1),isMoving(false),renderXOffset(0.0f),renderYOffset(0.0f){}
