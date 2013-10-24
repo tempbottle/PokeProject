@@ -1,7 +1,7 @@
 #ifndef POKEMONPROJECT_UPDATABLE_H
 #define POKEMONPROJECT_UPDATABLE_H
 
-#include "control/ListHandleable.h"
+#include "traits/ListHandleable.h"
 
 class ListHandler;
 

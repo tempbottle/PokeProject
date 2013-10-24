@@ -1,7 +1,7 @@
 #ifndef POKEMONPROJECT_EVENTHANDLEABLE_H
 #define POKEMONPROJECT_EVENTHANDLEABLE_H
 
-#include "control/ListHandleable.h"
+#include "traits/ListHandleable.h"
 
 union SDL_Event;
 class ListHandler;

@@ -8,7 +8,7 @@ class Renderable;
 class EventHandleable;
 
 /**
- * Contains lists of objects that should be held categorized in different ways
+ * Contains lists of objects (ListHandleables) that should be held categorized in different ways
  *
  * Author: Lolirofle
  */
