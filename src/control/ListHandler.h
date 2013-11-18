@@ -23,6 +23,9 @@ public:
 	void event(SDL_Event* event);
 	void update(int deltaTime);
 
+	void addToList(ListHandler* handler);
+	void removeFromList(ListHandler* handler);
+
 	ListHandler(){};
 	virtual ~ListHandler(){};
 };

@@ -14,7 +14,7 @@
 */
 class State : public Renderable{
 public:
-	SDL_Window* window;
+	SDL_Window*const window;
 	bool requestsToBePushed;
 	bool requestsToBePeeled;
 

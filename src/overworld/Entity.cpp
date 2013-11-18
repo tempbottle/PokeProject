@@ -6,7 +6,7 @@
 #include "traits/Renderable.h"
 #include "graphics/Renderer.h"
 
-Entity::Entity(int x,int y) : OverworldObject(x,y,(Rectangle<unsigned int>){1,1}),direction(0.0f),moveSpeed(1.0f),moveTileSpeed(1),isMoving(false),renderXOffset(0.0f),renderYOffset(0.0f){}
+Entity::Entity(int x,int y,float moveSpeed) : OverworldObject(x,y,(Rectangle<unsigned int>){1,1}),direction(0.0f),moveSpeed(moveSpeed),moveTileSpeed(1),isMoving(false),renderXOffset(0.0f),renderYOffset(0.0f){}
 
 void Entity::render(Renderer* renderer){
 	renderer->setColor((unsigned char)128,(unsigned char)192,(unsigned char)255,(unsigned char)255);

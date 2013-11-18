@@ -45,7 +45,7 @@ public:
 	float renderXOffset;
 	float renderYOffset;
 
-	Entity(int x,int y);
+	Entity(int x,int y,float moveSpeed=1.0f);
 
 	virtual void render(Renderer* r);
 	virtual void update(int deltaTime);

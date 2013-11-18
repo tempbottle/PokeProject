@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-Player::Player(int x,int y) : Entity(x,y){}
+Player::Player(int x,int y) : Entity(x,y,0.5f){}
 
 void Player::event(SDL_Event* event){
 	switch(event->type){//http://wiki.libsdl.org/SDL_Event
