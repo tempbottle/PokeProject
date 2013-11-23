@@ -6,6 +6,8 @@
 #include "ExitCodes.h"
 #include "overworld/OverworldObject.h"
 #include "control/State.h"
+#include "graphics/Renderer.h"
+#include "graphics/RendererGL.h"
 #include "graphics/RendererSDL.h"
 #include "control/GameState.h"
 #include "graphics/Texture.h"
@@ -16,26 +18,21 @@
 int main(int argc, char *argv[]){
 	// Initialize SDL video
 	if(SDL_Init(SDL_INIT_VIDEO)<0){
-		std::cout<<"SDL: Could not initiate: "<<SDL_GetError()<<std::endl;
+		std::cerr<<"SDL: Could not initiate: "<<SDL_GetError()<<std::endl;
 		return EXIT_ERROR_SDL_INIT;
 	}
 	
 	GameState* game = new GameState();
 
 	if((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG){
-		std::cout << "Could not initiate PNG loader: " << std::endl;
+		std::cerr << "Could not initiate PNG loader: " << std::endl;
 		return 1;
 	}
 
 	//Prepare for rendering
-	RendererSDL* renderer = new RendererSDL(SDL_CreateRenderer(game->window,-1,SDL_RENDERER_ACCELERATED));
-	if(renderer==NULL){
-		std::cout << "Could not create renderer: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return EXIT_ERROR_SDL_RENDERER_CREATE;
-	}
-	
-	game->texture = new Texture(IMG_LoadTexture(renderer->renderer,"test.png"));//TODO: All textures belongs to one specific renderer and our model is incorrect because you can pass any renderer to a texture when rendering;
+	Renderer* renderer = new RendererSDL(game->window);
+
+	//game->texture = new Texture(IMG_LoadTexture(sdlRenderer,"test.png"));//TODO: All textures belongs to one specific renderer and our model is incorrect because you can pass any renderer to a texture when rendering;
 
 	SDL_Event events;
 
@@ -60,7 +57,6 @@ int main(int argc, char *argv[]){
 	//Clean up
 	SDL_DestroyTexture(game->texture->texture);
 	delete game->texture;
-	SDL_DestroyRenderer(renderer->renderer);
 	delete renderer;
 	delete game;//TODO: Clean up of list handler's held objects
 	SDL_Quit();

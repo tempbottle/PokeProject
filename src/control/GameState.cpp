@@ -14,7 +14,7 @@ GameState::GameState() : State(
 		SDL_WINDOWPOS_UNDEFINED,
 		INITIAL_GAMEWINDOW_WIDTH,
 		INITIAL_GAMEWINDOW_HEIGHT,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
 	)),
 	view(0,0){
 	if(this->window==NULL){
@@ -32,10 +32,10 @@ GameState::~GameState(){
 }
 
 void GameState::render(Renderer* r){
-	ListHandler::render(r);
-
 	r->positionTranslate(view);
-		texture->render(r);
+		ListHandler::render(r);
+		//texture->render(r);
+		//r->drawTexture_tiled(texture,56,48);
 	r->positionTranslate(-view);
 }
 

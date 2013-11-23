@@ -14,6 +14,7 @@ public:
 	Player(int x,int y);
 
 	void event(SDL_Event* event);
+	void render(Renderer* r);
 
 	virtual void addToList(ListHandler* handler);
 	virtual void removeFromList(ListHandler* handler);

@@ -1,21 +1,20 @@
-#ifndef POKEMONPROJECT_RENDERERSDL_H
-#define POKEMONPROJECT_RENDERERSDL_H
+#ifndef POKEMONPROJECT_RENDERERGL_H
+#define POKEMONPROJECT_RENDERERGL_H
 
 #include "geom2d/Vector.h"
 #include "geom2d/Position.h"
 #include "graphics/Renderer.h"
+#include <SDL2/SDL.h>
 
 class Texture;
-struct SDL_Window;
-struct SDL_Renderer;
 
-class RendererSDL : public Renderer{
+class RendererGL : public Renderer{
 public:
-	SDL_Renderer* renderer;
-	Position<float> position;
-	
-	RendererSDL(SDL_Window* window);
-	~RendererSDL();
+	SDL_GLContext context;
+	SDL_Window* window;
+
+	RendererGL(SDL_Window* window);
+	void initView(unsigned int width,unsigned int height);
 
 	void setColor(float red,float green,float blue);
 	void setColor(float red,float green,float blue,float alpha);

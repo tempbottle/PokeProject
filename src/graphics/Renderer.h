@@ -16,6 +16,7 @@ public:
 	virtual void setColor(unsigned char red,unsigned char green,unsigned char blue,unsigned char alpha) = 0;
 	virtual void drawRectangle(Rectangle<unsigned int> rect) = 0;
 	virtual void drawTexture(Texture* texture) = 0;
+	virtual void drawTexture_tiled(Texture* texture,int width,int height) = 0;
 	virtual void positionTranslate(Vector<float> v) = 0;
 	void positionTranslate(Vector<float> v,void(*renderFunc)(Renderer*));
 

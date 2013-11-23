@@ -45,6 +45,10 @@ void Player::event(SDL_Event* event){
 	}
 }
 
+void Player::render(Renderer* r){
+	Entity::render(r);
+}
+
 void Player::addToList(ListHandler* handler){
 	Entity::addToList(handler);
 	EventHandleable::addToList(handler);
