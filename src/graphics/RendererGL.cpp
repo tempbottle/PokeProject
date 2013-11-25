@@ -56,7 +56,7 @@ void RendererGL::drawTexture_tiled(Texture* texture,int width,int height){
 
 }
 
-void RendererGL::positionTranslate(Vector<float> v){
+void RendererGL::addPosition(Vector<float> v){
 	glTranslatef(v.x,v.y,0.0f);
 }
 
@@ -69,4 +69,12 @@ void RendererGL::begin(){
 void RendererGL::end(){
 	glPopMatrix();
 	SDL_GL_SwapWindow(this->window);
+}
+
+SDL_GLContext RendererGL::getContext(){
+	return this->context;
+}
+
+SDL_Window* RendererGL::getWindow(){
+	return this->window;
 }

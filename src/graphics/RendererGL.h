@@ -9,10 +9,11 @@
 class Texture;
 
 class RendererGL : public Renderer{
-public:
+private:
 	SDL_GLContext context;
 	SDL_Window* window;
 
+public:
 	RendererGL(SDL_Window* window);
 	void initView(unsigned int width,unsigned int height);
 
@@ -23,9 +24,11 @@ public:
 	void drawRectangle(Rectangle<unsigned int> rect);
 	void drawTexture(Texture* texture);
 	void drawTexture_tiled(Texture* texture,int width,int height);
-	void positionTranslate(Vector<float> v);
+	void addPosition(Vector<float> v);
 	void begin();
 	void end();
+	SDL_GLContext getContext();
+	SDL_Window* getWindow();
 };
 
 #endif

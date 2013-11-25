@@ -32,11 +32,11 @@ GameState::~GameState(){
 }
 
 void GameState::render(Renderer* r){
-	r->positionTranslate(view);
+	r->addPosition(view);
 		ListHandler::render(r);
 		//texture->render(r);
 		//r->drawTexture_tiled(texture,56,48);
-	r->positionTranslate(-view);
+	r->addPosition(-view);
 }
 
 void GameState::event(SDL_Event* events){

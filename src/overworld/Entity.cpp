@@ -15,14 +15,14 @@ void Entity::render(Renderer* renderer){
 		this->y*(signed)OverworldObject::tileSize + this->renderYOffset
 	};
 
-	renderer->positionTranslate(v);
+	renderer->addPosition(v);
 	renderer->drawRectangle(
 		(Rectangle<unsigned int>){
 			(unsigned)this->collisionBox.width * (unsigned)OverworldObject::tileSize,
 			(unsigned)this->collisionBox.height * (unsigned)OverworldObject::tileSize
 		}
 	);
-	renderer->positionTranslate(-v);
+	renderer->addPosition(-v);
 }
 
 void Entity::update(int deltaTime){

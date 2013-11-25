@@ -10,10 +10,11 @@ struct SDL_Window;
 struct SDL_Renderer;
 
 class RendererSDL : public Renderer{
-public:
-	SDL_Renderer* renderer;
+private:
 	Position<float> position;
-	
+	SDL_Renderer* renderer;
+
+public:	
 	RendererSDL(SDL_Window* window);
 	~RendererSDL();
 
@@ -24,7 +25,9 @@ public:
 	void drawRectangle(Rectangle<unsigned int> rect);
 	void drawTexture(Texture* texture);
 	void drawTexture_tiled(Texture* texture,int width,int height);
-	void positionTranslate(Vector<float> v);
+	void addPosition(Vector<float> v);
+	Position<float> getPosition();
+	SDL_Renderer* getRenderer();
 	void begin();
 	void end();
 };

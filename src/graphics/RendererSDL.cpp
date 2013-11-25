@@ -5,7 +5,7 @@
 #include <iostream>
 #include "ExitCodes.h"
 
-RendererSDL::RendererSDL(SDL_Window* window) : renderer(SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED)),position((Position<float>){0.0f,0.0f}){
+RendererSDL::RendererSDL(SDL_Window* window) : position((Position<float>){0.0f,0.0f}),renderer(SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED)){
 	if(this->renderer==NULL){
 		std::cerr << "Could not create renderer: " << SDL_GetError() << std::endl;
 		SDL_Quit();
@@ -59,8 +59,16 @@ void RendererSDL::drawTexture_tiled(Texture* texture,int width,int height){//TOD
 	}
 }
 
-void RendererSDL::positionTranslate(Vector<float> v){
+void RendererSDL::addPosition(Vector<float> v){
 	this->position=this->position+v;
+}
+
+Position<float> RendererSDL::getPosition(){
+	return this->position;
+}
+
+SDL_Renderer* RendererSDL::getRenderer(){
+	return this->renderer;
 }
 
 void RendererSDL::begin(){

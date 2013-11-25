@@ -17,8 +17,8 @@ public:
 	virtual void drawRectangle(Rectangle<unsigned int> rect) = 0;
 	virtual void drawTexture(Texture* texture) = 0;
 	virtual void drawTexture_tiled(Texture* texture,int width,int height) = 0;
-	virtual void positionTranslate(Vector<float> v) = 0;
-	void positionTranslate(Vector<float> v,void(*renderFunc)(Renderer*));
+	virtual void addPosition(Vector<float> v) = 0;
+	void addPosition(Vector<float> v,void(*renderFunc)(Renderer*));
 
 	/**
 	 * Begin rendering session
